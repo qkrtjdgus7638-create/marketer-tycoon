@@ -1,0 +1,1295 @@
+{
+  "overlayVersion": "story-rail-context-card-v1",
+  "purpose": "기존 v3 데이터/로직에 고정 시나리오 레일, 라운드별 카드 후보군, 문구 변주, 신규 카드 10장을 얹기 위한 추가 데이터.",
+  "integrationSummary": [
+    "기존 pickSituation()의 완전 랜덤 상황 선택을 storyRounds[state.round - 1] 기반으로 교체한다.",
+    "각 storyRound는 linkedSituationId, baseText, variantRules, cardSlots를 가진다.",
+    "카드는 전체 풀에서 랜덤으로 뽑지 않고, 현재 라운드의 cardSlots별 candidateCardIds에서 1장씩 제시한다.",
+    "기존 상황/카드/시너지 데이터는 유지한다.",
+    "신규 카드 10장을 cards 배열에 추가하면 전체 카드풀은 30장이 된다."
+  ],
+  "newCards": [
+    {
+      "id": "efficiency_tracking",
+      "name": "효율 추적",
+      "category": "예산관리",
+      "description": "쓴 돈이 어디서 새는지 확인합니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        20000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 2,
+        "performance": -1,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -2,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "예산",
+        "분석",
+        "보고"
+      ],
+      "note": "예산은 크게 쓰지 않지만, 다음 판단과 보고 근거를 만드는 카드."
+    },
+    {
+      "id": "stop_ads",
+      "name": "광고 중단",
+      "category": "예산관리",
+      "description": "망한 광고를 더 태우지 않습니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        -1,
+        0
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 0
+      },
+      "build": {
+        "budgetControl": 3,
+        "performance": -2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -3,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": -1
+      },
+      "tags": [
+        "예산",
+        "방어",
+        "손절"
+      ],
+      "note": "성과는 약하지만 큰 손실을 막는 카드. 돈 녹는 중 상황에서 특히 자연스럽다."
+    },
+    {
+      "id": "conversion_boost",
+      "name": "전환 보강",
+      "category": "퍼포먼스",
+      "description": "들어온 사람을 그냥 보내지 않습니다.",
+      "cost": 25000,
+      "earned": [
+        20000,
+        75000
+      ],
+      "score": [
+        1,
+        3
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "전환",
+        "성과",
+        "구매"
+      ],
+      "note": "클릭은 있는데 구매가 없는 상황을 해결하는 핵심 카드."
+    },
+    {
+      "id": "click_recovery",
+      "name": "클릭 회수",
+      "category": "퍼포먼스",
+      "description": "한번 눌렀던 사람을 다시 데려옵니다.",
+      "cost": 20000,
+      "earned": [
+        15000,
+        65000
+      ],
+      "score": [
+        1,
+        3
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "전환",
+        "회수",
+        "성과"
+      ],
+      "note": "이전 반응을 성과로 이어붙이는 카드."
+    },
+    {
+      "id": "brand_guard",
+      "name": "브랜드 가드",
+      "category": "브랜드",
+      "description": "싸보이는 방향을 막습니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        15000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 2
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": -1,
+        "brand": 2,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": -3,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "방어",
+        "컨펌"
+      ],
+      "note": "브랜드팀 제동, 세일몰 위험, 대표 감도 피드백에 대응."
+    },
+    {
+      "id": "review_secure",
+      "name": "리뷰 확보",
+      "category": "브랜드",
+      "description": "말보다 믿을 만한 근거를 챙깁니다.",
+      "cost": 10000,
+      "earned": [
+        5000,
+        30000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 2,
+        "politics": 0,
+        "operations": -1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": -1,
+        "reportPressure": -1,
+        "operationRisk": 1,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "신뢰",
+        "전환"
+      ],
+      "note": "사람은 왔는데 안 사는 상황에서 구매 설득력을 보완."
+    },
+    {
+      "id": "discount_restraint",
+      "name": "할인 절제",
+      "category": "브랜드",
+      "description": "싸게 보이지 않게 선을 지킵니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        15000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 1,
+        "performance": -1,
+        "content": -1,
+        "brand": 2,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -1,
+        "approvalRisk": -1,
+        "brandRisk": -2,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "예산",
+        "방어"
+      ],
+      "note": "성과 폭발력은 약하지만 브랜드 리스크와 과한 프로모션을 막음."
+    },
+    {
+      "id": "ceo_persuade",
+      "name": "대표 설득",
+      "category": "사내정치",
+      "description": "윗선 언어로 방향을 설명합니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        15000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 2
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 2,
+        "operations": -1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -2,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 1,
+        "burnoutRisk": 1
+      },
+      "tags": [
+        "사내정치",
+        "컨펌",
+        "보고"
+      ],
+      "note": "대표님 한마디, 최종 평가, 보고 라운드에 자연스럽게 대응."
+    },
+    {
+      "id": "responsibility_split",
+      "name": "책임 분산",
+      "category": "사내정치",
+      "description": "혼자 떠안지 않게 기록을 남깁니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 2,
+        "operations": -1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 1,
+        "burnoutRisk": -1
+      },
+      "tags": [
+        "사내정치",
+        "방어",
+        "보고"
+      ],
+      "note": "파일/유관부서/보고 상황에서 실패 피해를 줄이는 카드."
+    },
+    {
+      "id": "agency_call",
+      "name": "대행사 호출",
+      "category": "운영력",
+      "description": "혼자 할 수 없는 일은 외부 도움을 씁니다.",
+      "cost": 20000,
+      "earned": [
+        5000,
+        40000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 2
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": -2,
+        "burnoutRisk": -1
+      },
+      "tags": [
+        "운영",
+        "수정",
+        "외부도움"
+      ],
+      "note": "일정 압박/긴급 수정에서 멘탈과 운영 리스크를 줄임."
+    }
+  ],
+  "storyRounds": [
+    {
+      "round": 1,
+      "id": "r01_reference_hell",
+      "title": "레퍼런스 지옥",
+      "linkedSituationId": "reference_hell",
+      "situationTags": [
+        "조사",
+        "방향성",
+        "기준불명확"
+      ],
+      "baseText": "팀장님이 “요즘 잘하는 브랜드 레퍼런스 좀 찾아봐요”라고 합니다. 문제는 잘하는 기준이 아무도 모른다는 겁니다.",
+      "variantRules": [
+        {
+          "id": "low_trust",
+          "priority": 80,
+          "condition": {
+            "trustLte": 3
+          },
+          "text": "업무를 받자마자 기준이 흐립니다. 신뢰가 낮아서 그냥 넘기면 바로 피드백이 날아올 분위기입니다."
+        },
+        {
+          "id": "default",
+          "priority": 0,
+          "condition": "default",
+          "text": "첫 업무는 레퍼런스 조사입니다. 아직 기준은 흐릿하지만, 여기서 방향을 잘 잡으면 이후 작업이 편해집니다."
+        }
+      ],
+      "cardSlots": [
+        {
+          "role": "정석",
+          "candidateCardIds": [
+            "reference_collect",
+            "tone_align"
+          ]
+        },
+        {
+          "role": "방어",
+          "candidateCardIds": [
+            "ask_first",
+            "request_doc"
+          ]
+        },
+        {
+          "role": "감도",
+          "candidateCardIds": [
+            "brand_mood",
+            "brand_guard"
+          ]
+        }
+      ],
+      "requiredCards": [
+        "reference_collect",
+        "ask_first",
+        "brand_mood"
+      ],
+      "resultHint": "선택 결과는 2라운드의 소재 방향 문구와 컨펌 리스크에 반영됩니다."
+    },
+    {
+      "round": 2,
+      "id": "r02_creative_direction",
+      "title": "첫 소재 방향",
+      "linkedSituationId": "calm_thumbnail",
+      "situationTags": [
+        "콘텐츠",
+        "방향설정",
+        "반응",
+        "브랜드"
+      ],
+      "baseText": "레퍼런스를 바탕으로 첫 광고 소재 방향을 잡아야 합니다. 감도와 반응 사이에서 방향을 정해야 합니다.",
+      "variantRules": [
+        {
+          "id": "content_high",
+          "priority": 60,
+          "condition": {
+            "buildGte": {
+              "content": 4
+            }
+          },
+          "text": "자료는 많이 모였습니다. 문제는 방향이 너무 많아졌다는 겁니다."
+        },
+        {
+          "id": "brand_high",
+          "priority": 60,
+          "condition": {
+            "buildGte": {
+              "brand": 4
+            }
+          },
+          "text": "분위기는 고급스러워졌습니다. 다만 사람들이 멈춰 볼지는 아직 모르겠습니다."
+        },
+        {
+          "id": "politics_high",
+          "priority": 50,
+          "condition": {
+            "buildGte": {
+              "politics": 4
+            }
+          },
+          "text": "기준은 물어봤지만, 팀장님도 정확히 뭘 원하는지는 모릅니다."
+        },
+        {
+          "id": "default",
+          "priority": 0,
+          "condition": "default",
+          "text": "방향은 잡아야 하는데 확신은 없습니다. 클릭을 노릴지, 브랜드 톤을 지킬지 선택해야 합니다."
+        }
+      ],
+      "cardSlots": [
+        {
+          "role": "정석",
+          "candidateCardIds": [
+            "creative_boost",
+            "split_test"
+          ]
+        },
+        {
+          "role": "공격",
+          "candidateCardIds": [
+            "hooking_copy",
+            "click_hook"
+          ]
+        },
+        {
+          "role": "브랜드",
+          "candidateCardIds": [
+            "tone_align",
+            "brand_mood"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "id": "r03_final_files",
+      "title": "파일명이 전부 최종",
+      "linkedSituationId": "final_files",
+      "situationTags": [
+        "파일관리",
+        "운영",
+        "실수위험"
+      ],
+      "baseText": "폴더를 열었더니 최종.psd, 진짜최종.psd, 진짜진짜최종_수정.psd가 나옵니다.",
+      "variantRules": [
+        {
+          "id": "operations_low",
+          "priority": 70,
+          "condition": {
+            "buildLte": {
+              "operations": 1
+            }
+          },
+          "text": "파일 구조를 보는 순간 머리가 복잡해집니다. 잘못 건드리면 바로 재작업입니다."
+        },
+        {
+          "id": "operations_high",
+          "priority": 70,
+          "condition": {
+            "buildGte": {
+              "operations": 5
+            }
+          },
+          "text": "파일은 엉망이지만, 당신은 이미 정리할 준비가 되어 있습니다."
+        },
+        {
+          "id": "default",
+          "priority": 0,
+          "condition": "default",
+          "text": "어느 파일이 진짜 최종인지 확인하지 않으면, 오늘 하루가 통째로 날아갈 수 있습니다."
+        }
+      ],
+      "cardSlots": [
+        {
+          "role": "정리",
+          "candidateCardIds": [
+            "file_cleanup",
+            "request_doc"
+          ]
+        },
+        {
+          "role": "방어",
+          "candidateCardIds": [
+            "responsibility_split",
+            "ask_first"
+          ]
+        },
+        {
+          "role": "응급",
+          "candidateCardIds": [
+            "urgent_fix",
+            "agency_call"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "id": "r04_not_this_vibe",
+      "title": "이런 느낌 말고",
+      "linkedSituationId": "not_this_vibe",
+      "situationTags": [
+        "시안피드백",
+        "컨펌",
+        "수정",
+        "브랜드"
+      ],
+      "baseText": "팀장님이 첫 시안을 보고 말합니다. “음… 이런 느낌 말고.” 무슨 느낌인지는 아직 모릅니다.",
+      "variantRules": [
+        {
+          "id": "content_over_brand",
+          "priority": 80,
+          "condition": {
+            "buildDiffGte": {
+              "left": "content",
+              "right": "brand",
+              "diff": 2
+            }
+          },
+          "text": "시안은 눈에 띕니다. 하지만 팀장님은 말합니다. “반응은 있을 것 같은데, 우리 브랜드랑은 좀 안 맞지 않아요?”"
+        },
+        {
+          "id": "brand_over_content",
+          "priority": 80,
+          "condition": {
+            "buildDiffGte": {
+              "left": "brand",
+              "right": "content",
+              "diff": 2
+            }
+          },
+          "text": "분위기는 깔끔합니다. 다만 너무 조용합니다. “예쁘긴 한데, 사람들이 멈춰 볼까요?”"
+        },
+        {
+          "id": "low_trust",
+          "priority": 90,
+          "condition": {
+            "trustLte": 3
+          },
+          "text": "팀장님이 시안을 오래 봅니다. “이거 방향을 이해하고 만든 거 맞죠?”"
+        },
+        {
+          "id": "high_trust",
+          "priority": 50,
+          "condition": {
+            "trustGte": 7
+          },
+          "text": "팀장님이 말합니다. “방향은 괜찮아요. 조금만 더 명확하게 다듬어봅시다.”"
+        },
+        {
+          "id": "default",
+          "priority": 0,
+          "condition": "default",
+          "text": "방향은 크게 틀리지 않았지만, 바로 통과되기엔 애매합니다."
+        }
+      ],
+      "cardSlots": [
+        {
+          "role": "정석",
+          "candidateCardIds": [
+            "creative_boost",
+            "tone_align"
+          ]
+        },
+        {
+          "role": "방어",
+          "candidateCardIds": [
+            "ask_first",
+            "approval_dodge"
+          ]
+        },
+        {
+          "role": "리스크",
+          "candidateCardIds": [
+            "hooking_copy",
+            "thumbnail_reroll",
+            "brand_guard"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "id": "r05_deadline_pressure",
+      "title": "오늘 안에 가능하죠?",
+      "linkedSituationId": "today_possible",
+      "situationTags": [
+        "일정압박",
+        "수정요청",
+        "멘탈",
+        "운영"
+      ],
+      "baseText": "오후 6시 12분. 퇴근 준비를 하려는 순간 메시지가 옵니다. “이거 오늘 안에만 부탁드려요.”",
+      "variantRules": [
+        {
+          "id": "low_mental",
+          "priority": 90,
+          "condition": {
+            "mentalLte": 4
+          },
+          "text": "오늘 하루가 이미 길었습니다. 이 요청을 받는 순간 멘탈이 흔들립니다."
+        },
+        {
+          "id": "high_operations",
+          "priority": 70,
+          "condition": {
+            "buildGte": {
+              "operations": 5
+            }
+          },
+          "text": "작업 범위는 어느 정도 정리되어 있습니다. 무리하면 처리할 수는 있지만, 우선순위가 필요합니다."
+        },
+        {
+          "id": "high_trust",
+          "priority": 60,
+          "condition": {
+            "trustGte": 7
+          },
+          "text": "신뢰가 쌓여 있어서 부탁은 부드럽게 들어왔습니다. 하지만 실제 수정량은 적지 않습니다."
+        },
+        {
+          "id": "default",
+          "priority": 0,
+          "condition": "default",
+          "text": "급한 요청입니다. 다 해내거나, 범위를 줄이거나, 일정을 막아야 합니다."
+        }
+      ],
+      "cardSlots": [
+        {
+          "role": "응급",
+          "candidateCardIds": [
+            "urgent_fix",
+            "agency_call"
+          ]
+        },
+        {
+          "role": "방어",
+          "candidateCardIds": [
+            "schedule_defense",
+            "approval_dodge"
+          ]
+        },
+        {
+          "role": "정리",
+          "candidateCardIds": [
+            "request_doc",
+            "responsibility_split"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "id": "r06_test_budget",
+      "title": "테스트 예산 10만 원",
+      "linkedSituationId": "ten_thousand_test",
+      "situationTags": [
+        "테스트",
+        "예산",
+        "광고집행"
+      ],
+      "baseText": "팀장님이 말합니다. “10만 원만 태워보고 감 좀 봅시다.” 이제 진짜 숫자가 필요합니다.",
+      "variantRules": [
+        {
+          "id": "high_operations",
+          "priority": 60,
+          "condition": {
+            "buildGte": {
+              "operations": 5
+            }
+          },
+          "text": "준비와 운영은 안정적입니다. 이제 문제는 실제 반응입니다."
+        },
+        {
+          "id": "low_score",
+          "priority": 70,
+          "condition": {
+            "scoreLte": 2
+          },
+          "text": "지금까지 준비는 했지만, 성과는 아직 부족합니다. 이번 테스트가 중요합니다."
+        },
+        {
+          "id": "default",
+          "priority": 0,
+          "condition": "default",
+          "text": "작은 예산이지만, 이 테스트로 다음 방향을 잡아야 합니다."
+        }
+      ],
+      "cardSlots": [
+        {
+          "role": "정석",
+          "candidateCardIds": [
+            "small_test",
+            "split_test"
+          ]
+        },
+        {
+          "role": "공격",
+          "candidateCardIds": [
+            "early_boost",
+            "buyer_capture"
+          ]
+        },
+        {
+          "role": "방어",
+          "candidateCardIds": [
+            "channel_split",
+            "efficiency_tracking"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "id": "r07_low_click",
+      "title": "클릭이 안 붙는다",
+      "linkedSituationId": "no_click",
+      "situationTags": [
+        "반응저조",
+        "클릭부족",
+        "소재문제"
+      ],
+      "baseText": "광고는 나갔지만 사람들이 그냥 지나갑니다. 팀장님이 묻습니다. “소재가 약한가?”",
+      "variantRules": [
+        {
+          "id": "low_score_low_money",
+          "priority": 90,
+          "condition": {
+            "scoreLte": 2,
+            "moneyLte": 50000
+          },
+          "text": "숫자는 조용하고, 예산도 거의 남지 않았습니다. 돈은 썼는데 볼 만한 결과가 없습니다."
+        },
+        {
+          "id": "low_score_high_money",
+          "priority": 80,
+          "condition": {
+            "scoreLte": 2,
+            "moneyGte": 90000
+          },
+          "text": "돈은 아직 남아 있습니다. 하지만 광고 반응은 너무 조용합니다."
+        },
+        {
+          "id": "performance_over_budget",
+          "priority": 60,
+          "condition": {
+            "buildDiffGte": {
+              "left": "performance",
+              "right": "budgetControl",
+              "diff": 2
+            }
+          },
+          "text": "광고는 공격적으로 돌아가고 있습니다. 숫자는 움직이지만 예산 소진 속도가 빠릅니다."
+        },
+        {
+          "id": "default",
+          "priority": 0,
+          "condition": "default",
+          "text": "반응을 끌어올릴지, 작게 배워갈지 선택해야 합니다."
+        }
+      ],
+      "cardSlots": [
+        {
+          "role": "정석",
+          "candidateCardIds": [
+            "creative_boost",
+            "click_hook"
+          ]
+        },
+        {
+          "role": "학습",
+          "candidateCardIds": [
+            "split_test",
+            "small_test"
+          ]
+        },
+        {
+          "role": "도박",
+          "candidateCardIds": [
+            "thumbnail_reroll",
+            "early_boost"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 8,
+      "id": "r08_no_purchase",
+      "title": "사람은 왔는데 안 산다",
+      "linkedSituationId": "pretty_no_click",
+      "situationTags": [
+        "전환문제",
+        "구매부족",
+        "매출압박"
+      ],
+      "baseText": "사람들은 광고를 눌렀습니다. 그런데 구매로 이어지지 않습니다.",
+      "variantRules": [
+        {
+          "id": "content_high_performance_low",
+          "priority": 70,
+          "condition": {
+            "buildGte": {
+              "content": 5
+            },
+            "buildLte": {
+              "performance": 2
+            }
+          },
+          "text": "사람들은 확실히 눌렀습니다. 하지만 거기서 끝났습니다. “클릭은 좋은데, 그래서 구매는요?”"
+        },
+        {
+          "id": "brand_high_score_low",
+          "priority": 60,
+          "condition": {
+            "buildGte": {
+              "brand": 5
+            },
+            "scoreLte": 3
+          },
+          "text": "페이지는 깔끔합니다. 문제는 아무도 결제 버튼을 누르지 않는다는 겁니다."
+        },
+        {
+          "id": "default",
+          "priority": 0,
+          "condition": "default",
+          "text": "반응을 구매로 바꿀 방법이 필요합니다."
+        }
+      ],
+      "cardSlots": [
+        {
+          "role": "정석",
+          "candidateCardIds": [
+            "conversion_boost",
+            "buyer_capture"
+          ]
+        },
+        {
+          "role": "회수",
+          "candidateCardIds": [
+            "click_recovery",
+            "review_secure"
+          ]
+        },
+        {
+          "role": "브랜드방어",
+          "candidateCardIds": [
+            "discount_restraint",
+            "brand_guard"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 9,
+      "id": "r09_what_learned",
+      "title": "그래서 배운 게 뭐죠?",
+      "linkedSituationId": "what_learned",
+      "situationTags": [
+        "보고",
+        "학습",
+        "데이터해석"
+      ],
+      "baseText": "팀장님이 테스트 결과를 보며 말합니다. “그래서 다음엔 뭘 하면 되죠?”",
+      "variantRules": [
+        {
+          "id": "high_score",
+          "priority": 60,
+          "condition": {
+            "scoreGte": 7
+          },
+          "text": "숫자는 나쁘지 않습니다. 이제 중요한 건 이 결과를 다음 액션으로 설명하는 겁니다."
+        },
+        {
+          "id": "low_score",
+          "priority": 70,
+          "condition": {
+            "scoreLte": 4
+          },
+          "text": "성과가 애매합니다. 그래도 배운 점이 없다면 더 위험합니다."
+        },
+        {
+          "id": "default",
+          "priority": 0,
+          "condition": "default",
+          "text": "테스트 결과를 그냥 숫자로 두지 말고, 다음 액션으로 연결해야 합니다."
+        }
+      ],
+      "cardSlots": [
+        {
+          "role": "보고",
+          "candidateCardIds": [
+            "report_shield",
+            "efficiency_tracking"
+          ]
+        },
+        {
+          "role": "학습",
+          "candidateCardIds": [
+            "split_test",
+            "small_test"
+          ]
+        },
+        {
+          "role": "방어",
+          "candidateCardIds": [
+            "ask_first",
+            "responsibility_split"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 10,
+      "id": "r10_ceo_comment",
+      "title": "대표님 지나가다 한마디",
+      "linkedSituationId": "ceo_comment",
+      "situationTags": [
+        "대표피드백",
+        "컨펌",
+        "임팩트",
+        "브랜드"
+      ],
+      "baseText": "대표님이 모니터를 보고 말합니다. “이거 좀 더 임팩트 있게 안 돼?”",
+      "variantRules": [
+        {
+          "id": "high_score",
+          "priority": 60,
+          "condition": {
+            "scoreGte": 7
+          },
+          "text": "대표님이 숫자를 먼저 확인합니다. 반응은 괜찮지만, 더 눈에 띄게 만들 수 있냐고 묻습니다."
+        },
+        {
+          "id": "low_score",
+          "priority": 80,
+          "condition": {
+            "scoreLte": 3
+          },
+          "text": "대표님이 화면과 숫자를 번갈아 봅니다. 분위기가 조용해집니다. “이거 왜 하는 거죠?”"
+        },
+        {
+          "id": "politics_high",
+          "priority": 70,
+          "condition": {
+            "buildGte": {
+              "politics": 5
+            }
+          },
+          "text": "당신은 미리 보고용 논리를 준비해뒀습니다. 피드백이 와도 설명할 여지가 있습니다."
+        },
+        {
+          "id": "default",
+          "priority": 0,
+          "condition": "default",
+          "text": "갑작스러운 윗선 피드백입니다. 임팩트를 키울지, 방향을 방어할지 선택해야 합니다."
+        }
+      ],
+      "cardSlots": [
+        {
+          "role": "설득",
+          "candidateCardIds": [
+            "ceo_persuade",
+            "report_shield"
+          ]
+        },
+        {
+          "role": "임팩트",
+          "candidateCardIds": [
+            "hooking_copy",
+            "brand_mood"
+          ]
+        },
+        {
+          "role": "방어",
+          "candidateCardIds": [
+            "brand_guard",
+            "approval_dodge"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 11,
+      "id": "r11_report_day",
+      "title": "보고 D-day",
+      "linkedSituationId": "report_day",
+      "situationTags": [
+        "보고",
+        "평가",
+        "신뢰",
+        "정리"
+      ],
+      "baseText": "오늘은 테스트 결과를 공유하는 날입니다. 좋은 숫자도 있고, 말하기 애매한 숫자도 있습니다.",
+      "variantRules": [
+        {
+          "id": "high_score_high_money",
+          "priority": 100,
+          "condition": {
+            "scoreGte": 8,
+            "moneyGte": 120000
+          },
+          "text": "보고서에 넣을 숫자가 꽤 괜찮습니다. 예산도 크게 망가지지 않았습니다."
+        },
+        {
+          "id": "high_score_low_money",
+          "priority": 90,
+          "condition": {
+            "scoreGte": 8,
+            "moneyLte": 50000
+          },
+          "text": "성과는 분명히 있습니다. 하지만 예산 사용 내역이 조금 부담스럽습니다."
+        },
+        {
+          "id": "low_score_high_money",
+          "priority": 80,
+          "condition": {
+            "scoreLte": 4,
+            "moneyGte": 100000
+          },
+          "text": "돈은 거의 지켰습니다. 문제는 보여줄 숫자도 거의 없다는 겁니다."
+        },
+        {
+          "id": "low_trust",
+          "priority": 85,
+          "condition": {
+            "trustLte": 3
+          },
+          "text": "보고를 시작하기도 전에 분위기가 무겁습니다. 팀장님은 이미 의심하는 눈치입니다."
+        },
+        {
+          "id": "default",
+          "priority": 0,
+          "condition": "default",
+          "text": "좋은 숫자도 있고, 애매한 숫자도 있습니다. 어떻게 정리하느냐가 중요합니다."
+        }
+      ],
+      "cardSlots": [
+        {
+          "role": "보고",
+          "candidateCardIds": [
+            "report_shield",
+            "ceo_persuade"
+          ]
+        },
+        {
+          "role": "근거",
+          "candidateCardIds": [
+            "efficiency_tracking",
+            "file_cleanup"
+          ]
+        },
+        {
+          "role": "방어",
+          "candidateCardIds": [
+            "responsibility_split",
+            "ask_first"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 12,
+      "id": "r12_numbers_not_effort",
+      "title": "열심히 말고 숫자로",
+      "linkedSituationId": "number_not_effort",
+      "situationTags": [
+        "최종평가",
+        "성과",
+        "신뢰",
+        "숫자"
+      ],
+      "baseText": "팀장님이 말합니다. “열심히 한 건 알겠는데, 숫자로 보면 어때요?”",
+      "variantRules": [
+        {
+          "id": "excellent_candidate",
+          "priority": 100,
+          "condition": {
+            "scoreGte": 9,
+            "moneyGte": 120000,
+            "trustGte": 7
+          },
+          "text": "숫자와 예산, 신뢰가 모두 나쁘지 않습니다. 인턴치고는 꽤 괜찮은 마무리입니다."
+        },
+        {
+          "id": "high_score_low_money",
+          "priority": 90,
+          "condition": {
+            "scoreGte": 8,
+            "moneyLte": 70000
+          },
+          "text": "성과는 만들었습니다. 다만 예산이 얇아졌습니다."
+        },
+        {
+          "id": "low_score",
+          "priority": 80,
+          "condition": {
+            "scoreLte": 5
+          },
+          "text": "열심히 한 흔적은 있지만, 숫자로 보여주기엔 부족합니다."
+        },
+        {
+          "id": "default",
+          "priority": 0,
+          "condition": "default",
+          "text": "마지막으로 숫자를 정리해야 합니다. 어떤 방식으로든 평가를 통과해야 합니다."
+        }
+      ],
+      "cardSlots": [
+        {
+          "role": "성과",
+          "candidateCardIds": [
+            "buyer_capture",
+            "conversion_boost"
+          ]
+        },
+        {
+          "role": "보고",
+          "candidateCardIds": [
+            "report_shield",
+            "efficiency_tracking"
+          ]
+        },
+        {
+          "role": "방어",
+          "candidateCardIds": [
+            "ceo_persuade",
+            "responsibility_split"
+          ]
+        }
+      ]
+    }
+  ],
+  "contextDescriptions": {
+    "request_doc": {
+      "r03_final_files": "어떤 파일이 진짜 최종인지 먼저 확인합니다.",
+      "r05_deadline_pressure": "오늘 안에 해야 할 범위를 먼저 확정합니다.",
+      "r09_what_learned": "테스트에서 확인한 것과 미정인 것을 분리합니다."
+    },
+    "creative_boost": {
+      "r02_creative_direction": "첫 소재 방향을 더 눌리고 싶게 다듬습니다.",
+      "r04_not_this_vibe": "피드백을 반영해 시안을 다시 강화합니다.",
+      "r07_low_click": "클릭이 붙도록 썸네일과 문구를 손봅니다."
+    },
+    "report_shield": {
+      "r09_what_learned": "애매한 테스트 결과를 다음 액션으로 정리합니다.",
+      "r10_ceo_comment": "윗선 피드백을 숫자와 목적 중심으로 방어합니다.",
+      "r11_report_day": "좋은 숫자와 애매한 숫자를 보고용 구조로 묶습니다.",
+      "r12_numbers_not_effort": "열심히 한 과정을 숫자로 번역합니다."
+    },
+    "efficiency_tracking": {
+      "r06_test_budget": "테스트 예산이 어디서 효율을 내는지 확인합니다.",
+      "r09_what_learned": "쓴 돈과 얻은 반응을 다음 액션으로 연결합니다.",
+      "r11_report_day": "보고서에 넣을 효율 근거를 만듭니다."
+    },
+    "agency_call": {
+      "r05_deadline_pressure": "내부에서 오늘 다 하기 어려운 작업을 외부 도움으로 분리합니다."
+    },
+    "brand_guard": {
+      "r04_not_this_vibe": "반응을 노리되 브랜드가 무너지지 않게 선을 잡습니다.",
+      "r10_ceo_comment": "임팩트 요구가 브랜드 톤을 해치지 않게 막습니다."
+    }
+  },
+  "developerNotes": {
+    "minimalCodeChange": [
+      "data.storyRounds가 있으면 pickSituation() 대신 currentRound = data.storyRounds[state.round - 1]를 사용한다.",
+      "renderSituation()은 currentRound의 variantRules를 평가해서 표시 문구를 정한다.",
+      "pickCards()는 currentRound.cardSlots에서 슬롯별 1장씩 뽑는다.",
+      "카드 설명은 contextDescriptions[card.id]?.[currentRound.id]가 있으면 그 문구를 우선 사용한다.",
+      "기존 weighted random 상황 방식은 storyRounds가 없을 때 fallback으로 유지한다."
+    ],
+    "conditionPriority": "variantRules는 priority가 높은 조건부터 평가하고, 첫 매칭 문구를 사용한다.",
+    "cardSlotRule": "각 슬롯에서 1장을 뽑되, 최근 2턴에 나온 카드는 가중치를 낮춘다. 후보가 부족하면 기존 tags 매칭 방식으로 fallback한다."
+  }
+}

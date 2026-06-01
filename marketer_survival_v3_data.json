@@ -1,0 +1,1348 @@
+{
+  "gameTitle": "마케터로 살아남기",
+  "version": "MVP 인턴 스테이지 v3 - 예산/성과 중심",
+  "stageDefaults": {
+    "rank": "인턴",
+    "rounds": 12,
+    "startingMoney": 100000,
+    "startingScore": 0,
+    "startingMental": 10,
+    "startingTrust": 5,
+    "clearConditions": {
+      "scoreGte": 6,
+      "moneyGte": 70000,
+      "mentalGte": 1,
+      "trustGte": 4
+    },
+    "excellentClear": {
+      "scoreGte": 9,
+      "moneyGte": 120000,
+      "mentalGte": 3,
+      "trustGte": 7
+    },
+    "failConditions": [
+      "mental <= 0",
+      "money <= 0",
+      "trust <= 0",
+      "round 12 종료 시 score < 6"
+    ]
+  },
+  "visibleStats": [
+    "money",
+    "score",
+    "mental",
+    "trust"
+  ],
+  "buildStats": [
+    "budgetControl",
+    "performance",
+    "content",
+    "brand",
+    "politics",
+    "operations"
+  ],
+  "riskStats": [
+    "budgetRisk",
+    "approvalRisk",
+    "brandRisk",
+    "reportPressure",
+    "operationRisk",
+    "burnoutRisk"
+  ],
+  "cards": [
+    {
+      "id": "small_test",
+      "name": "소액 테스트",
+      "category": "예산관리",
+      "description": "일단 작게 태워보고 판단합니다.",
+      "cost": 10000,
+      "earned": [
+        5000,
+        25000
+      ],
+      "score": [
+        1,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 0
+      },
+      "build": {
+        "budgetControl": 2,
+        "performance": -1,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "예산",
+        "테스트",
+        "안정"
+      ],
+      "note": "돈을 크게 잃지 않고 안정적으로 상황을 넘기는 기본 생존 카드."
+    },
+    {
+      "id": "budget_defense",
+      "name": "예산 방어",
+      "category": "예산관리",
+      "description": "돈부터 지킵니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        -1,
+        0
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": -1
+      },
+      "build": {
+        "budgetControl": 2,
+        "performance": -1,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -2,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "예산",
+        "방어",
+        "안정"
+      ],
+      "note": "돈은 지키지만 성과가 거의 안 남. 너무 자주 쓰면 평가에 불리."
+    },
+    {
+      "id": "channel_split",
+      "name": "채널 분산",
+      "category": "예산관리",
+      "description": "이번엔 안전운전으로 갑니다.",
+      "cost": 15000,
+      "earned": [
+        10000,
+        35000
+      ],
+      "score": [
+        1,
+        1
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 0
+      },
+      "build": {
+        "budgetControl": 1,
+        "performance": -1,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 1
+      },
+      "risk": {
+        "budgetRisk": -1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": -1,
+        "burnoutRisk": -1
+      },
+      "tags": [
+        "예산",
+        "운영",
+        "안정"
+      ],
+      "note": "대박은 없지만 큰 실패도 적음."
+    },
+    {
+      "id": "buyer_capture",
+      "name": "구매자 포착",
+      "category": "퍼포먼스",
+      "description": "살 사람부터 잡습니다.",
+      "cost": 30000,
+      "earned": [
+        25000,
+        80000
+      ],
+      "score": [
+        1,
+        3
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "전환",
+        "검색",
+        "성과"
+      ],
+      "note": "성과와 돈을 만들기 좋은 카드. 초반에 너무 많이 쓰면 예산이 빠르게 줄어듦."
+    },
+    {
+      "id": "click_hook",
+      "name": "클릭 유도",
+      "category": "퍼포먼스",
+      "description": "일단 누르게 만듭니다.",
+      "cost": 20000,
+      "earned": [
+        10000,
+        50000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 0
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 1,
+        "content": 1,
+        "brand": -1,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": 1,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "반응",
+        "성과",
+        "콘텐츠"
+      ],
+      "note": "반응은 만들지만 구매까지 이어질지는 불확실."
+    },
+    {
+      "id": "early_boost",
+      "name": "초반 부스팅",
+      "category": "퍼포먼스",
+      "description": "초반에 한 번 밀어봅니다.",
+      "cost": 35000,
+      "earned": [
+        20000,
+        90000
+      ],
+      "score": [
+        1,
+        3
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 2,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": 1
+      },
+      "tags": [
+        "성과",
+        "고위험",
+        "부스팅"
+      ],
+      "note": "초반 성과를 만들기 좋지만 돈이 크게 움직임."
+    },
+    {
+      "id": "creative_boost",
+      "name": "소재 강화",
+      "category": "콘텐츠",
+      "description": "먼저 누르고 싶게 만듭니다.",
+      "cost": 20000,
+      "earned": [
+        15000,
+        60000
+      ],
+      "score": [
+        1,
+        3
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 0
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 2,
+        "brand": -1,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 1,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": 1
+      },
+      "tags": [
+        "콘텐츠",
+        "반응",
+        "소재"
+      ],
+      "note": "인턴 핵심 카드. 성과 score를 올리기 좋고 후속 컨펌 이슈가 생길 수 있음."
+    },
+    {
+      "id": "split_test",
+      "name": "분할 실험",
+      "category": "콘텐츠",
+      "description": "둘 다 태워보고 이긴 쪽을 살립니다.",
+      "cost": 15000,
+      "earned": [
+        10000,
+        40000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 1,
+        "performance": 0,
+        "content": 1,
+        "brand": -1,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "콘텐츠",
+        "테스트",
+        "반응"
+      ],
+      "note": "감이 아니라 비교로 가는 카드. 빌드 안정성이 좋음."
+    },
+    {
+      "id": "hooking_copy",
+      "name": "후킹 카피",
+      "category": "콘텐츠",
+      "description": "첫 문장으로 붙잡습니다.",
+      "cost": 10000,
+      "earned": [
+        5000,
+        45000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 0
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 2,
+        "brand": -1,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 1,
+        "brandRisk": 1,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "콘텐츠",
+        "반응",
+        "카피"
+      ],
+      "note": "싸게 반응을 만들 수 있지만 너무 광고 같아질 수 있음."
+    },
+    {
+      "id": "reference_collect",
+      "name": "레퍼런스 수집",
+      "category": "콘텐츠",
+      "description": "일단 잘하는 곳부터 봅니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        15000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 1,
+        "brand": -1,
+        "politics": 0,
+        "operations": 1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "콘텐츠",
+        "조사",
+        "운영"
+      ],
+      "note": "직접 돈을 벌기보다는 다음 판단을 좋게 만드는 카드."
+    },
+    {
+      "id": "thumbnail_reroll",
+      "name": "썸네일 리롤",
+      "category": "콘텐츠",
+      "description": "안 먹히면 다시 뽑습니다.",
+      "cost": 20000,
+      "earned": [
+        0,
+        70000
+      ],
+      "score": [
+        0,
+        3
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 0
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 2,
+        "brand": -1,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 1,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": 1
+      },
+      "tags": [
+        "콘텐츠",
+        "도박",
+        "반응"
+      ],
+      "note": "가벼운 도박형 콘텐츠 카드. 성공하면 인턴 구간에서 강함."
+    },
+    {
+      "id": "brand_mood",
+      "name": "감도 연출",
+      "category": "브랜드",
+      "description": "조금 더 고급스럽게 갑니다.",
+      "cost": 10000,
+      "earned": [
+        0,
+        20000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 2
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": -1,
+        "brand": 2,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": -2,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "컨펌",
+        "안정"
+      ],
+      "note": "숫자는 약하지만 컨펌과 신뢰 관리에 좋음."
+    },
+    {
+      "id": "tone_align",
+      "name": "톤 정리",
+      "category": "브랜드",
+      "description": "말투와 분위기를 맞춥니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        15000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": -1,
+        "brand": 2,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": -1,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "톤",
+        "컨펌"
+      ],
+      "note": "브랜드 리스크를 줄이는 안정 카드."
+    },
+    {
+      "id": "ask_first",
+      "name": "질문 먼저",
+      "category": "사내정치",
+      "description": "하기 전에 기준부터 묻습니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        0
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 2,
+        "operations": -1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 1,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "사내정치",
+        "컨펌",
+        "방어"
+      ],
+      "note": "작업 전 기준을 잡는 생존 카드. 돈은 거의 못 벌지만 사고를 줄임."
+    },
+    {
+      "id": "approval_dodge",
+      "name": "컨펌 회피",
+      "category": "사내정치",
+      "description": "새로 만들기보다 안 걸리게 고칩니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 2,
+        "operations": -1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -2,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": 1,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "사내정치",
+        "컨펌",
+        "방어"
+      ],
+      "note": "조용히 넘어가는 카드. 성과형 플레이에는 약하지만 생존력이 좋음."
+    },
+    {
+      "id": "report_shield",
+      "name": "보고서 방패",
+      "category": "사내정치",
+      "description": "일단 설명 가능한 숫자를 만듭니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        1,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 2
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 2,
+        "operations": -1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -2,
+        "operationRisk": 1,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "사내정치",
+        "보고",
+        "방어"
+      ],
+      "note": "돈은 거의 못 벌지만 평가 방어에 강함. 마지막 보고 라운드에서 좋음."
+    },
+    {
+      "id": "file_cleanup",
+      "name": "파일 정리",
+      "category": "운영력",
+      "description": "최종 파일을 진짜 최종으로 만듭니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        0
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": -1,
+        "operations": 2
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 1,
+        "operationRisk": -2,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "운영",
+        "파일",
+        "방어"
+      ],
+      "note": "돈과 성과는 약하지만 사고를 줄임."
+    },
+    {
+      "id": "schedule_defense",
+      "name": "일정 방어",
+      "category": "운영력",
+      "description": "오늘 안 되는 건 오늘 안 된다고 말합니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        0
+      ],
+      "score": [
+        -1,
+        0
+      ],
+      "secondary": {
+        "mental": 2,
+        "trust": -1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": -1,
+        "operations": 2
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 1,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": -2
+      },
+      "tags": [
+        "운영",
+        "일정",
+        "방어"
+      ],
+      "note": "멘탈을 지키는 카드. 너무 자주 쓰면 신뢰와 성과가 약해짐."
+    },
+    {
+      "id": "request_doc",
+      "name": "요청서 받기",
+      "category": "운영력",
+      "description": "말로 받은 업무를 글로 남깁니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        0
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": -1,
+        "operations": 2
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": -2,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "운영",
+        "요청",
+        "방어"
+      ],
+      "note": "유관부서/수정 사고를 줄임. 직접 돈은 못 벌지만 후반 안정성이 좋음."
+    },
+    {
+      "id": "urgent_fix",
+      "name": "긴급 수정",
+      "category": "운영력",
+      "description": "일단 지금 터진 것부터 막습니다.",
+      "cost": 15000,
+      "earned": [
+        5000,
+        35000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": -2,
+        "trust": 2
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": -1,
+        "operations": 2
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": -1,
+        "burnoutRisk": 2
+      },
+      "tags": [
+        "운영",
+        "수정",
+        "위기"
+      ],
+      "note": "문제 해결력은 좋지만 멘탈을 갈아 넣는 카드."
+    }
+  ],
+  "situations": [
+    {
+      "id": "reference_hell",
+      "name": "레퍼런스 지옥",
+      "category": "콘텐츠",
+      "description": "팀장님이 “요즘 잘하는 브랜드 레퍼런스 좀 찾아봐요”라고 합니다. 문제는 잘하는 기준이 아무도 모른다는 겁니다.",
+      "preferredTags": [
+        "콘텐츠",
+        "조사",
+        "컨펌"
+      ]
+    },
+    {
+      "id": "final_files",
+      "name": "파일명이 전부 최종",
+      "category": "운영",
+      "description": "폴더를 열었더니 최종.psd, 진짜최종.psd, 진짜진짜최종_수정.psd가 나옵니다.",
+      "preferredTags": [
+        "운영",
+        "파일",
+        "방어"
+      ]
+    },
+    {
+      "id": "calm_thumbnail",
+      "name": "썸네일이 너무 얌전하다",
+      "category": "반응",
+      "description": "광고 소재는 깔끔합니다. 문제는 아무도 멈춰 보지 않는다는 겁니다.",
+      "preferredTags": [
+        "콘텐츠",
+        "반응",
+        "도박"
+      ]
+    },
+    {
+      "id": "no_click",
+      "name": "클릭이 안 붙는다",
+      "category": "반응",
+      "description": "광고는 나갔지만 사람들이 그냥 지나갑니다. 팀장님이 “소재가 약한가?”라고 합니다.",
+      "preferredTags": [
+        "콘텐츠",
+        "반응",
+        "테스트"
+      ]
+    },
+    {
+      "id": "ad_like_copy",
+      "name": "문구가 너무 광고 같다",
+      "category": "브랜드",
+      "description": "카피를 바꿨는데 “너무 광고 같지 않아요?”라는 피드백이 왔습니다.",
+      "preferredTags": [
+        "콘텐츠",
+        "브랜드",
+        "컨펌"
+      ]
+    },
+    {
+      "id": "pretty_no_click",
+      "name": "소재는 예쁜데 안 눌린다",
+      "category": "반응",
+      "description": "분위기는 괜찮습니다. 근데 숫자는 조용합니다.",
+      "preferredTags": [
+        "반응",
+        "콘텐츠",
+        "성과"
+      ]
+    },
+    {
+      "id": "ten_thousand_test",
+      "name": "테스트 예산 10만 원",
+      "category": "예산",
+      "description": "팀장님이 “10만 원만 태워보고 감 좀 봅시다”라고 합니다.",
+      "preferredTags": [
+        "예산",
+        "테스트",
+        "안정"
+      ]
+    },
+    {
+      "id": "miracle_low_budget",
+      "name": "소액으로 기적 요구",
+      "category": "예산",
+      "description": "예산은 작습니다. 기대는 큽니다.",
+      "preferredTags": [
+        "예산",
+        "방어",
+        "안정"
+      ]
+    },
+    {
+      "id": "budget_burning",
+      "name": "돈 녹는 중",
+      "category": "예산",
+      "description": "광고비가 생각보다 빨리 사라지고 있습니다. 팀장님이 효율을 묻습니다.",
+      "preferredTags": [
+        "예산",
+        "방어",
+        "보고"
+      ]
+    },
+    {
+      "id": "spent_no_learning",
+      "name": "예산을 다 썼는데 배운 게 없다",
+      "category": "보고",
+      "description": "돈은 썼습니다. 그런데 무엇을 배웠는지 애매합니다.",
+      "preferredTags": [
+        "보고",
+        "테스트",
+        "사내정치"
+      ]
+    },
+    {
+      "id": "not_this_vibe",
+      "name": "이런 느낌 말고",
+      "category": "컨펌",
+      "description": "팀장님이 “음... 이런 느낌 말고”라고 합니다. 무슨 느낌인지는 아직 모릅니다.",
+      "preferredTags": [
+        "컨펌",
+        "조사",
+        "브랜드"
+      ]
+    },
+    {
+      "id": "approval_waiting",
+      "name": "팀장님 컨펌 대기",
+      "category": "컨펌",
+      "description": "수정안을 보냈습니다. 메신저의 1은 사라졌지만 답은 없습니다.",
+      "preferredTags": [
+        "컨펌",
+        "보고",
+        "방어"
+      ]
+    },
+    {
+      "id": "ceo_comment",
+      "name": "대표님 지나가다 한마디",
+      "category": "컨펌",
+      "description": "대표님이 모니터를 보고 “이거 좀 더 임팩트 있게 안 돼?”라고 합니다.",
+      "preferredTags": [
+        "컨펌",
+        "브랜드",
+        "콘텐츠"
+      ]
+    },
+    {
+      "id": "real_final_file",
+      "name": "최종의 최종 파일 등장",
+      "category": "운영",
+      "description": "작업을 끝냈는데 사수가 “아 이게 진짜 최종이에요”라며 다른 파일을 보냅니다.",
+      "preferredTags": [
+        "운영",
+        "파일",
+        "수정"
+      ]
+    },
+    {
+      "id": "today_possible",
+      "name": "오늘 안에 가능하죠?",
+      "category": "운영",
+      "description": "퇴근 시간이 다가올 때쯤 “이거 오늘 안에만 부탁드려요”라는 메시지가 옵니다.",
+      "preferredTags": [
+        "운영",
+        "일정",
+        "방어"
+      ]
+    },
+    {
+      "id": "missing_materials",
+      "name": "자료 위치 실종",
+      "category": "운영",
+      "description": "예전 캠페인 자료를 찾아야 하는데 폴더 구조가 고고학 유적지 같습니다.",
+      "preferredTags": [
+        "운영",
+        "조사",
+        "파일"
+      ]
+    },
+    {
+      "id": "meeting_no_result",
+      "name": "회의록에 결론이 없다",
+      "category": "운영",
+      "description": "회의는 1시간 했습니다. 결론은 없습니다.",
+      "preferredTags": [
+        "운영",
+        "요청",
+        "보고"
+      ]
+    },
+    {
+      "id": "what_learned",
+      "name": "그래서 배운 게 뭐죠?",
+      "category": "보고",
+      "description": "팀장님이 테스트 결과를 보며 “그래서 다음엔 뭘 하면 되죠?”라고 합니다.",
+      "preferredTags": [
+        "보고",
+        "테스트",
+        "사내정치"
+      ]
+    },
+    {
+      "id": "report_day",
+      "name": "보고 D-day",
+      "category": "보고",
+      "description": "오늘은 테스트 결과를 공유하는 날입니다. 좋은 숫자도 있고 애매한 숫자도 있습니다.",
+      "preferredTags": [
+        "보고",
+        "사내정치",
+        "방어"
+      ]
+    },
+    {
+      "id": "number_not_effort",
+      "name": "열심히 말고 숫자로",
+      "category": "보고",
+      "description": "팀장님이 “열심히 한 건 알겠는데, 숫자로 보면 어때요?”라고 합니다.",
+      "preferredTags": [
+        "보고",
+        "성과",
+        "전환"
+      ]
+    },
+    {
+      "id": "reaction_sudden",
+      "name": "갑자기 반응이 붙음",
+      "category": "기회",
+      "description": "갑자기 광고 반응이 오르기 시작했습니다. 지금 더 밀면 성과가 날 수도 있습니다.",
+      "preferredTags": [
+        "성과",
+        "부스팅",
+        "전환"
+      ]
+    },
+    {
+      "id": "comments_start",
+      "name": "댓글이 달리기 시작함",
+      "category": "기회",
+      "description": "게시물에 댓글이 붙기 시작했습니다. 좋은 신호일 수도 있고 이상하게 번질 수도 있습니다.",
+      "preferredTags": [
+        "브랜드",
+        "콘텐츠",
+        "컨펌"
+      ]
+    },
+    {
+      "id": "manager_satisfied",
+      "name": "팀장님이 의외로 만족함",
+      "category": "기회",
+      "description": "팀장님이 “오, 생각보다 괜찮네요”라고 합니다. 기대치도 같이 올라갑니다.",
+      "preferredTags": [
+        "보고",
+        "테스트",
+        "콘텐츠"
+      ]
+    },
+    {
+      "id": "intern_good",
+      "name": "인턴인데 꽤 하는데?",
+      "category": "기회",
+      "description": "사수가 “인턴인데 이 정도면 꽤 빠른데요?”라고 합니다. 일이 더 들어올 수도 있습니다.",
+      "preferredTags": [
+        "운영",
+        "보고",
+        "수정"
+      ]
+    },
+    {
+      "id": "ok_numbers",
+      "name": "무난한 숫자",
+      "category": "보고",
+      "description": "대박은 아니지만 보고할 만한 숫자가 생겼습니다. 이걸 어떻게 포장할지가 관건입니다.",
+      "preferredTags": [
+        "보고",
+        "사내정치",
+        "성과"
+      ]
+    },
+    {
+      "id": "something_to_report",
+      "name": "보고할 건 생겼다",
+      "category": "보고",
+      "description": "완벽하진 않지만 적어도 빈손은 아닙니다. 팀장님에게 설명할 근거가 생겼습니다.",
+      "preferredTags": [
+        "보고",
+        "테스트",
+        "사내정치"
+      ]
+    },
+    {
+      "id": "creative_recover",
+      "name": "소재 반응 회복",
+      "category": "반응",
+      "description": "수정한 소재에 반응이 조금씩 붙기 시작합니다. 더 밀지, 안정적으로 정리할지 선택해야 합니다.",
+      "preferredTags": [
+        "콘텐츠",
+        "성과",
+        "예산"
+      ]
+    },
+    {
+      "id": "budget_left_no_number",
+      "name": "예산은 남았는데 숫자가 없다",
+      "category": "예산",
+      "description": "돈은 아꼈습니다. 그런데 보고할 성과가 부족합니다.",
+      "preferredTags": [
+        "성과",
+        "퍼포먼스",
+        "보고"
+      ]
+    },
+    {
+      "id": "too_passive",
+      "name": "소극적 운영",
+      "category": "예산",
+      "description": "팀장님이 “효율은 좋은데, 이 정도 규모로 성과라고 하기엔 작지 않아요?”라고 합니다.",
+      "preferredTags": [
+        "성과",
+        "부스팅",
+        "보고"
+      ]
+    },
+    {
+      "id": "spend_more",
+      "name": "팀장님이 더 태워보자고 함",
+      "category": "예산",
+      "description": "숫자가 조금 보이자 팀장님이 “조금 더 태워보죠”라고 합니다.",
+      "preferredTags": [
+        "예산",
+        "성과",
+        "방어"
+      ]
+    }
+  ],
+  "synergies": [
+    {
+      "id": "best_creative",
+      "name": "베스트 소재 발견",
+      "requiredRecentCards": [
+        "소재 강화",
+        "분할 실험"
+      ],
+      "withinTurns": 3,
+      "effect": {
+        "moneyBonus": 10000,
+        "scoreBonus": 1
+      },
+      "message": "감으로 고른 게 아니라 테스트로 이긴 소재를 찾았습니다."
+    },
+    {
+      "id": "click_to_buy",
+      "name": "관심을 구매로",
+      "requiredRecentCards": [
+        "클릭 유도",
+        "구매자 포착"
+      ],
+      "withinTurns": 3,
+      "effect": {
+        "moneyBonus": 15000,
+        "scoreBonus": 1
+      },
+      "message": "클릭을 만든 뒤 살 사람에게 다시 붙였습니다."
+    },
+    {
+      "id": "small_but_clear",
+      "name": "작지만 명확한 테스트",
+      "requiredRecentCards": [
+        "소액 테스트",
+        "분할 실험"
+      ],
+      "withinTurns": 3,
+      "effect": {
+        "scoreBonus": 1,
+        "trustBonus": 1
+      },
+      "message": "적은 예산으로도 배운 점을 만들었습니다."
+    },
+    {
+      "id": "reportable_logic",
+      "name": "보고 가능한 논리",
+      "requiredRecentCards": [
+        "분할 실험",
+        "보고서 방패"
+      ],
+      "withinTurns": 3,
+      "effect": {
+        "scoreBonus": 1,
+        "trustBonus": 2
+      },
+      "message": "테스트 결과를 보고 가능한 논리로 정리했습니다."
+    },
+    {
+      "id": "safe_operation",
+      "name": "사고 없는 진행",
+      "requiredRecentCards": [
+        "파일 정리",
+        "요청서 받기"
+      ],
+      "withinTurns": 4,
+      "effect": {
+        "mentalBonus": 1,
+        "trustBonus": 1
+      },
+      "message": "작업 범위와 파일이 정리되어 사고가 줄었습니다."
+    },
+    {
+      "id": "last_minute_save",
+      "name": "마감 구조대",
+      "requiredRecentCards": [
+        "일정 방어",
+        "긴급 수정"
+      ],
+      "withinTurns": 3,
+      "effect": {
+        "mentalBonus": 1,
+        "trustBonus": 1
+      },
+      "message": "무리한 일정을 조정하고 필요한 부분만 막았습니다."
+    },
+    {
+      "id": "brand_safe_copy",
+      "name": "안전한 카피",
+      "requiredRecentCards": [
+        "톤 정리",
+        "후킹 카피"
+      ],
+      "withinTurns": 3,
+      "effect": {
+        "scoreBonus": 1,
+        "brandRiskDelta": -1
+      },
+      "message": "클릭을 노리면서도 브랜드 톤을 크게 벗어나지 않았습니다."
+    },
+    {
+      "id": "quiet_pass",
+      "name": "조용한 통과",
+      "requiredRecentCards": [
+        "질문 먼저",
+        "컨펌 회피"
+      ],
+      "withinTurns": 3,
+      "effect": {
+        "trustBonus": 1,
+        "approvalRiskDelta": -1
+      },
+      "message": "기준을 확인한 뒤 크게 걸리지 않게 처리했습니다."
+    },
+    {
+      "id": "boost_with_plan",
+      "name": "계획 있는 부스팅",
+      "requiredRecentCards": [
+        "초반 부스팅",
+        "채널 분산"
+      ],
+      "withinTurns": 3,
+      "effect": {
+        "moneyBonus": 10000,
+        "budgetRiskDelta": -1
+      },
+      "message": "초반에 밀되, 리스크를 분산했습니다."
+    },
+    {
+      "id": "mood_report",
+      "name": "감도 있는 보고",
+      "requiredRecentCards": [
+        "감도 연출",
+        "보고서 방패"
+      ],
+      "withinTurns": 4,
+      "effect": {
+        "trustBonus": 2,
+        "scoreBonus": 1
+      },
+      "message": "좋은 톤과 보고 논리를 같이 챙겼습니다."
+    }
+  ]
+}

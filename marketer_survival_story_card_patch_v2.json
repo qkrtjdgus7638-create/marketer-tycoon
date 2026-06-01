@@ -1,0 +1,2018 @@
+{
+  "overlayTitle": "마케터로 살아남기 - 스토리/카드 맥락 최소 추가 패치 v2",
+  "purpose": "기존 app.js와 v3 JSON을 크게 갈아엎지 않고, 고정 12라운드 스토리 레일, 라운드별 카드 슬롯, 카드 맥락 속성, 팀장/사수/대표 대사를 얹기 위한 데이터 패치.",
+  "mergePolicy": {
+    "cards": "기존 cards에는 cardPatches를 id 기준으로 병합하고, newCards는 cards 배열에 append.",
+    "situations": "newSituations는 situations 배열에 append. storyRounds 사용 시 상황풀 랜덤 대신 storyRounds 우선.",
+    "extraFields": "fits, badFits, slotRoles, contextDescriptions, resultLines, speaker, line 등은 기존 코드에서 무시해도 안전한 추가 필드. 사용하려면 minimalCodeChanges 참고."
+  },
+  "newCards": [
+    {
+      "id": "efficiency_track",
+      "name": "효율 추적",
+      "category": "예산관리",
+      "description": "돈이 어디서 새는지 먼저 봅니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        15000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 2,
+        "performance": -1,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "예산",
+        "보고",
+        "테스트"
+      ],
+      "note": "돈을 많이 쓰지 않고 배운 점을 만드는 예산관리 카드.",
+      "fits": [
+        "예산",
+        "보고",
+        "학습",
+        "데이터해석",
+        "테스트"
+      ],
+      "badFits": [
+        "브랜드제동",
+        "파일관리"
+      ],
+      "slotRoles": [
+        "방어",
+        "정석"
+      ],
+      "contextDescriptions": {
+        "r06_test_budget": "10만 원을 바로 태우기 전에 무엇을 확인할지 정합니다.",
+        "r09_what_learned": "테스트에서 무엇을 배웠는지 숫자로 정리합니다.",
+        "r11_report_day": "보고서에 넣을 효율 기준을 먼저 잡습니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "돈이 어디서 새고 어디서 반응이 붙는지 정리했습니다.",
+          "speaker": "팀장님",
+          "line": "좋아요. 적어도 다음에 뭘 봐야 할지는 보이네요."
+        },
+        "missed": {
+          "narration": "효율을 보긴 했지만 지금 급한 문제를 바로 해결하진 못했습니다.",
+          "speaker": "팀장님",
+          "line": "분석은 좋은데, 지금은 움직일 카드가 필요해요."
+        }
+      }
+    },
+    {
+      "id": "ad_stop",
+      "name": "광고 중단",
+      "category": "예산관리",
+      "description": "안 되는 광고는 더 태우지 않습니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        -1,
+        0
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": -1
+      },
+      "build": {
+        "budgetControl": 2,
+        "performance": -2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -3,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "예산",
+        "방어",
+        "중단"
+      ],
+      "note": "손절 판단 카드. 돈은 지키지만 성과는 작아진다.",
+      "fits": [
+        "예산부족",
+        "돈녹음",
+        "효율악화",
+        "반응저조"
+      ],
+      "badFits": [
+        "기회",
+        "성과확장",
+        "대표피드백"
+      ],
+      "slotRoles": [
+        "방어",
+        "리스크회피"
+      ],
+      "contextDescriptions": {
+        "r07_low_click": "반응 없는 소재에 예산을 더 태우지 않습니다.",
+        "r08_no_purchase": "구매가 안 붙는 흐름을 잠깐 멈추고 원인을 봅니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "성과가 안 나는 집행을 멈춰 예산 손실을 줄였습니다.",
+          "speaker": "팀장님",
+          "line": "멈추는 판단도 필요하긴 하죠. 대신 다음 액션은 있어야 해요."
+        },
+        "missed": {
+          "narration": "예산은 지켰지만 지금 필요한 추진력은 부족했습니다.",
+          "speaker": "팀장님",
+          "line": "아끼는 건 좋은데, 아무것도 안 하면 숫자도 안 나와요."
+        }
+      }
+    },
+    {
+      "id": "conversion_boost",
+      "name": "전환 보강",
+      "category": "퍼포먼스",
+      "description": "들어온 사람을 그냥 보내지 않습니다.",
+      "cost": 25000,
+      "earned": [
+        20000,
+        75000
+      ],
+      "score": [
+        1,
+        3
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "전환",
+        "성과",
+        "구매"
+      ],
+      "note": "클릭은 있는데 구매가 없는 라운드의 핵심 카드.",
+      "fits": [
+        "전환문제",
+        "구매부족",
+        "매출압박",
+        "상세페이지"
+      ],
+      "badFits": [
+        "파일관리",
+        "기준불명확"
+      ],
+      "slotRoles": [
+        "정석",
+        "공격"
+      ],
+      "contextDescriptions": {
+        "r08_no_purchase": "클릭 이후 이탈하는 구간을 손봐 구매로 이어지게 만듭니다.",
+        "r12_final_number": "최종 평가 전에 구매로 연결될 근거를 보강합니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "눌러본 사람들을 구매 쪽으로 조금 더 밀어 넣었습니다.",
+          "speaker": "팀장님",
+          "line": "클릭에서 끝나지 않고 구매 쪽으로 이어진 건 좋네요."
+        },
+        "missed": {
+          "narration": "전환 요소를 손봤지만 지금 상황의 핵심은 다른 곳에 있었습니다.",
+          "speaker": "팀장님",
+          "line": "이것도 필요하지만, 지금은 먼저 방향부터 맞춰야겠어요."
+        }
+      }
+    },
+    {
+      "id": "click_recovery",
+      "name": "클릭 회수",
+      "category": "퍼포먼스",
+      "description": "관심 보인 사람을 다시 데려옵니다.",
+      "cost": 20000,
+      "earned": [
+        15000,
+        65000
+      ],
+      "score": [
+        1,
+        3
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "전환",
+        "회수",
+        "성과"
+      ],
+      "note": "앞 라운드에서 반응을 만든 뒤 쓰면 좋은 회수 카드.",
+      "fits": [
+        "전환문제",
+        "구매부족",
+        "기회",
+        "반응회복"
+      ],
+      "badFits": [
+        "파일관리",
+        "조사"
+      ],
+      "slotRoles": [
+        "공격",
+        "정석"
+      ],
+      "contextDescriptions": {
+        "r08_no_purchase": "이미 눌렀던 사람을 다시 데려와 구매 가능성을 높입니다.",
+        "r09_what_learned": "반응이 있었던 유저를 기준으로 다음 액션을 정리합니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "관심을 보였던 사람들에게 다시 붙어 구매 가능성을 높였습니다.",
+          "speaker": "팀장님",
+          "line": "한 번 온 사람을 놓치지 않은 건 괜찮네요."
+        },
+        "missed": {
+          "narration": "다시 데려올 사람은 찾았지만 아직 모수가 충분하지 않았습니다.",
+          "speaker": "팀장님",
+          "line": "회수도 좋은데, 먼저 들어온 사람이 더 있어야겠어요."
+        }
+      }
+    },
+    {
+      "id": "brand_guard",
+      "name": "브랜드 가드",
+      "category": "브랜드",
+      "description": "싸보이는 방향을 막습니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        15000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 2
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": -1,
+        "brand": 2,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": -3,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "방어",
+        "컨펌"
+      ],
+      "note": "브랜드팀 제동, 세일몰 위험을 줄이는 카드.",
+      "fits": [
+        "브랜드제동",
+        "톤붕괴",
+        "세일몰위험",
+        "대표피드백",
+        "컨펌"
+      ],
+      "badFits": [
+        "반응저조",
+        "예산부족"
+      ],
+      "slotRoles": [
+        "방어",
+        "정석"
+      ],
+      "contextDescriptions": {
+        "r04_not_this_vibe": "브랜드와 맞지 않는 표현을 걷어내고 톤을 지킵니다.",
+        "r10_ceo_comment": "대표님 피드백이 브랜드를 망치지 않게 안전선을 잡습니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "반응을 노리면서도 브랜드가 무너지지 않게 선을 잡았습니다.",
+          "speaker": "팀장님",
+          "line": "이 정도면 너무 싸보이지는 않겠네요."
+        },
+        "missed": {
+          "narration": "브랜드 톤은 지켰지만 당장 숫자를 만드는 힘은 약했습니다.",
+          "speaker": "팀장님",
+          "line": "톤은 좋은데, 지금은 숫자도 같이 봐야 해요."
+        }
+      }
+    },
+    {
+      "id": "review_collect",
+      "name": "리뷰 확보",
+      "category": "브랜드",
+      "description": "제품을 믿을 만해 보이게 만듭니다.",
+      "cost": 10000,
+      "earned": [
+        0,
+        25000
+      ],
+      "score": [
+        0,
+        2
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 1,
+        "content": -1,
+        "brand": 1,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": -1,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "전환",
+        "신뢰"
+      ],
+      "note": "브랜드와 전환 사이를 이어주는 카드.",
+      "fits": [
+        "전환문제",
+        "구매부족",
+        "신뢰부족",
+        "보고"
+      ],
+      "badFits": [
+        "파일관리",
+        "일정압박"
+      ],
+      "slotRoles": [
+        "정석",
+        "방어"
+      ],
+      "contextDescriptions": {
+        "r08_no_purchase": "구매를 망설이는 이유를 리뷰와 신뢰 요소로 보강합니다.",
+        "r11_report_day": "리뷰 반응을 보고서의 보조 근거로 정리합니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "리뷰와 신뢰 요소를 보강해 구매 망설임을 줄였습니다.",
+          "speaker": "팀장님",
+          "line": "이건 구매 설득용 근거로 쓰기 괜찮겠네요."
+        },
+        "missed": {
+          "narration": "신뢰 요소는 챙겼지만 현재 상황의 급한 불은 다른 곳이었습니다.",
+          "speaker": "팀장님",
+          "line": "좋은데, 지금 당장 해결할 문제와는 조금 거리가 있어요."
+        }
+      }
+    },
+    {
+      "id": "discount_restraint",
+      "name": "할인 절제",
+      "category": "브랜드",
+      "description": "세일 느낌을 조금 덜어냅니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": -1,
+        "content": 0,
+        "brand": 2,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -1,
+        "approvalRisk": 0,
+        "brandRisk": -2,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "방어",
+        "안정"
+      ],
+      "note": "가격 후킹으로 싸보이는 문제를 막는 카드.",
+      "fits": [
+        "세일몰위험",
+        "브랜드제동",
+        "대표피드백",
+        "톤붕괴"
+      ],
+      "badFits": [
+        "성과압박",
+        "기회"
+      ],
+      "slotRoles": [
+        "방어",
+        "리스크회피"
+      ],
+      "contextDescriptions": {
+        "r04_not_this_vibe": "자극적인 세일 표현을 덜어내고 톤을 안정시킵니다.",
+        "r10_ceo_comment": "임팩트 요청이 과한 할인 표현으로 흐르지 않게 막습니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "할인 느낌을 조절해 브랜드 부담을 줄였습니다.",
+          "speaker": "팀장님",
+          "line": "좋아요. 너무 세일몰처럼 보이는 건 피해야죠."
+        },
+        "missed": {
+          "narration": "톤은 안정됐지만 지금 필요한 반응은 약했습니다.",
+          "speaker": "팀장님",
+          "line": "브랜드는 괜찮은데, 숫자는 아직 조용하네요."
+        }
+      }
+    },
+    {
+      "id": "exec_persuasion",
+      "name": "대표 설득",
+      "category": "사내정치",
+      "description": "윗선 언어로 다시 설명합니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        15000
+      ],
+      "score": [
+        0,
+        2
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 2
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 2,
+        "operations": -1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -2,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 1,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "사내정치",
+        "컨펌",
+        "보고"
+      ],
+      "note": "대표/팀장 피드백 라운드 방어 카드.",
+      "fits": [
+        "대표피드백",
+        "보고",
+        "컨펌",
+        "평가"
+      ],
+      "badFits": [
+        "파일관리",
+        "반응저조"
+      ],
+      "slotRoles": [
+        "방어",
+        "보고"
+      ],
+      "contextDescriptions": {
+        "r10_ceo_comment": "대표님 피드백을 숫자와 목적 중심으로 다시 설명합니다.",
+        "r11_report_day": "보고서의 목적과 다음 액션을 윗선이 이해할 언어로 정리합니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "결과의 목적과 다음 액션을 윗선 언어로 풀어냈습니다.",
+          "speaker": "팀장님",
+          "line": "이렇게 설명하면 대표님도 이해하기 쉬울 것 같아요."
+        },
+        "missed": {
+          "narration": "말은 그럴듯했지만 실제 문제 해결은 조금 부족했습니다.",
+          "speaker": "팀장님",
+          "line": "설명은 좋은데, 근거 숫자가 더 필요해요."
+        }
+      }
+    },
+    {
+      "id": "responsibility_split",
+      "name": "책임 분산",
+      "category": "사내정치",
+      "description": "혼자 뒤집어쓰지 않게 선을 긋습니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 0
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 2,
+        "operations": -1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": 0,
+        "reportPressure": 1,
+        "operationRisk": -1,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "사내정치",
+        "방어",
+        "운영"
+      ],
+      "note": "유관부서/외부 요청이 꼬일 때 리스크를 나누는 카드.",
+      "fits": [
+        "유관부서요청",
+        "파일혼선",
+        "보고",
+        "수정요청",
+        "일정압박"
+      ],
+      "badFits": [
+        "성과압박",
+        "기회"
+      ],
+      "slotRoles": [
+        "방어",
+        "운영"
+      ],
+      "contextDescriptions": {
+        "r03_final_files": "어떤 파일을 기준으로 할지 책임 소재를 명확히 합니다.",
+        "r05_deadline_pressure": "오늘 안에 처리할 수 있는 범위를 나누고 기록합니다.",
+        "r11_report_day": "결과에 영향을 준 변수들을 혼자 떠안지 않게 정리합니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "업무 범위와 책임 소재를 정리해 후폭풍을 줄였습니다.",
+          "speaker": "팀장님",
+          "line": "이건 정리해두는 게 맞아요. 나중에 말 바뀌면 힘들어요."
+        },
+        "missed": {
+          "narration": "책임은 나눴지만 성과를 만드는 힘은 약했습니다.",
+          "speaker": "팀장님",
+          "line": "정리는 좋은데, 이번엔 결과도 필요합니다."
+        }
+      }
+    },
+    {
+      "id": "agency_call",
+      "name": "대행사 호출",
+      "category": "운영력",
+      "description": "내부에서 못 치는 일은 도움을 받습니다.",
+      "cost": 20000,
+      "earned": [
+        5000,
+        40000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 2
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": -2,
+        "burnoutRisk": -1
+      },
+      "tags": [
+        "운영",
+        "수정",
+        "외부지원"
+      ],
+      "note": "돈은 쓰지만 일정과 멘탈을 지키는 운영 카드.",
+      "fits": [
+        "일정압박",
+        "수정요청",
+        "운영",
+        "파일관리"
+      ],
+      "badFits": [
+        "예산부족",
+        "보고"
+      ],
+      "slotRoles": [
+        "정석",
+        "방어"
+      ],
+      "contextDescriptions": {
+        "r05_deadline_pressure": "내부에서 다 처리하기 어려운 수정 일부를 외부 도움으로 넘깁니다.",
+        "r03_final_files": "파일 정리와 단순 수정 일부를 외부 도움으로 분리합니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "일부 작업을 외부 도움으로 분리해 마감 리스크를 줄였습니다.",
+          "speaker": "팀장님",
+          "line": "무조건 혼자 다 하는 것보다 이 판단이 낫네요."
+        },
+        "missed": {
+          "narration": "도움을 부르긴 했지만 예산 대비 효과는 조금 애매했습니다.",
+          "speaker": "팀장님",
+          "line": "외부 도움도 좋은데, 쓸 타이밍은 잘 봐야 해요."
+        }
+      }
+    }
+  ],
+  "newSituations": [
+    {
+      "id": "first_creative_direction",
+      "name": "첫 소재 방향",
+      "category": "콘텐츠",
+      "description": "레퍼런스를 바탕으로 첫 광고 소재 방향을 잡아야 합니다.",
+      "preferredTags": [
+        "콘텐츠",
+        "브랜드",
+        "반응"
+      ]
+    },
+    {
+      "id": "visits_no_purchase",
+      "name": "사람은 왔는데 안 산다",
+      "category": "보고",
+      "description": "사람들은 광고를 눌렀습니다. 그런데 구매로 이어지지 않습니다.",
+      "preferredTags": [
+        "전환",
+        "성과",
+        "신뢰"
+      ]
+    }
+  ],
+  "cardPatches": {
+    "small_test": {
+      "fits": [
+        "테스트",
+        "예산",
+        "반응불확실",
+        "학습"
+      ],
+      "badFits": [
+        "대표피드백",
+        "파일관리"
+      ],
+      "slotRoles": [
+        "정석",
+        "방어"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "작게 집행해보고 판단할 수 있는 근거를 만들었습니다.",
+          "speaker": "팀장님",
+          "line": "좋아요. 큰돈 쓰기 전에 감을 본 건 괜찮네요."
+        },
+        "missed": {
+          "narration": "작게 움직였지만 지금 필요한 결론에는 조금 부족했습니다.",
+          "speaker": "팀장님",
+          "line": "테스트는 했는데, 그래서 다음 액션이 뭔지가 더 필요해요."
+        }
+      }
+    },
+    "budget_defense": {
+      "fits": [
+        "예산부족",
+        "돈녹음",
+        "효율악화"
+      ],
+      "badFits": [
+        "기회",
+        "성과압박"
+      ],
+      "slotRoles": [
+        "방어",
+        "리스크회피"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "예산 소모를 줄이며 더 큰 손실을 막았습니다.",
+          "speaker": "팀장님",
+          "line": "지금은 무리해서 태우는 것보다 막는 게 맞겠네요."
+        },
+        "missed": {
+          "narration": "돈은 지켰지만 보여줄 숫자가 약해졌습니다.",
+          "speaker": "팀장님",
+          "line": "예산 아낀 건 알겠는데, 성과도 필요해요."
+        }
+      }
+    },
+    "channel_split": {
+      "fits": [
+        "예산",
+        "운영",
+        "리스크",
+        "복합상황"
+      ],
+      "badFits": [
+        "단일성과압박"
+      ],
+      "slotRoles": [
+        "방어",
+        "정석"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "위험을 나눠 큰 실패 가능성을 낮췄습니다.",
+          "speaker": "팀장님",
+          "line": "한쪽으로 몰지 않은 건 안정적이네요."
+        },
+        "missed": {
+          "narration": "분산은 했지만 임팩트가 강하진 않았습니다.",
+          "speaker": "팀장님",
+          "line": "안전한 건 좋은데, 뭘 확실히 보려는 건지는 애매해요."
+        }
+      }
+    },
+    "buyer_capture": {
+      "fits": [
+        "전환문제",
+        "매출압박",
+        "최종평가",
+        "성과"
+      ],
+      "badFits": [
+        "파일관리",
+        "기준불명확"
+      ],
+      "slotRoles": [
+        "공격",
+        "정석"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "살 가능성이 높은 사람에게 먼저 붙어 매출 가능성을 키웠습니다.",
+          "speaker": "팀장님",
+          "line": "이번엔 실제 구매 쪽으로 움직인 게 보이네요."
+        },
+        "missed": {
+          "narration": "구매자를 노렸지만 아직 설득 재료가 부족했습니다.",
+          "speaker": "팀장님",
+          "line": "대상은 맞는데, 왜 사야 하는지가 더 필요해요."
+        }
+      }
+    },
+    "click_hook": {
+      "fits": [
+        "반응저조",
+        "클릭부족",
+        "소재문제"
+      ],
+      "badFits": [
+        "보고",
+        "파일관리"
+      ],
+      "slotRoles": [
+        "공격",
+        "정석"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "사람들이 멈춰 볼 만한 장치를 만들었습니다.",
+          "speaker": "팀장님",
+          "line": "이제 적어도 그냥 지나치진 않겠네요."
+        },
+        "missed": {
+          "narration": "클릭은 노렸지만 지금 상황의 핵심과는 조금 어긋났습니다.",
+          "speaker": "팀장님",
+          "line": "반응도 중요하지만, 지금은 정리할 게 먼저예요."
+        }
+      }
+    },
+    "early_boost": {
+      "fits": [
+        "기회",
+        "초반집행",
+        "성과압박",
+        "반응회복"
+      ],
+      "badFits": [
+        "예산부족",
+        "브랜드제동"
+      ],
+      "slotRoles": [
+        "리스크",
+        "공격"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "초반에 강하게 밀어 반응을 빠르게 끌어올렸습니다.",
+          "speaker": "팀장님",
+          "line": "숫자는 빨리 올라오네요. 대신 효율도 같이 봐야 합니다."
+        },
+        "missed": {
+          "narration": "세게 밀었지만 타이밍이 맞지 않아 예산 부담이 커졌습니다.",
+          "speaker": "팀장님",
+          "line": "이렇게 태울 거면 근거가 더 있어야 해요."
+        }
+      }
+    },
+    "creative_boost": {
+      "fits": [
+        "반응저조",
+        "시안피드백",
+        "클릭부족",
+        "수정요청"
+      ],
+      "badFits": [
+        "보고",
+        "파일관리",
+        "일정압박"
+      ],
+      "slotRoles": [
+        "정석",
+        "공격"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "소재를 다시 손봐 반응이 살아날 여지를 만들었습니다.",
+          "speaker": "팀장님",
+          "line": "이전보다 눈에 들어오긴 하네요."
+        },
+        "missed": {
+          "narration": "소재를 손봤지만 지금 문제를 바로 해결하진 못했습니다.",
+          "speaker": "팀장님",
+          "line": "수정은 했는데, 지금 필요한 건 다른 쪽 같아요."
+        }
+      }
+    },
+    "split_test": {
+      "fits": [
+        "테스트",
+        "반응불확실",
+        "학습",
+        "보고"
+      ],
+      "badFits": [
+        "긴급수정",
+        "마감압박"
+      ],
+      "slotRoles": [
+        "정석",
+        "방어"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "감이 아니라 비교할 수 있는 테스트 근거를 남겼습니다.",
+          "speaker": "팀장님",
+          "line": "좋아요. 적어도 A안/B안 차이는 설명할 수 있겠네요."
+        },
+        "missed": {
+          "narration": "테스트를 하긴 했지만 시간이 부족해 결론이 약했습니다.",
+          "speaker": "팀장님",
+          "line": "비교는 좋은데, 지금은 빨리 결론이 필요해요."
+        }
+      }
+    },
+    "hooking_copy": {
+      "fits": [
+        "반응저조",
+        "시안피드백",
+        "임팩트요청",
+        "클릭부족"
+      ],
+      "badFits": [
+        "브랜드제동",
+        "보고"
+      ],
+      "slotRoles": [
+        "리스크",
+        "공격"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "첫 문장으로 시선을 붙잡는 힘을 키웠습니다.",
+          "speaker": "팀장님",
+          "line": "이건 확실히 눈에 띄긴 하네요. 톤만 조심합시다."
+        },
+        "missed": {
+          "narration": "카피는 세졌지만 브랜드 부담도 같이 생겼습니다.",
+          "speaker": "팀장님",
+          "line": "너무 광고처럼 보이면 반려될 수 있어요."
+        }
+      }
+    },
+    "reference_collect": {
+      "fits": [
+        "조사",
+        "방향성",
+        "기준불명확"
+      ],
+      "badFits": [
+        "마감압박",
+        "매출압박"
+      ],
+      "slotRoles": [
+        "정석"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "참고할 방향과 비교 기준을 확보했습니다.",
+          "speaker": "팀장님",
+          "line": "좋아요. 근데 우리한테 맞는 방향만 추려봅시다."
+        },
+        "missed": {
+          "narration": "자료는 모았지만 지금 필요한 실행은 조금 늦어졌습니다.",
+          "speaker": "팀장님",
+          "line": "레퍼런스만 보다가 끝나면 안 됩니다."
+        }
+      }
+    },
+    "thumbnail_reroll": {
+      "fits": [
+        "반응저조",
+        "클릭부족",
+        "소재문제"
+      ],
+      "badFits": [
+        "브랜드제동",
+        "파일관리"
+      ],
+      "slotRoles": [
+        "리스크",
+        "공격"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "썸네일을 다시 잡아 반응이 튈 가능성을 만들었습니다.",
+          "speaker": "팀장님",
+          "line": "이번 썸네일은 확실히 더 튀네요."
+        },
+        "missed": {
+          "narration": "다시 뽑았지만 방향성이 흔들릴 위험도 커졌습니다.",
+          "speaker": "팀장님",
+          "line": "바꾸는 건 좋은데, 너무 갈팡질팡하면 안 돼요."
+        }
+      }
+    },
+    "brand_mood": {
+      "fits": [
+        "브랜드제동",
+        "대표피드백",
+        "톤붕괴",
+        "시안피드백"
+      ],
+      "badFits": [
+        "성과압박",
+        "예산부족"
+      ],
+      "slotRoles": [
+        "정석",
+        "방어"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "소재의 분위기를 정리해 브랜드 부담을 낮췄습니다.",
+          "speaker": "팀장님",
+          "line": "이제 우리 브랜드랑 좀 더 맞아 보이네요."
+        },
+        "missed": {
+          "narration": "감도는 좋아졌지만 숫자 쪽 변화는 크지 않았습니다.",
+          "speaker": "팀장님",
+          "line": "예쁘긴 한데, 반응도 봐야 해요."
+        }
+      }
+    },
+    "tone_align": {
+      "fits": [
+        "브랜드제동",
+        "문구피드백",
+        "톤붕괴",
+        "컨펌"
+      ],
+      "badFits": [
+        "예산부족",
+        "성과압박"
+      ],
+      "slotRoles": [
+        "정석",
+        "방어"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "말투와 분위기를 맞춰 컨펌 리스크를 줄였습니다.",
+          "speaker": "팀장님",
+          "line": "이 정도 톤이면 훨씬 안정적이네요."
+        },
+        "missed": {
+          "narration": "톤은 안정됐지만 임팩트는 조금 약해졌습니다.",
+          "speaker": "팀장님",
+          "line": "깔끔하긴 한데, 멈춰 볼지는 봐야겠어요."
+        }
+      }
+    },
+    "ask_first": {
+      "fits": [
+        "기준불명확",
+        "컨펌",
+        "방향성",
+        "수정요청"
+      ],
+      "badFits": [
+        "기회",
+        "성과압박"
+      ],
+      "slotRoles": [
+        "방어",
+        "정석"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "작업 전 기준을 확인해 재작업 가능성을 줄였습니다.",
+          "speaker": "팀장님",
+          "line": "먼저 물어본 건 좋아요. 방향 틀리면 더 오래 걸려요."
+        },
+        "missed": {
+          "narration": "질문은 했지만 실행 속도는 조금 늦어졌습니다.",
+          "speaker": "팀장님",
+          "line": "이제 기준은 알았으니 움직입시다."
+        }
+      }
+    },
+    "approval_dodge": {
+      "fits": [
+        "컨펌",
+        "작은수정",
+        "방어",
+        "일정압박"
+      ],
+      "badFits": [
+        "매출압박",
+        "반응저조"
+      ],
+      "slotRoles": [
+        "방어",
+        "회피"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "큰 방향을 흔들지 않고 조용히 문제를 넘겼습니다.",
+          "speaker": "팀장님",
+          "line": "이 정도 수정이면 굳이 다시 크게 볼 필요는 없겠네요."
+        },
+        "missed": {
+          "narration": "조용히 넘겼지만 실질적인 개선은 약했습니다.",
+          "speaker": "팀장님",
+          "line": "넘어가는 건 좋은데, 결과가 따라와야 해요."
+        }
+      }
+    },
+    "report_shield": {
+      "fits": [
+        "보고",
+        "평가",
+        "신뢰",
+        "데이터해석"
+      ],
+      "badFits": [
+        "파일관리",
+        "클릭부족"
+      ],
+      "slotRoles": [
+        "보고",
+        "방어"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "애매한 숫자도 설명 가능한 흐름으로 정리했습니다.",
+          "speaker": "팀장님",
+          "line": "이 정도면 보고 때 방어는 되겠네요."
+        },
+        "missed": {
+          "narration": "보고 흐름은 만들었지만 실제 성과는 아직 약했습니다.",
+          "speaker": "팀장님",
+          "line": "말은 되는데, 숫자가 더 있으면 좋겠어요."
+        }
+      }
+    },
+    "file_cleanup": {
+      "fits": [
+        "파일관리",
+        "운영",
+        "실수위험"
+      ],
+      "badFits": [
+        "성과압박",
+        "브랜드제동"
+      ],
+      "slotRoles": [
+        "정석",
+        "방어"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "파일 구조를 정리해 사고 가능성을 줄였습니다.",
+          "speaker": "사수",
+          "line": "오, 파일 찾기 편해졌네요."
+        },
+        "missed": {
+          "narration": "파일은 정리됐지만 지금 성과 문제를 풀지는 못했습니다.",
+          "speaker": "팀장님",
+          "line": "정리는 좋은데, 지금은 숫자를 봐야 해요."
+        }
+      }
+    },
+    "schedule_defense": {
+      "fits": [
+        "일정압박",
+        "마감압박",
+        "번아웃"
+      ],
+      "badFits": [
+        "기회",
+        "성과압박"
+      ],
+      "slotRoles": [
+        "방어",
+        "리스크회피"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "무리한 일정을 조정해 멘탈 손실을 막았습니다.",
+          "speaker": "팀장님",
+          "line": "오늘 다 하긴 어렵겠네요. 우선순위부터 정리합시다."
+        },
+        "missed": {
+          "narration": "일정은 지켰지만 적극성이 낮아 보였습니다.",
+          "speaker": "팀장님",
+          "line": "안 되는 건 알겠는데, 대안도 같이 가져와야 해요."
+        }
+      }
+    },
+    "request_doc": {
+      "fits": [
+        "수정요청",
+        "일정압박",
+        "파일혼선",
+        "회의결론없음"
+      ],
+      "badFits": [
+        "반응저조",
+        "매출압박"
+      ],
+      "slotRoles": [
+        "방어",
+        "정석"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "요청 범위를 글로 남겨 수정 범위를 줄였습니다.",
+          "speaker": "사수",
+          "line": "이거 먼저 확인하길 잘했네요. 말 바뀌면 힘들어요."
+        },
+        "missed": {
+          "narration": "범위는 정리됐지만 성과를 만드는 선택은 아니었습니다.",
+          "speaker": "팀장님",
+          "line": "정리는 좋은데, 이제 실제 액션이 필요해요."
+        }
+      }
+    },
+    "urgent_fix": {
+      "fits": [
+        "수정요청",
+        "위기",
+        "마감압박",
+        "운영"
+      ],
+      "badFits": [
+        "브랜드전략",
+        "학습"
+      ],
+      "slotRoles": [
+        "리스크",
+        "정석"
+      ],
+      "resultLines": {
+        "matched": {
+          "narration": "지금 터진 문제를 빠르게 막았습니다.",
+          "speaker": "팀장님",
+          "line": "빠르게 막아준 건 고마워요. 대신 너무 무리하진 맙시다."
+        },
+        "missed": {
+          "narration": "급한 불은 껐지만 체력 소모가 컸습니다.",
+          "speaker": "팀장님",
+          "line": "이렇게 계속 하면 오래 못 버텨요."
+        }
+      }
+    }
+  },
+  "storyRounds": [
+    {
+      "round": 1,
+      "id": "r01_reference_hell",
+      "situationId": "reference_hell",
+      "title": "레퍼런스 지옥",
+      "phase": "업무 수령",
+      "situationTags": [
+        "조사",
+        "방향성",
+        "기준불명확"
+      ],
+      "baseText": "첫 업무는 레퍼런스 조사입니다. 문제는 잘하는 기준이 아무도 모른다는 겁니다.",
+      "speaker": "팀장님",
+      "line": "요즘 잘하는 브랜드 레퍼런스 좀 찾아봐요.",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "일단 어디서부터 봐야 할지 막막합니다."
+        }
+      ],
+      "cardSlots": {
+        "정석": [
+          "reference_collect",
+          "tone_align"
+        ],
+        "방어": [
+          "ask_first",
+          "request_doc"
+        ],
+        "브랜드": [
+          "brand_mood"
+        ]
+      }
+    },
+    {
+      "round": 2,
+      "id": "r02_creative_direction",
+      "situationId": "first_creative_direction",
+      "title": "첫 소재 방향",
+      "phase": "방향 설정",
+      "situationTags": [
+        "콘텐츠",
+        "방향설정",
+        "반응",
+        "브랜드"
+      ],
+      "baseText": "레퍼런스를 바탕으로 첫 광고 소재 방향을 잡아야 합니다.",
+      "speaker": "팀장님",
+      "line": "감도 있으면서도 성과 나는 쪽으로 가보죠.",
+      "variants": [
+        {
+          "id": "content_heavy",
+          "condition": {
+            "buildDiff": [
+              "content",
+              "brand",
+              2
+            ]
+          },
+          "text": "자료는 많지만 방향이 너무 많아졌습니다."
+        },
+        {
+          "id": "brand_heavy",
+          "condition": {
+            "buildDiff": [
+              "brand",
+              "content",
+              2
+            ]
+          },
+          "text": "분위기는 좋아졌지만 클릭이 붙을지는 아직 모릅니다."
+        },
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "방향은 잡았지만 아직 확신은 없습니다."
+        }
+      ],
+      "cardSlots": {
+        "정석": [
+          "creative_boost",
+          "split_test"
+        ],
+        "공격": [
+          "hooking_copy",
+          "click_hook"
+        ],
+        "브랜드": [
+          "tone_align",
+          "brand_mood"
+        ]
+      }
+    },
+    {
+      "round": 3,
+      "id": "r03_final_files",
+      "situationId": "final_files",
+      "title": "파일명이 전부 최종",
+      "phase": "실무 처리",
+      "situationTags": [
+        "파일관리",
+        "운영",
+        "실수위험"
+      ],
+      "baseText": "기존 파일을 열었더니 진짜 최종이 여러 개입니다.",
+      "speaker": "사수",
+      "line": "아마 이 파일이 최종일 거예요. 아마요.",
+      "variants": [
+        {
+          "id": "low_operations",
+          "condition": {
+            "buildLte": {
+              "operations": 1
+            }
+          },
+          "text": "파일 구조를 보는 순간 머리가 복잡해집니다."
+        },
+        {
+          "id": "high_operations",
+          "condition": {
+            "buildGte": {
+              "operations": 5
+            }
+          },
+          "text": "파일 구조가 엉망이지만 정리할 순 있어 보입니다."
+        },
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "어느 파일을 기준으로 해야 할지 확인이 필요합니다."
+        }
+      ],
+      "cardSlots": {
+        "정석": [
+          "file_cleanup",
+          "request_doc"
+        ],
+        "방어": [
+          "responsibility_split",
+          "ask_first"
+        ],
+        "응급": [
+          "urgent_fix",
+          "agency_call"
+        ]
+      }
+    },
+    {
+      "round": 4,
+      "id": "r04_not_this_vibe",
+      "situationId": "not_this_vibe",
+      "title": "이런 느낌 말고",
+      "phase": "첫 컨펌",
+      "situationTags": [
+        "시안피드백",
+        "컨펌",
+        "수정",
+        "브랜드"
+      ],
+      "baseText": "팀장님이 첫 시안을 확인합니다.",
+      "speaker": "팀장님",
+      "line": "음... 이런 느낌 말고요.",
+      "variants": [
+        {
+          "id": "content_over_brand",
+          "condition": {
+            "buildDiff": [
+              "content",
+              "brand",
+              2
+            ]
+          },
+          "text": "반응은 있을 것 같지만 브랜드 톤이 조금 가벼워 보입니다."
+        },
+        {
+          "id": "brand_over_content",
+          "condition": {
+            "buildDiff": [
+              "brand",
+              "content",
+              2
+            ]
+          },
+          "text": "분위기는 좋은데 사람들이 멈춰 볼지는 애매합니다."
+        },
+        {
+          "id": "low_trust",
+          "condition": {
+            "statLte": {
+              "trust": 3
+            }
+          },
+          "text": "피드백이 평소보다 차갑게 들어옵니다."
+        },
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "방향은 틀리지 않았지만 더 명확한 정리가 필요합니다."
+        }
+      ],
+      "cardSlots": {
+        "정석": [
+          "creative_boost",
+          "tone_align"
+        ],
+        "방어": [
+          "ask_first",
+          "approval_dodge",
+          "brand_guard"
+        ],
+        "리스크": [
+          "hooking_copy",
+          "thumbnail_reroll"
+        ]
+      }
+    },
+    {
+      "round": 5,
+      "id": "r05_deadline_pressure",
+      "situationId": "today_possible",
+      "title": "오늘 안에 가능하죠?",
+      "phase": "마감 압박",
+      "situationTags": [
+        "일정압박",
+        "수정요청",
+        "멘탈",
+        "운영"
+      ],
+      "baseText": "퇴근 시간이 다가올 때쯤 수정 요청이 들어옵니다.",
+      "speaker": "팀장님",
+      "line": "이거 오늘 안에만 부탁드려요.",
+      "variants": [
+        {
+          "id": "low_mental",
+          "condition": {
+            "statLte": {
+              "mental": 4
+            }
+          },
+          "text": "멘탈이 많이 깎인 상태라 같은 요청도 더 무겁게 느껴집니다."
+        },
+        {
+          "id": "high_trust",
+          "condition": {
+            "statGte": {
+              "trust": 8
+            }
+          },
+          "text": "신뢰가 있어서 부탁은 부드럽지만, 실제 업무량은 줄지 않습니다."
+        },
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "무리하면 처리할 수 있지만 후폭풍이 남을 수 있습니다."
+        }
+      ],
+      "cardSlots": {
+        "정석": [
+          "urgent_fix",
+          "agency_call"
+        ],
+        "방어": [
+          "schedule_defense",
+          "request_doc"
+        ],
+        "회피": [
+          "approval_dodge",
+          "responsibility_split"
+        ]
+      }
+    },
+    {
+      "round": 6,
+      "id": "r06_test_budget",
+      "situationId": "ten_thousand_test",
+      "title": "테스트 예산 10만 원",
+      "phase": "광고 집행",
+      "situationTags": [
+        "테스트",
+        "예산",
+        "광고집행"
+      ],
+      "baseText": "이제 실제 광고를 태워볼 시간입니다.",
+      "speaker": "팀장님",
+      "line": "10만 원만 태워보고 감 좀 봅시다.",
+      "variants": [
+        {
+          "id": "low_score",
+          "condition": {
+            "statLte": {
+              "score": 3
+            }
+          },
+          "text": "준비는 했지만 아직 보여줄 숫자가 부족합니다."
+        },
+        {
+          "id": "high_operations",
+          "condition": {
+            "buildGte": {
+              "operations": 5
+            }
+          },
+          "text": "준비와 운영은 안정적입니다. 이제 숫자가 필요합니다."
+        },
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "작은 예산으로 최대한 배울 점을 만들어야 합니다."
+        }
+      ],
+      "cardSlots": {
+        "정석": [
+          "small_test",
+          "split_test"
+        ],
+        "공격": [
+          "early_boost",
+          "buyer_capture"
+        ],
+        "방어": [
+          "channel_split",
+          "efficiency_track"
+        ]
+      }
+    },
+    {
+      "round": 7,
+      "id": "r07_low_click",
+      "situationId": "no_click",
+      "title": "클릭이 안 붙는다",
+      "phase": "반응 문제",
+      "situationTags": [
+        "반응저조",
+        "클릭부족",
+        "소재문제"
+      ],
+      "baseText": "광고는 나갔지만 사람들이 그냥 지나갑니다.",
+      "speaker": "팀장님",
+      "line": "소재가 약한가요? 아니면 타겟이 이상한가요?",
+      "variants": [
+        {
+          "id": "perf_high_budget_low",
+          "condition": {
+            "buildDiff": [
+              "performance",
+              "budgetControl",
+              2
+            ]
+          },
+          "text": "반응은 조금 보이지만 예산 소진 속도가 빠릅니다."
+        },
+        {
+          "id": "budget_high_perf_low",
+          "condition": {
+            "buildDiff": [
+              "budgetControl",
+              "performance",
+              2
+            ]
+          },
+          "text": "돈은 지켰지만 화면에 찍힌 숫자가 작습니다."
+        },
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "지금은 멈춰 보게 만드는 단서가 필요합니다."
+        }
+      ],
+      "cardSlots": {
+        "정석": [
+          "creative_boost",
+          "click_hook"
+        ],
+        "학습": [
+          "split_test",
+          "small_test"
+        ],
+        "리스크": [
+          "thumbnail_reroll",
+          "early_boost"
+        ]
+      }
+    },
+    {
+      "round": 8,
+      "id": "r08_no_purchase",
+      "situationId": "visits_no_purchase",
+      "title": "사람은 왔는데 안 산다",
+      "phase": "전환 문제",
+      "situationTags": [
+        "전환문제",
+        "구매부족",
+        "매출압박"
+      ],
+      "baseText": "사람들은 눌렀습니다. 그런데 구매로 이어지지 않습니다.",
+      "speaker": "팀장님",
+      "line": "클릭은 좋은데, 그래서 구매는요?",
+      "variants": [
+        {
+          "id": "content_high_perf_low",
+          "condition": {
+            "buildGte": {
+              "content": 5
+            },
+            "buildLte": {
+              "performance": 2
+            }
+          },
+          "text": "소재 반응은 있는데 구매 설득이 약합니다."
+        },
+        {
+          "id": "brand_high_score_low",
+          "condition": {
+            "buildGte": {
+              "brand": 5
+            },
+            "statLte": {
+              "score": 3
+            }
+          },
+          "text": "깔끔하지만 결제 버튼은 조용합니다."
+        },
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "이제 반응을 성과로 바꿔야 합니다."
+        }
+      ],
+      "cardSlots": {
+        "정석": [
+          "conversion_boost",
+          "buyer_capture"
+        ],
+        "보강": [
+          "review_collect",
+          "click_recovery"
+        ],
+        "방어": [
+          "discount_restraint",
+          "report_shield"
+        ]
+      }
+    },
+    {
+      "round": 9,
+      "id": "r09_what_learned",
+      "situationId": "what_learned",
+      "title": "그래서 배운 게 뭐죠?",
+      "phase": "학습 정리",
+      "situationTags": [
+        "보고",
+        "학습",
+        "데이터해석"
+      ],
+      "baseText": "팀장님이 테스트 결과를 보며 다음 액션을 묻습니다.",
+      "speaker": "팀장님",
+      "line": "그래서 다음엔 뭘 하면 되죠?",
+      "variants": [
+        {
+          "id": "low_score",
+          "condition": {
+            "statLte": {
+              "score": 4
+            }
+          },
+          "text": "성과가 작아서 배운 점이라도 명확해야 합니다."
+        },
+        {
+          "id": "high_score",
+          "condition": {
+            "statGte": {
+              "score": 7
+            }
+          },
+          "text": "숫자가 조금 있어서 다음 방향을 설득할 여지가 있습니다."
+        },
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "어떤 숫자를 근거로 삼을지 정해야 합니다."
+        }
+      ],
+      "cardSlots": {
+        "정석": [
+          "efficiency_track",
+          "split_test"
+        ],
+        "보고": [
+          "report_shield",
+          "ask_first"
+        ],
+        "방어": [
+          "small_test",
+          "responsibility_split"
+        ]
+      }
+    },
+    {
+      "round": 10,
+      "id": "r10_ceo_comment",
+      "situationId": "ceo_comment",
+      "title": "대표님 지나가다 한마디",
+      "phase": "윗선 피드백",
+      "situationTags": [
+        "대표피드백",
+        "컨펌",
+        "임팩트",
+        "브랜드"
+      ],
+      "baseText": "대표님이 모니터를 보고 한마디합니다.",
+      "speaker": "대표님",
+      "line": "이거 좀 더 임팩트 있게 안 돼?",
+      "variants": [
+        {
+          "id": "high_score",
+          "condition": {
+            "statGte": {
+              "score": 7
+            }
+          },
+          "text": "성과가 있어서 피드백은 비교적 부드럽습니다."
+        },
+        {
+          "id": "low_score",
+          "condition": {
+            "statLte": {
+              "score": 3
+            }
+          },
+          "text": "성과가 낮아 피드백의 압박이 강합니다."
+        },
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "임팩트와 브랜드 톤 사이에서 판단해야 합니다."
+        }
+      ],
+      "cardSlots": {
+        "설득": [
+          "exec_persuasion",
+          "report_shield"
+        ],
+        "브랜드": [
+          "brand_guard",
+          "brand_mood",
+          "discount_restraint"
+        ],
+        "공격": [
+          "hooking_copy",
+          "creative_boost"
+        ]
+      }
+    },
+    {
+      "round": 11,
+      "id": "r11_report_day",
+      "situationId": "report_day",
+      "title": "보고 D-day",
+      "phase": "최종 보고 준비",
+      "situationTags": [
+        "보고",
+        "평가",
+        "신뢰",
+        "정리"
+      ],
+      "baseText": "좋은 숫자도 있고, 말하기 애매한 숫자도 있습니다.",
+      "speaker": "팀장님",
+      "line": "오늘은 숫자랑 배운 점 중심으로 정리해봅시다.",
+      "variants": [
+        {
+          "id": "high_score_high_money",
+          "condition": {
+            "statGte": {
+              "score": 8,
+              "money": 120000
+            }
+          },
+          "text": "보고서에 넣을 숫자가 괜찮고 예산도 망가지지 않았습니다."
+        },
+        {
+          "id": "high_score_low_money",
+          "condition": {
+            "statGte": {
+              "score": 8
+            },
+            "statLte": {
+              "money": 50000
+            }
+          },
+          "text": "성과는 있지만 예산 사용 내역이 부담스럽습니다."
+        },
+        {
+          "id": "low_score_high_money",
+          "condition": {
+            "statLte": {
+              "score": 4
+            },
+            "statGte": {
+              "money": 100000
+            }
+          },
+          "text": "돈은 남겼지만 보여줄 숫자가 약합니다."
+        },
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "정리 방식에 따라 평가가 갈릴 수 있습니다."
+        }
+      ],
+      "cardSlots": {
+        "보고": [
+          "report_shield",
+          "exec_persuasion"
+        ],
+        "정리": [
+          "efficiency_track",
+          "file_cleanup"
+        ],
+        "방어": [
+          "responsibility_split",
+          "ask_first"
+        ]
+      }
+    },
+    {
+      "round": 12,
+      "id": "r12_final_number",
+      "situationId": "number_not_effort",
+      "title": "열심히 말고 숫자로",
+      "phase": "최종 평가",
+      "situationTags": [
+        "최종평가",
+        "성과",
+        "신뢰",
+        "숫자"
+      ],
+      "baseText": "마지막 평가는 노력보다 결과를 봅니다.",
+      "speaker": "팀장님",
+      "line": "열심히 한 건 알겠는데, 숫자로 보면 어때요?",
+      "variants": [
+        {
+          "id": "excellent_path",
+          "condition": {
+            "statGte": {
+              "score": 9,
+              "money": 120000,
+              "trust": 7
+            }
+          },
+          "text": "성과, 예산, 신뢰가 모두 괜찮습니다. 사원 전환 가능성이 높습니다."
+        },
+        {
+          "id": "score_only",
+          "condition": {
+            "statGte": {
+              "score": 9
+            },
+            "statLte": {
+              "money": 60000
+            }
+          },
+          "text": "성과는 있지만 예산을 너무 많이 썼습니다."
+        },
+        {
+          "id": "money_only",
+          "condition": {
+            "statLte": {
+              "score": 5
+            },
+            "statGte": {
+              "money": 100000
+            }
+          },
+          "text": "돈은 남겼지만 결과가 약합니다."
+        },
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "최종 평가에서는 돈, 성과, 신뢰, 멘탈을 함께 봅니다."
+        }
+      ],
+      "cardSlots": {
+        "보고": [
+          "report_shield",
+          "exec_persuasion"
+        ],
+        "성과": [
+          "buyer_capture",
+          "conversion_boost",
+          "efficiency_track"
+        ],
+        "방어": [
+          "responsibility_split",
+          "brand_guard"
+        ]
+      }
+    }
+  ],
+  "minimalCodeChanges": [
+    "nextRound(): data.storyRounds가 있으면 pickSituation() 대신 data.storyRounds[state.round - 1] 기반으로 currentSituation을 만든다. storyRounds가 없으면 기존 pickSituation() 유지.",
+    "renderSituation(): situation.speaker와 situation.line이 있으면 설명 위/아래에 대사 블록으로 출력한다. 기존 situationText 하나만 쓰는 구조면 `speaker: line + baseText/variantText`를 합쳐 넣어도 된다.",
+    "pickCards(): storyRound.cardSlots가 있으면 각 슬롯 후보에서 1장씩 뽑는다. 없으면 기존 preferredTags 방식 유지.",
+    "renderChoiceCard(): card.contextDescriptions[currentRound.id]가 있으면 card.description 대신 그 문구를 보여준다. 없으면 기존 description 유지.",
+    "buildResultText(): 기존 outcomeTone 문장 뒤에 card.resultLines.matched/missed의 narration과 speaker/line을 추가한다. 없으면 기존 문장 유지."
+  ],
+  "dialogueRules": {
+    "situationDialogue": "각 storyRound의 speaker/line은 상황 카드에서 먼저 보이는 한마디로 사용한다.",
+    "resultDialogue": "카드 선택 후 결과 화면에서는 card.resultLines.matched 또는 missed를 사용한다. matched 기준은 기존 matchedSituation 로직을 그대로 사용한다.",
+    "fallback": "대사가 없는 카드/상황은 기존 description과 buildResultText를 그대로 사용한다."
+  }
+}
