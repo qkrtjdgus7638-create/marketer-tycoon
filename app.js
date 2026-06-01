@@ -899,6 +899,8 @@ function render() {
   if (!data || !state) return;
 
   document.body.classList.toggle("is-intro", state.screen === "intro");
+  document.body.classList.toggle("is-choice", state.screen === "choice");
+  document.body.classList.toggle("is-result", state.screen === "result");
   els.startScreen.classList.toggle("hidden", state.screen !== "intro");
   els.cardChoices.classList.toggle("hidden", state.screen !== "choice");
   els.turnResult.classList.toggle("hidden", state.screen !== "result");
