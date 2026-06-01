@@ -141,7 +141,13 @@ function mergeStoryPatch() {
     data.situations = [...data.situations, ...storyOverlay.newSituations.filter((situation) => !existingIds.has(situation.id))];
   }
 
-  const patches = normalizeCardPatches(storyOverlay.cardPatches);
+
+
+  if (storyOverlay.stageDefaultsPatch) {
+    data.stageDefaults = deepMerge(data.stageDefaults, storyOverlay.stageDefaultsPatch);
+  }
+
+    const patches = normalizeCardPatches(storyOverlay.cardPatches);
   for (const [cardId, patch] of Object.entries(patches)) {
     const index = data.cards.findIndex((card) => card.id === cardId);
     if (index === -1) continue;
@@ -686,8 +692,8 @@ function failTitle() {
 }
 
 function resultSummary(cleared, excellent) {
-  if (excellent) return "성과와 예산, 신뢰를 모두 챙겼습니다. 다음 캠페인이 바로 넘어옵니다.";
-  if (cleared) return "완벽하진 않지만 살아남았습니다. 회사는 일단 다음 캠페인을 맡겨보기로 했습니다.";
+  if (excellent) return "성과와 예산 회수까지 모두 챙겼습니다. 다음 캠페인 예산을 맡겨볼 만합니다.";
+  if (cleared) return "목표 예산과 성과 기준을 넘겼습니다. 인턴 테스트는 통과입니다.";
   if (state.score < data.stageDefaults.clearConditions.scoreGte) return "열심히 한 흔적은 있지만 성과 점수가 부족했습니다.";
   if (state.money < data.stageDefaults.clearConditions.moneyGte) return "숫자는 만들었지만 남은 예산이 너무 얇습니다.";
   if (state.trust < data.stageDefaults.clearConditions.trustGte) return "성과는 있지만 보고와 컨펌에서 신뢰를 잃었습니다.";
@@ -707,7 +713,7 @@ function render() {
   els.stageHeading.textContent = state.screen === "result" ? "선택 결과" : "선택 카드";
   els.stageSubcopy.textContent = state.screen === "result" ? "이번 선택으로 바뀐 결과입니다." : "이번 턴에 사용할 카드를 선택하세요.";
 
-  setMeter("money", state.money, 150000);
+  setMeter("money", state.money, storyOverlay?.balanceProfileV12?.moneyMeterMax || storyOverlay?.balanceProfileV11?.moneyMeterMax || 600000);
   setMeter("mental", state.mental, 15);
   setMeter("performance", state.score, 18);
   setMeter("trust", state.trust, 12);
@@ -861,26 +867,85 @@ function renderLogs() {
 }
 
 function buildResultText(card, situation, cost, earned, scoreGain, matched, synergies) {
-  const patchedLine = getPatchedResultLine(card, matched);
-  if (patchedLine) {
-    const moneyText = earned - cost === 0 ? "예산 변화는 거의 없습니다." : `예산 ${formatMoneyDelta(earned - cost)}.`;
-    const scoreText = scoreGain > 0 ? `성과 +${scoreGain}.` : "성과는 아직 쌓이지 않았습니다.";
-    return [patchedLine, moneyText, scoreText, ...synergies].filter(Boolean).join(" ");
-  }
+  const patchedLine = getPatchedResultLine(card, matched, situation);
+  const narration = patchedLine?.narration || fallbackResultNarration(card, situation, matched);
+  const dialogue = patchedLine?.line
+    ? formatDialogue(patchedLine.speaker || getResultSpeaker(situation), patchedLine.line)
+    : makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, matched);
 
-  const tone = outcomeToneByCategory[situation.category] || outcomeToneByCategory.보고;
-  const base = matched ? tone.matched : tone.missed;
-  const net = earned - cost;
-  const moneyText = net === 0 ? "예산 변화는 거의 없습니다." : `예산 ${formatMoneyDelta(net)}.`;
-  const scoreText = scoreGain > 0 ? `성과 +${scoreGain}.` : "성과는 아직 쌓이지 않았습니다.";
-  return [base, moneyText, scoreText, ...synergies].filter(Boolean).join(" ");
+  const spentText = cost > 0 ? `쓴 예산 -${cost.toLocaleString("ko-KR")}원.` : "쓴 예산 0원.";
+  const earnedText = `회수 금액 +${earned.toLocaleString("ko-KR")}원.`;
+  const netText = `순손익 ${formatMoneyDelta(earned - cost)}.`;
+  const scoreText = scoreGain > 0 ? `성과 +${scoreGain}.` : scoreGain < 0 ? `성과 ${scoreGain}.` : "성과 변화 없음.";
+
+  return [narration, dialogue, spentText, earnedText, netText, scoreText, ...synergies].filter(Boolean).join(" ");
 }
 
-function getPatchedResultLine(card, matched) {
-  const result = card.resultLines?.[matched ? "matched" : "missed"];
-  if (!result) return "";
-  const dialogue = result.speaker && result.line ? `${result.speaker}: “${result.line}”` : "";
-  return [result.narration, dialogue].filter(Boolean).join(" ");
+function getPatchedResultLine(card, matched, situation) {
+  const mode = matched ? "matched" : "missed";
+  const roundId = situation.storyRound?.id;
+  const overrides = storyOverlay?.resultLineOverrides || {};
+  const roundOverrides = roundId ? overrides[roundId] : null;
+  const exact = roundOverrides?.[card.id]?.[mode];
+  if (exact) return exact;
+  const byCategory = roundOverrides?.[`category:${card.category}`]?.[mode];
+  if (byCategory) return byCategory;
+  const cardDefault = card.resultLines?.[mode];
+  if (cardDefault) return cardDefault;
+  return null;
+}
+
+function fallbackResultNarration(card, situation, matched) {
+  if (!matched) return "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다.";
+  const byCategory = {
+    "예산관리": "예산 흐름을 확인하고 손실을 줄이는 쪽으로 움직였습니다.",
+    "퍼포먼스": "성과를 만들기 위해 더 직접적인 액션을 선택했습니다.",
+    "콘텐츠": "반응을 만들 수 있도록 메시지와 소재를 손봤습니다.",
+    "브랜드": "브랜드 톤이 무너지지 않도록 방향을 정리했습니다.",
+    "사내정치": "보고와 컨펌에서 설명 가능한 근거를 챙겼습니다.",
+    "운영력": "일이 터지기 전에 범위와 진행 방식을 정리했습니다.",
+  };
+  return byCategory[card.category] || "현재 상황에 맞춰 다음 선택을 준비했습니다.";
+}
+
+function makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, matched) {
+  const speaker = getResultSpeaker(situation);
+  const net = earned - cost;
+  let line = "좋아요. 다음 선택에서 이 흐름을 이어가봅시다.";
+
+  if (!matched) {
+    line = "의미는 있는데, 지금 문제랑은 조금 빗나갔어요. 다음 선택에서 바로잡아봅시다.";
+  } else if (net >= 60000 || scoreGain >= 4) {
+    line = card.category === "퍼포먼스"
+      ? "숫자는 확실히 보이네요. 대신 효율은 계속 같이 봐야 합니다."
+      : "이번 선택은 결과가 꽤 보이네요. 이 흐름은 보고에 써도 되겠어요.";
+  } else if (net <= -25000) {
+    line = card.category === "퍼포먼스"
+      ? "성과를 노린 건 좋은데, 이 비용 구조는 조금 부담됩니다."
+      : "방향은 이해했는데, 쓴 비용에 비해 결과가 아직 약해요.";
+  } else if (scoreGain <= 0 && card.category !== "운영력" && card.category !== "사내정치") {
+    line = "지금 당장 보이는 숫자는 약해요. 대신 다음 액션이 분명해야 합니다.";
+  } else {
+    const byCategory = {
+      "예산관리": "돈을 지키는 판단은 괜찮아요. 다만 성과 근거도 같이 챙겨야 합니다.",
+      "퍼포먼스": "숫자를 만들려는 방향은 맞아요. 이제 효율을 같이 봅시다.",
+      "콘텐츠": "반응을 만들 단서는 생겼네요. 다음엔 이걸 숫자로 이어봅시다.",
+      "브랜드": "톤은 안정됐네요. 이제 숫자도 같이 확인해봅시다.",
+      "사내정치": "설명할 근거를 챙긴 건 좋아요. 보고 때 도움이 될 겁니다.",
+      "운영력": "일이 터지기 전에 정리한 건 좋아요. 이게 나중에 사고를 줄입니다.",
+    };
+    line = byCategory[card.category] || line;
+  }
+  return formatDialogue(speaker, line);
+}
+
+function getResultSpeaker(situation) {
+  return situation.storyRound?.resultSpeaker || situation.storyRound?.speaker || "팀장님";
+}
+
+function formatDialogue(speaker, line) {
+  if (!speaker || !line) return "";
+  return `${speaker}: “${line}”`;
 }
 
 function diffCore(before, after) {
@@ -917,7 +982,7 @@ function decayRisks() {
 }
 
 function clampState() {
-  state.money = Math.min(200000, state.money);
+  state.money = Math.min(storyOverlay?.balanceProfileV12?.moneyClampMax || storyOverlay?.balanceProfileV11?.moneyClampMax || 650000, state.money);
   state.score = Math.min(18, state.score);
   state.mental = Math.min(15, state.mental);
   state.trust = Math.min(12, state.trust);
