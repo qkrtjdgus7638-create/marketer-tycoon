@@ -1,6 +1,6 @@
 {
-  "overlayTitle": "마케터로 살아남기 - 선택지 상호작용 안정화 패치 v9",
-  "purpose": "무작위성은 유지하되, 선택지 3장이 한 상황 안에서 자연스럽게 읽히도록 라운드별 선택 세트를 도입한다. 카드 색/아이콘은 빌드 계열 기준으로 통일한다.",
+  "overlayTitle": "마케터로 살아남기 - 인턴 30만원 목표 신중 밸런스 패치 v12",
+  "purpose": "인턴 단계 클리어 목표를 30만원 언저리로 유지하되, 아무 선택이나 해도 쉽게 달성되지 않도록 안정/중간/고위험 카드의 비용·회수·성과를 재조정한 패치.",
   "mergePolicy": {
     "cards": "기존 cards에는 cardPatches를 id 기준으로 병합하고, newCards는 cards 배열에 append한다.",
     "storyRounds": "기존 storyRounds를 v9 storyRounds로 교체한다. cardSlots보다 choiceSets를 우선 사용한다.",
@@ -31,6 +31,15 @@
       "badFits": [
         "전환문제",
         "대표피드백"
+      ],
+      "cost": 12000,
+      "earned": [
+        6000,
+        42000
+      ],
+      "score": [
+        1,
+        2
       ]
     },
     "budget_defense": {
@@ -44,6 +53,15 @@
       "badFits": [
         "기회",
         "성과확장"
+      ],
+      "cost": 0,
+      "earned": [
+        0,
+        6000
+      ],
+      "score": [
+        -1,
+        0
       ]
     },
     "channel_split": {
@@ -57,6 +75,15 @@
       "badFits": [
         "파일관리",
         "기준불명확"
+      ],
+      "cost": 22000,
+      "earned": [
+        14000,
+        70000
+      ],
+      "score": [
+        1,
+        2
       ]
     },
     "buyer_capture": {
@@ -71,6 +98,15 @@
         "파일관리",
         "기준불명확",
         "조사"
+      ],
+      "cost": 65000,
+      "earned": [
+        10000,
+        200000
+      ],
+      "score": [
+        1,
+        5
       ]
     },
     "click_hook": {
@@ -83,6 +119,15 @@
       "badFits": [
         "파일관리",
         "보고"
+      ],
+      "cost": 30000,
+      "earned": [
+        0,
+        105000
+      ],
+      "score": [
+        1,
+        3
       ]
     },
     "early_boost": {
@@ -97,6 +142,15 @@
         "예산부족",
         "파일관리",
         "기준불명확"
+      ],
+      "cost": 95000,
+      "earned": [
+        0,
+        260000
+      ],
+      "score": [
+        0,
+        6
       ]
     },
     "creative_boost": {
@@ -110,6 +164,15 @@
       "badFits": [
         "파일관리",
         "보고"
+      ],
+      "cost": 38000,
+      "earned": [
+        0,
+        135000
+      ],
+      "score": [
+        1,
+        4
       ]
     },
     "split_test": {
@@ -123,6 +186,15 @@
       ],
       "badFits": [
         "일정압박"
+      ],
+      "cost": 24000,
+      "earned": [
+        12000,
+        80000
+      ],
+      "score": [
+        1,
+        3
       ]
     },
     "hooking_copy": {
@@ -136,6 +208,15 @@
       "badFits": [
         "파일관리",
         "예산부족"
+      ],
+      "cost": 24000,
+      "earned": [
+        0,
+        120000
+      ],
+      "score": [
+        0,
+        4
       ]
     },
     "reference_collect": {
@@ -149,6 +230,15 @@
         "전환문제",
         "마감압박",
         "최종평가"
+      ],
+      "cost": 4000,
+      "earned": [
+        0,
+        14000
+      ],
+      "score": [
+        0,
+        1
       ]
     },
     "thumbnail_reroll": {
@@ -162,6 +252,15 @@
         "조사",
         "파일관리",
         "보고"
+      ],
+      "cost": 60000,
+      "earned": [
+        0,
+        210000
+      ],
+      "score": [
+        0,
+        6
       ]
     },
     "brand_mood": {
@@ -176,6 +275,15 @@
         "조사",
         "파일관리",
         "전환문제"
+      ],
+      "cost": 14000,
+      "earned": [
+        0,
+        45000
+      ],
+      "score": [
+        0,
+        2
       ]
     },
     "tone_align": {
@@ -190,6 +298,15 @@
       "badFits": [
         "전환문제",
         "예산부족"
+      ],
+      "cost": 7000,
+      "earned": [
+        0,
+        22000
+      ],
+      "score": [
+        0,
+        1
       ]
     },
     "ask_first": {
@@ -203,6 +320,15 @@
       ],
       "badFits": [
         "성과확장"
+      ],
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        0
       ]
     },
     "approval_dodge": {
@@ -215,6 +341,15 @@
       "badFits": [
         "조사",
         "전환문제"
+      ],
+      "cost": 0,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        0,
+        1
       ]
     },
     "report_shield": {
@@ -228,6 +363,15 @@
       "badFits": [
         "파일관리",
         "반응저조"
+      ],
+      "cost": 9000,
+      "earned": [
+        0,
+        38000
+      ],
+      "score": [
+        1,
+        2
       ]
     },
     "file_cleanup": {
@@ -240,6 +384,15 @@
       "badFits": [
         "반응저조",
         "전환문제"
+      ],
+      "cost": 0,
+      "earned": [
+        0,
+        6000
+      ],
+      "score": [
+        0,
+        0
       ]
     },
     "schedule_defense": {
@@ -252,6 +405,15 @@
       "badFits": [
         "기회",
         "성과확장"
+      ],
+      "cost": 0,
+      "earned": [
+        0,
+        3000
+      ],
+      "score": [
+        -1,
+        0
       ]
     },
     "request_doc": {
@@ -266,6 +428,15 @@
       "badFits": [
         "전환문제",
         "성과확장"
+      ],
+      "cost": 0,
+      "earned": [
+        0,
+        6000
+      ],
+      "score": [
+        0,
+        0
       ]
     },
     "urgent_fix": {
@@ -279,6 +450,345 @@
       "badFits": [
         "조사",
         "보고"
+      ],
+      "cost": 35000,
+      "earned": [
+        0,
+        105000
+      ],
+      "score": [
+        1,
+        3
+      ]
+    },
+    "efficiency_track": {
+      "cost": 5000,
+      "earned": [
+        0,
+        22000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "ad_stop": {
+      "cost": 0,
+      "earned": [
+        0,
+        3000
+      ],
+      "score": [
+        -1,
+        0
+      ]
+    },
+    "test_goal": {
+      "cost": 0,
+      "earned": [
+        0,
+        7000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "spend_pacing": {
+      "cost": 0,
+      "earned": [
+        0,
+        12000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "price_check": {
+      "cost": 7000,
+      "earned": [
+        0,
+        30000
+      ],
+      "score": [
+        0,
+        2
+      ]
+    },
+    "conversion_boost": {
+      "cost": 52000,
+      "earned": [
+        10000,
+        185000
+      ],
+      "score": [
+        1,
+        5
+      ]
+    },
+    "click_recovery": {
+      "cost": 42000,
+      "earned": [
+        5000,
+        155000
+      ],
+      "score": [
+        1,
+        4
+      ]
+    },
+    "landing_check": {
+      "cost": 18000,
+      "earned": [
+        5000,
+        65000
+      ],
+      "score": [
+        1,
+        2
+      ]
+    },
+    "offer_test": {
+      "cost": 28000,
+      "earned": [
+        0,
+        115000
+      ],
+      "score": [
+        0,
+        4
+      ]
+    },
+    "audience_split": {
+      "cost": 26000,
+      "earned": [
+        5000,
+        95000
+      ],
+      "score": [
+        1,
+        3
+      ]
+    },
+    "cta_tighten": {
+      "cost": 18000,
+      "earned": [
+        0,
+        85000
+      ],
+      "score": [
+        0,
+        3
+      ]
+    },
+    "product_page_fix": {
+      "cost": 45000,
+      "earned": [
+        0,
+        170000
+      ],
+      "score": [
+        1,
+        5
+      ]
+    },
+    "angle_sort": {
+      "cost": 3000,
+      "earned": [
+        0,
+        14000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "message_cleanup": {
+      "cost": 9000,
+      "earned": [
+        0,
+        42000
+      ],
+      "score": [
+        0,
+        2
+      ]
+    },
+    "brand_guard": {
+      "cost": 3000,
+      "earned": [
+        0,
+        12000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "review_collect": {
+      "cost": 18000,
+      "earned": [
+        0,
+        70000
+      ],
+      "score": [
+        0,
+        3
+      ]
+    },
+    "discount_restraint": {
+      "cost": 0,
+      "earned": [
+        0,
+        8000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "reference_filter": {
+      "cost": 0,
+      "earned": [
+        0,
+        7000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "claim_check": {
+      "cost": 0,
+      "earned": [
+        0,
+        6000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "exec_persuasion": {
+      "cost": 7000,
+      "earned": [
+        0,
+        28000
+      ],
+      "score": [
+        1,
+        2
+      ]
+    },
+    "responsibility_split": {
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "expectation_align": {
+      "cost": 0,
+      "earned": [
+        0,
+        3000
+      ],
+      "score": [
+        0,
+        0
+      ]
+    },
+    "pre_report": {
+      "cost": 0,
+      "earned": [
+        0,
+        8000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "meeting_summary": {
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "approval_anchor": {
+      "cost": 0,
+      "earned": [
+        0,
+        8000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "postmortem_note": {
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        1,
+        1
+      ]
+    },
+    "agency_call": {
+      "cost": 30000,
+      "earned": [
+        0,
+        95000
+      ],
+      "score": [
+        1,
+        3
+      ]
+    },
+    "asset_request": {
+      "cost": 0,
+      "earned": [
+        0,
+        3000
+      ],
+      "score": [
+        0,
+        0
+      ]
+    },
+    "task_slice": {
+      "cost": 0,
+      "earned": [
+        0,
+        6000
+      ],
+      "score": [
+        0,
+        1
+      ]
+    },
+    "brief_rewrite": {
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        1
       ]
     }
   },
@@ -288,14 +798,14 @@
       "name": "효율 추적",
       "category": "예산관리",
       "description": "쓴 예산 대비 어떤 반응이 남았는지 확인합니다.",
-      "cost": 5000,
+      "cost": 10000,
       "earned": [
         0,
-        15000
+        50000
       ],
       "score": [
         0,
-        1
+        2
       ],
       "secondary": {
         "mental": 0,
@@ -343,7 +853,7 @@
       "cost": 0,
       "earned": [
         0,
-        5000
+        8000
       ],
       "score": [
         -1,
@@ -392,14 +902,14 @@
       "name": "전환 보강",
       "category": "퍼포먼스",
       "description": "클릭 이후 구매까지 이어지도록 전환 요소를 보강합니다.",
-      "cost": 25000,
+      "cost": 70000,
       "earned": [
         20000,
-        75000
+        260000
       ],
       "score": [
-        1,
-        3
+        2,
+        7
       ],
       "secondary": {
         "mental": -1,
@@ -443,14 +953,14 @@
       "name": "클릭 회수",
       "category": "퍼포먼스",
       "description": "이미 반응한 사람에게 다시 노출해 구매 가능성을 높입니다.",
-      "cost": 20000,
+      "cost": 55000,
       "earned": [
-        15000,
-        65000
+        10000,
+        240000
       ],
       "score": [
         1,
-        3
+        6
       ],
       "secondary": {
         "mental": -1,
@@ -497,7 +1007,7 @@
       "cost": 5000,
       "earned": [
         0,
-        15000
+        25000
       ],
       "score": [
         0,
@@ -546,14 +1056,14 @@
       "name": "리뷰 확보",
       "category": "브랜드",
       "description": "구매를 망설이는 사람에게 보여줄 신뢰 근거를 챙깁니다.",
-      "cost": 10000,
+      "cost": 25000,
       "earned": [
         0,
-        25000
+        120000
       ],
       "score": [
-        0,
-        2
+        1,
+        4
       ],
       "secondary": {
         "mental": 0,
@@ -600,7 +1110,7 @@
       "cost": 0,
       "earned": [
         0,
-        10000
+        20000
       ],
       "score": [
         0,
@@ -648,14 +1158,14 @@
       "name": "대표 설득",
       "category": "사내정치",
       "description": "대표가 보는 기준에 맞춰 선택의 이유를 설명합니다.",
-      "cost": 5000,
+      "cost": 15000,
       "earned": [
         0,
-        15000
+        80000
       ],
       "score": [
         1,
-        2
+        4
       ],
       "secondary": {
         "mental": -1,
@@ -702,7 +1212,7 @@
       "cost": 0,
       "earned": [
         0,
-        5000
+        15000
       ],
       "score": [
         0,
@@ -751,14 +1261,14 @@
       "name": "대행사 호출",
       "category": "운영력",
       "description": "내부에서 처리하기 어려운 작업은 외부 도움으로 분리합니다.",
-      "cost": 20000,
+      "cost": 45000,
       "earned": [
-        5000,
-        40000
+        0,
+        160000
       ],
       "score": [
         1,
-        2
+        5
       ],
       "secondary": {
         "mental": 1,
@@ -805,7 +1315,7 @@
       "cost": 0,
       "earned": [
         0,
-        10000
+        20000
       ],
       "score": [
         0,
@@ -855,7 +1365,7 @@
       "cost": 0,
       "earned": [
         0,
-        10000
+        30000
       ],
       "score": [
         0,
@@ -902,14 +1412,14 @@
       "name": "랜딩 확인",
       "category": "퍼포먼스",
       "description": "광고를 누른 뒤 어디서 빠지는지 확인합니다.",
-      "cost": 10000,
+      "cost": 25000,
       "earned": [
-        5000,
-        30000
+        15000,
+        100000
       ],
       "score": [
         1,
-        2
+        3
       ],
       "secondary": {
         "mental": 0,
@@ -953,14 +1463,14 @@
       "name": "제안 테스트",
       "category": "퍼포먼스",
       "description": "어떤 혜택 표현이 구매를 움직이는지 작게 비교합니다.",
-      "cost": 15000,
+      "cost": 40000,
       "earned": [
-        10000,
-        50000
+        0,
+        180000
       ],
       "score": [
-        1,
-        2
+        0,
+        5
       ],
       "secondary": {
         "mental": -1,
@@ -1007,7 +1517,7 @@
       "cost": 5000,
       "earned": [
         0,
-        20000
+        30000
       ],
       "score": [
         0,
@@ -1055,14 +1565,14 @@
       "name": "메시지 정리",
       "category": "콘텐츠",
       "description": "하고 싶은 말을 한 문장으로 정리합니다.",
-      "cost": 5000,
+      "cost": 15000,
       "earned": [
         0,
-        25000
+        85000
       ],
       "score": [
         0,
-        2
+        3
       ],
       "secondary": {
         "mental": 0,
@@ -1109,7 +1619,7 @@
       "cost": 0,
       "earned": [
         0,
-        10000
+        20000
       ],
       "score": [
         0,
@@ -1160,7 +1670,7 @@
       "cost": 0,
       "earned": [
         0,
-        10000
+        15000
       ],
       "score": [
         0,
@@ -1211,7 +1721,7 @@
       "cost": 0,
       "earned": [
         0,
-        5000
+        10000
       ],
       "score": [
         0,
@@ -1262,11 +1772,11 @@
       "cost": 0,
       "earned": [
         0,
-        10000
+        30000
       ],
       "score": [
         0,
-        1
+        2
       ],
       "secondary": {
         "mental": 0,
@@ -1313,7 +1823,7 @@
       "cost": 0,
       "earned": [
         0,
-        5000
+        8000
       ],
       "score": [
         0,
@@ -1364,7 +1874,7 @@
       "cost": 0,
       "earned": [
         0,
-        10000
+        25000
       ],
       "score": [
         0,
@@ -1414,7 +1924,7 @@
       "cost": 0,
       "earned": [
         0,
-        5000
+        18000
       ],
       "score": [
         0,
@@ -1487,7 +1997,7 @@
       "cost": 0,
       "earned": [
         0,
-        5000
+        15000
       ],
       "score": [
         0,
@@ -1555,14 +2065,14 @@
       "name": "타깃 쪼개기",
       "category": "퍼포먼스",
       "description": "모두에게 뿌리지 않고 반응 가능성이 큰 사람부터 나눠 봅니다.",
-      "cost": 15000,
+      "cost": 45000,
       "earned": [
         10000,
-        50000
+        170000
       ],
       "score": [
         1,
-        2
+        5
       ],
       "secondary": {
         "mental": -1,
@@ -1626,14 +2136,14 @@
       "name": "CTA 조이기",
       "category": "퍼포먼스",
       "description": "눌렀던 사람이 다음 행동을 하도록 버튼과 문구를 정리합니다.",
-      "cost": 10000,
+      "cost": 30000,
       "earned": [
-        5000,
-        45000
+        0,
+        150000
       ],
       "score": [
-        1,
-        2
+        0,
+        5
       ],
       "secondary": {
         "mental": 0,
@@ -1697,14 +2207,14 @@
       "name": "상세 흐름 손보기",
       "category": "퍼포먼스",
       "description": "광고에서 들어온 사람이 이탈하지 않도록 상세 흐름을 손봅니다.",
-      "cost": 20000,
+      "cost": 65000,
       "earned": [
-        15000,
-        70000
+        10000,
+        280000
       ],
       "score": [
-        1,
-        3
+        2,
+        8
       ],
       "secondary": {
         "mental": -1,
@@ -1767,14 +2277,14 @@
       "name": "가격 저항 확인",
       "category": "예산관리",
       "description": "사람들이 가격에서 멈추는지 먼저 확인합니다.",
-      "cost": 5000,
+      "cost": 15000,
       "earned": [
         0,
-        20000
+        70000
       ],
       "score": [
         0,
-        2
+        3
       ],
       "secondary": {
         "mental": 0,
@@ -1841,11 +2351,11 @@
       "cost": 0,
       "earned": [
         0,
-        10000
+        25000
       ],
       "score": [
         0,
-        1
+        2
       ],
       "secondary": {
         "mental": 1,
@@ -1912,7 +2422,7 @@
       "cost": 0,
       "earned": [
         0,
-        5000
+        12000
       ],
       "score": [
         1,
@@ -2300,7 +2810,8 @@
             }
           ]
         }
-      ]
+      ],
+      "resultSpeaker": "팀장님"
     },
     {
       "round": 2,
@@ -2509,7 +3020,8 @@
             }
           ]
         }
-      ]
+      ],
+      "resultSpeaker": "팀장님"
     },
     {
       "round": 3,
@@ -2711,7 +3223,8 @@
             }
           ]
         }
-      ]
+      ],
+      "resultSpeaker": "사수"
     },
     {
       "round": 4,
@@ -2919,7 +3432,8 @@
             }
           ]
         }
-      ]
+      ],
+      "resultSpeaker": "팀장님"
     },
     {
       "round": 5,
@@ -3126,7 +3640,8 @@
             }
           ]
         }
-      ]
+      ],
+      "resultSpeaker": "사수"
     },
     {
       "round": 6,
@@ -3344,7 +3859,8 @@
             }
           ]
         }
-      ]
+      ],
+      "resultSpeaker": "팀장님"
     },
     {
       "round": 7,
@@ -3554,7 +4070,8 @@
             }
           ]
         }
-      ]
+      ],
+      "resultSpeaker": "팀장님"
     },
     {
       "round": 8,
@@ -3768,7 +4285,8 @@
             }
           ]
         }
-      ]
+      ],
+      "resultSpeaker": "팀장님"
     },
     {
       "round": 9,
@@ -3981,7 +4499,8 @@
             }
           ]
         }
-      ]
+      ],
+      "resultSpeaker": "팀장님"
     },
     {
       "round": 10,
@@ -4193,7 +4712,8 @@
             }
           ]
         }
-      ]
+      ],
+      "resultSpeaker": "대표님"
     },
     {
       "round": 11,
@@ -4403,7 +4923,8 @@
             }
           ]
         }
-      ]
+      ],
+      "resultSpeaker": "팀장님"
     },
     {
       "round": 12,
@@ -4616,7 +5137,8 @@
             }
           ]
         }
-      ]
+      ],
+      "resultSpeaker": "팀장님"
     }
   ],
   "changeLog": [
@@ -4659,5 +5181,1453 @@
     "카드 설명을 기능 설명보다 상황 대응 행동으로 다듬음",
     "카드 색/아이콘을 category 기준으로 통일하는 앱/CSS 보정 포함",
     "50장 카드풀은 유지하되, 초반 라운드에는 실행/전환/대표 대응 카드가 섞이지 않게 정리"
+  ],
+  "resultLineOverrides": {
+    "r01_reference_hell": {
+      "angle_sort": {
+        "matched": {
+          "narration": "비슷한 사례를 모아 다음 시안의 출발점을 만들었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "ask_first": {
+        "matched": {
+          "narration": "작업 전에 원하는 기준을 확인해 헛도는 시간을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "asset_request": {
+        "matched": {
+          "narration": "요청 범위와 필요한 자료를 정리해 조사 범위를 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "brief_rewrite": {
+        "matched": {
+          "narration": "요청 범위와 필요한 자료를 정리해 조사 범위를 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "efficiency_track": {
+        "matched": {
+          "narration": "조사 전에 확인할 기준과 비용 감각을 먼저 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "expectation_align": {
+        "matched": {
+          "narration": "작업 전에 원하는 기준을 확인해 헛도는 시간을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "reference_collect": {
+        "matched": {
+          "narration": "비슷한 사례를 모아 다음 시안의 출발점을 만들었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "reference_filter": {
+        "matched": {
+          "narration": "모은 사례 중 우리 브랜드와 맞는 톤을 걸러냈습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "request_doc": {
+        "matched": {
+          "narration": "요청 범위와 필요한 자료를 정리해 조사 범위를 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "test_goal": {
+        "matched": {
+          "narration": "조사 전에 확인할 기준과 비용 감각을 먼저 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "tone_align": {
+        "matched": {
+          "narration": "모은 사례 중 우리 브랜드와 맞는 톤을 걸러냈습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      }
+    },
+    "r02_creative_direction": {
+      "angle_sort": {
+        "matched": {
+          "narration": "소재의 메시지와 시선을 끄는 포인트를 다듬었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "ask_first": {
+        "matched": {
+          "narration": "방향을 설명할 수 있도록 논리를 먼저 세웠습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "brand_mood": {
+        "matched": {
+          "narration": "반응을 노리면서도 브랜드 톤이 무너지지 않게 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "brief_rewrite": {
+        "matched": {
+          "narration": "작업 범위를 정리해 제작 흐름을 덜 꼬이게 만들었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "claim_check": {
+        "matched": {
+          "narration": "반응을 노리면서도 브랜드 톤이 무너지지 않게 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "click_hook": {
+        "matched": {
+          "narration": "반응이 날 만한 지점을 중심으로 소재 방향을 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "creative_boost": {
+        "matched": {
+          "narration": "소재의 메시지와 시선을 끄는 포인트를 다듬었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "expectation_align": {
+        "matched": {
+          "narration": "방향을 설명할 수 있도록 논리를 먼저 세웠습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "hooking_copy": {
+        "matched": {
+          "narration": "소재의 메시지와 시선을 끄는 포인트를 다듬었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "message_cleanup": {
+        "matched": {
+          "narration": "소재의 메시지와 시선을 끄는 포인트를 다듬었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "reference_filter": {
+        "matched": {
+          "narration": "반응을 노리면서도 브랜드 톤이 무너지지 않게 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "small_test": {
+        "matched": {
+          "narration": "첫 소재에서 무엇을 확인할지 기준을 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "split_test": {
+        "matched": {
+          "narration": "소재의 메시지와 시선을 끄는 포인트를 다듬었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "test_goal": {
+        "matched": {
+          "narration": "첫 소재에서 무엇을 확인할지 기준을 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "tone_align": {
+        "matched": {
+          "narration": "반응을 노리면서도 브랜드 톤이 무너지지 않게 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      }
+    },
+    "r03_final_files": {
+      "approval_anchor": {
+        "matched": {
+          "narration": "나중에 말이 바뀌지 않도록 확인 기록을 남겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "ask_first": {
+        "matched": {
+          "narration": "나중에 말이 바뀌지 않도록 확인 기록을 남겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "asset_request": {
+        "matched": {
+          "narration": "진짜 최종 파일과 작업 범위를 정리해 실수 가능성을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "brief_rewrite": {
+        "matched": {
+          "narration": "진짜 최종 파일과 작업 범위를 정리해 실수 가능성을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "expectation_align": {
+        "matched": {
+          "narration": "나중에 말이 바뀌지 않도록 확인 기록을 남겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "file_cleanup": {
+        "matched": {
+          "narration": "진짜 최종 파일과 작업 범위를 정리해 실수 가능성을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "pre_report": {
+        "matched": {
+          "narration": "나중에 말이 바뀌지 않도록 확인 기록을 남겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "request_doc": {
+        "matched": {
+          "narration": "진짜 최종 파일과 작업 범위를 정리해 실수 가능성을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "responsibility_split": {
+        "matched": {
+          "narration": "나중에 말이 바뀌지 않도록 확인 기록을 남겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "schedule_defense": {
+        "matched": {
+          "narration": "진짜 최종 파일과 작업 범위를 정리해 실수 가능성을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "task_slice": {
+        "matched": {
+          "narration": "진짜 최종 파일과 작업 범위를 정리해 실수 가능성을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "urgent_fix": {
+        "matched": {
+          "narration": "진짜 최종 파일과 작업 범위를 정리해 실수 가능성을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      }
+    },
+    "r04_not_this_vibe": {
+      "angle_sort": {
+        "matched": {
+          "narration": "시안에서 눈에 들어오지 않는 부분을 다시 손봤습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "approval_anchor": {
+        "matched": {
+          "narration": "피드백의 기준을 다시 확인해 엉뚱한 재작업을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "approval_dodge": {
+        "matched": {
+          "narration": "피드백의 기준을 다시 확인해 엉뚱한 재작업을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "ask_first": {
+        "matched": {
+          "narration": "피드백의 기준을 다시 확인해 엉뚱한 재작업을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "brand_guard": {
+        "matched": {
+          "narration": "가벼워 보이는 부분을 덜어내고 톤을 안정시켰습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "brand_mood": {
+        "matched": {
+          "narration": "가벼워 보이는 부분을 덜어내고 톤을 안정시켰습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "brief_rewrite": {
+        "matched": {
+          "narration": "수정해야 할 것과 나중에 볼 것을 나눠 작업을 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "claim_check": {
+        "matched": {
+          "narration": "가벼워 보이는 부분을 덜어내고 톤을 안정시켰습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "creative_boost": {
+        "matched": {
+          "narration": "시안에서 눈에 들어오지 않는 부분을 다시 손봤습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "discount_restraint": {
+        "matched": {
+          "narration": "가벼워 보이는 부분을 덜어내고 톤을 안정시켰습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "expectation_align": {
+        "matched": {
+          "narration": "피드백의 기준을 다시 확인해 엉뚱한 재작업을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "hooking_copy": {
+        "matched": {
+          "narration": "시안에서 눈에 들어오지 않는 부분을 다시 손봤습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "message_cleanup": {
+        "matched": {
+          "narration": "시안에서 눈에 들어오지 않는 부분을 다시 손봤습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "pre_report": {
+        "matched": {
+          "narration": "피드백의 기준을 다시 확인해 엉뚱한 재작업을 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "split_test": {
+        "matched": {
+          "narration": "시안에서 눈에 들어오지 않는 부분을 다시 손봤습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "thumbnail_reroll": {
+        "matched": {
+          "narration": "시안에서 눈에 들어오지 않는 부분을 다시 손봤습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "tone_align": {
+        "matched": {
+          "narration": "가벼워 보이는 부분을 덜어내고 톤을 안정시켰습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      }
+    },
+    "r05_deadline_pressure": {
+      "agency_call": {
+        "matched": {
+          "narration": "오늘 처리 가능한 범위를 정리해 마감 리스크를 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "asset_request": {
+        "matched": {
+          "narration": "오늘 처리 가능한 범위를 정리해 마감 리스크를 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "brief_rewrite": {
+        "matched": {
+          "narration": "오늘 처리 가능한 범위를 정리해 마감 리스크를 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "expectation_align": {
+        "matched": {
+          "narration": "무리한 요청을 그대로 떠안지 않도록 기준을 남겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "file_cleanup": {
+        "matched": {
+          "narration": "오늘 처리 가능한 범위를 정리해 마감 리스크를 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "pre_report": {
+        "matched": {
+          "narration": "무리한 요청을 그대로 떠안지 않도록 기준을 남겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "request_doc": {
+        "matched": {
+          "narration": "오늘 처리 가능한 범위를 정리해 마감 리스크를 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "responsibility_split": {
+        "matched": {
+          "narration": "무리한 요청을 그대로 떠안지 않도록 기준을 남겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "schedule_defense": {
+        "matched": {
+          "narration": "오늘 처리 가능한 범위를 정리해 마감 리스크를 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "task_slice": {
+        "matched": {
+          "narration": "오늘 처리 가능한 범위를 정리해 마감 리스크를 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "urgent_fix": {
+        "matched": {
+          "narration": "오늘 처리 가능한 범위를 정리해 마감 리스크를 줄였습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      }
+    },
+    "r06_test_budget": {
+      "audience_split": {
+        "matched": {
+          "narration": "초반 숫자를 만들기 위해 더 공격적으로 집행했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "budget_defense": {
+        "matched": {
+          "narration": "10만 원을 쓰기 전에 확인할 지표와 속도를 정했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "channel_split": {
+        "matched": {
+          "narration": "10만 원을 쓰기 전에 확인할 지표와 속도를 정했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "click_hook": {
+        "matched": {
+          "narration": "초반 숫자를 만들기 위해 더 공격적으로 집행했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "creative_boost": {
+        "matched": {
+          "narration": "어떤 소재가 반응을 만드는지 확인하는 쪽으로 집행했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "early_boost": {
+        "matched": {
+          "narration": "초반 숫자를 만들기 위해 더 공격적으로 집행했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "efficiency_track": {
+        "matched": {
+          "narration": "10만 원을 쓰기 전에 확인할 지표와 속도를 정했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "price_check": {
+        "matched": {
+          "narration": "10만 원을 쓰기 전에 확인할 지표와 속도를 정했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "small_test": {
+        "matched": {
+          "narration": "10만 원을 쓰기 전에 확인할 지표와 속도를 정했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "spend_pacing": {
+        "matched": {
+          "narration": "10만 원을 쓰기 전에 확인할 지표와 속도를 정했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "split_test": {
+        "matched": {
+          "narration": "어떤 소재가 반응을 만드는지 확인하는 쪽으로 집행했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "test_goal": {
+        "matched": {
+          "narration": "10만 원을 쓰기 전에 확인할 지표와 속도를 정했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      }
+    },
+    "r07_low_click": {
+      "ad_stop": {
+        "matched": {
+          "narration": "더 태울지 멈출지 판단할 수 있게 지표를 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "audience_split": {
+        "matched": {
+          "narration": "클릭이 붙도록 노출과 메시지를 더 공격적으로 손봤습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "budget_defense": {
+        "matched": {
+          "narration": "더 태울지 멈출지 판단할 수 있게 지표를 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "click_hook": {
+        "matched": {
+          "narration": "클릭이 붙도록 노출과 메시지를 더 공격적으로 손봤습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "creative_boost": {
+        "matched": {
+          "narration": "소재의 첫인상과 후킹을 다시 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "cta_tighten": {
+        "matched": {
+          "narration": "클릭이 붙도록 노출과 메시지를 더 공격적으로 손봤습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "early_boost": {
+        "matched": {
+          "narration": "클릭이 붙도록 노출과 메시지를 더 공격적으로 손봤습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "efficiency_track": {
+        "matched": {
+          "narration": "더 태울지 멈출지 판단할 수 있게 지표를 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "hooking_copy": {
+        "matched": {
+          "narration": "소재의 첫인상과 후킹을 다시 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "message_cleanup": {
+        "matched": {
+          "narration": "소재의 첫인상과 후킹을 다시 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "small_test": {
+        "matched": {
+          "narration": "더 태울지 멈출지 판단할 수 있게 지표를 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "spend_pacing": {
+        "matched": {
+          "narration": "더 태울지 멈출지 판단할 수 있게 지표를 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "split_test": {
+        "matched": {
+          "narration": "소재의 첫인상과 후킹을 다시 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "thumbnail_reroll": {
+        "matched": {
+          "narration": "소재의 첫인상과 후킹을 다시 잡았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      }
+    },
+    "r08_no_purchase": {
+      "brand_guard": {
+        "matched": {
+          "narration": "구매를 망설이는 사람에게 필요한 신뢰 근거를 챙겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "buyer_capture": {
+        "matched": {
+          "narration": "클릭 이후 구매로 이어지는 구간을 직접 보강했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "click_recovery": {
+        "matched": {
+          "narration": "클릭 이후 구매로 이어지는 구간을 직접 보강했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "conversion_boost": {
+        "matched": {
+          "narration": "클릭 이후 구매로 이어지는 구간을 직접 보강했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "cta_tighten": {
+        "matched": {
+          "narration": "클릭 이후 구매로 이어지는 구간을 직접 보강했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "discount_restraint": {
+        "matched": {
+          "narration": "구매를 망설이는 사람에게 필요한 신뢰 근거를 챙겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "efficiency_track": {
+        "matched": {
+          "narration": "구매가 안 붙는 이유를 비용 구조와 함께 확인했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "landing_check": {
+        "matched": {
+          "narration": "클릭 이후 구매로 이어지는 구간을 직접 보강했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "offer_test": {
+        "matched": {
+          "narration": "클릭 이후 구매로 이어지는 구간을 직접 보강했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "price_check": {
+        "matched": {
+          "narration": "구매가 안 붙는 이유를 비용 구조와 함께 확인했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "product_page_fix": {
+        "matched": {
+          "narration": "클릭 이후 구매로 이어지는 구간을 직접 보강했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "review_collect": {
+        "matched": {
+          "narration": "구매를 망설이는 사람에게 필요한 신뢰 근거를 챙겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      }
+    },
+    "r09_what_learned": {
+      "ask_first": {
+        "matched": {
+          "narration": "애매한 결과도 설명 가능한 보고 흐름으로 만들었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "buyer_capture": {
+        "matched": {
+          "narration": "다음 성과로 이어질 수 있는 액션을 숫자로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "efficiency_track": {
+        "matched": {
+          "narration": "쓴 돈으로 무엇을 배웠는지 효율 기준으로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "file_cleanup": {
+        "matched": {
+          "narration": "테스트에서 확인한 것과 아직 모르는 것을 분리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "landing_check": {
+        "matched": {
+          "narration": "다음 성과로 이어질 수 있는 액션을 숫자로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "meeting_summary": {
+        "matched": {
+          "narration": "애매한 결과도 설명 가능한 보고 흐름으로 만들었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "message_cleanup": {
+        "matched": {
+          "narration": "어떤 메시지와 소재가 먹혔는지 구분했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "postmortem_note": {
+        "matched": {
+          "narration": "현재 상황에 맞춰 다음 선택을 준비했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "pre_report": {
+        "matched": {
+          "narration": "애매한 결과도 설명 가능한 보고 흐름으로 만들었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "price_check": {
+        "matched": {
+          "narration": "쓴 돈으로 무엇을 배웠는지 효율 기준으로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "report_shield": {
+        "matched": {
+          "narration": "애매한 결과도 설명 가능한 보고 흐름으로 만들었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "responsibility_split": {
+        "matched": {
+          "narration": "애매한 결과도 설명 가능한 보고 흐름으로 만들었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "small_test": {
+        "matched": {
+          "narration": "쓴 돈으로 무엇을 배웠는지 효율 기준으로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "split_test": {
+        "matched": {
+          "narration": "어떤 메시지와 소재가 먹혔는지 구분했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "test_goal": {
+        "matched": {
+          "narration": "쓴 돈으로 무엇을 배웠는지 효율 기준으로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      }
+    },
+    "r10_ceo_comment": {
+      "angle_sort": {
+        "matched": {
+          "narration": "화면에서 바로 눈에 띄는 포인트를 더 분명하게 만들었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "approval_anchor": {
+        "matched": {
+          "narration": "대표님이 보는 기준에 맞춰 선택의 이유를 설명했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "approval_dodge": {
+        "matched": {
+          "narration": "대표님이 보는 기준에 맞춰 선택의 이유를 설명했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "brand_guard": {
+        "matched": {
+          "narration": "임팩트를 키우되 브랜드가 가벼워지지 않게 막았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "brand_mood": {
+        "matched": {
+          "narration": "임팩트를 키우되 브랜드가 가벼워지지 않게 막았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "brief_rewrite": {
+        "matched": {
+          "narration": "바꿀 부분과 유지할 부분을 나눠 수정 범위를 정했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "claim_check": {
+        "matched": {
+          "narration": "임팩트를 키우되 브랜드가 가벼워지지 않게 막았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "creative_boost": {
+        "matched": {
+          "narration": "화면에서 바로 눈에 띄는 포인트를 더 분명하게 만들었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "discount_restraint": {
+        "matched": {
+          "narration": "임팩트를 키우되 브랜드가 가벼워지지 않게 막았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "exec_persuasion": {
+        "matched": {
+          "narration": "대표님이 보는 기준에 맞춰 선택의 이유를 설명했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "expectation_align": {
+        "matched": {
+          "narration": "대표님이 보는 기준에 맞춰 선택의 이유를 설명했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "hooking_copy": {
+        "matched": {
+          "narration": "화면에서 바로 눈에 띄는 포인트를 더 분명하게 만들었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "meeting_summary": {
+        "matched": {
+          "narration": "대표님이 보는 기준에 맞춰 선택의 이유를 설명했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "message_cleanup": {
+        "matched": {
+          "narration": "화면에서 바로 눈에 띄는 포인트를 더 분명하게 만들었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "pre_report": {
+        "matched": {
+          "narration": "대표님이 보는 기준에 맞춰 선택의 이유를 설명했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "report_shield": {
+        "matched": {
+          "narration": "대표님이 보는 기준에 맞춰 선택의 이유를 설명했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "tone_align": {
+        "matched": {
+          "narration": "임팩트를 키우되 브랜드가 가벼워지지 않게 막았습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      }
+    },
+    "r11_report_day": {
+      "approval_anchor": {
+        "matched": {
+          "narration": "애매한 숫자도 평가 가능한 논리로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "budget_defense": {
+        "matched": {
+          "narration": "예산 사용과 결과를 같이 설명할 수 있게 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "buyer_capture": {
+        "matched": {
+          "narration": "성과로 이어진 지점을 보고서의 중심에 세웠습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "conversion_boost": {
+        "matched": {
+          "narration": "성과로 이어진 지점을 보고서의 중심에 세웠습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "efficiency_track": {
+        "matched": {
+          "narration": "예산 사용과 결과를 같이 설명할 수 있게 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "exec_persuasion": {
+        "matched": {
+          "narration": "애매한 숫자도 평가 가능한 논리로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "file_cleanup": {
+        "matched": {
+          "narration": "자료와 파일을 정리해 보고 흐름을 안정시켰습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "meeting_summary": {
+        "matched": {
+          "narration": "애매한 숫자도 평가 가능한 논리로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "postmortem_note": {
+        "matched": {
+          "narration": "현재 상황에 맞춰 다음 선택을 준비했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "pre_report": {
+        "matched": {
+          "narration": "애매한 숫자도 평가 가능한 논리로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "price_check": {
+        "matched": {
+          "narration": "예산 사용과 결과를 같이 설명할 수 있게 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "report_shield": {
+        "matched": {
+          "narration": "애매한 숫자도 평가 가능한 논리로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "responsibility_split": {
+        "matched": {
+          "narration": "애매한 숫자도 평가 가능한 논리로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "review_collect": {
+        "matched": {
+          "narration": "브랜드 톤을 지킨 부분을 보고 근거로 묶었습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "split_test": {
+        "matched": {
+          "narration": "소재와 메시지에서 배운 점을 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "test_goal": {
+        "matched": {
+          "narration": "예산 사용과 결과를 같이 설명할 수 있게 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      }
+    },
+    "r12_final_number": {
+      "approval_anchor": {
+        "matched": {
+          "narration": "평가자가 듣는 방식으로 결과를 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "brand_guard": {
+        "matched": {
+          "narration": "숫자뿐 아니라 브랜드를 지킨 부분까지 같이 챙겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "budget_defense": {
+        "matched": {
+          "narration": "최종 평가에서 예산을 어떻게 지켰는지 설명할 준비를 했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "buyer_capture": {
+        "matched": {
+          "narration": "최종 평가에 보여줄 성과 숫자를 최대한 끌어올렸습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "click_recovery": {
+        "matched": {
+          "narration": "최종 평가에 보여줄 성과 숫자를 최대한 끌어올렸습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "conversion_boost": {
+        "matched": {
+          "narration": "최종 평가에 보여줄 성과 숫자를 최대한 끌어올렸습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "cta_tighten": {
+        "matched": {
+          "narration": "최종 평가에 보여줄 성과 숫자를 최대한 끌어올렸습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "efficiency_track": {
+        "matched": {
+          "narration": "최종 평가에서 예산을 어떻게 지켰는지 설명할 준비를 했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "exec_persuasion": {
+        "matched": {
+          "narration": "평가자가 듣는 방식으로 결과를 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "meeting_summary": {
+        "matched": {
+          "narration": "평가자가 듣는 방식으로 결과를 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "postmortem_note": {
+        "matched": {
+          "narration": "현재 상황에 맞춰 다음 선택을 준비했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "pre_report": {
+        "matched": {
+          "narration": "평가자가 듣는 방식으로 결과를 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "price_check": {
+        "matched": {
+          "narration": "최종 평가에서 예산을 어떻게 지켰는지 설명할 준비를 했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "product_page_fix": {
+        "matched": {
+          "narration": "최종 평가에 보여줄 성과 숫자를 최대한 끌어올렸습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "report_shield": {
+        "matched": {
+          "narration": "평가자가 듣는 방식으로 결과를 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "responsibility_split": {
+        "matched": {
+          "narration": "평가자가 듣는 방식으로 결과를 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "review_collect": {
+        "matched": {
+          "narration": "숫자뿐 아니라 브랜드를 지킨 부분까지 같이 챙겼습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "split_test": {
+        "matched": {
+          "narration": "어떤 소재가 반응을 만들었는지 마지막으로 정리했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      },
+      "test_goal": {
+        "matched": {
+          "narration": "최종 평가에서 예산을 어떻게 지켰는지 설명할 준비를 했습니다."
+        },
+        "missed": {
+          "narration": "선택 자체는 의미가 있었지만, 지금 상황의 핵심과는 조금 빗나갔습니다."
+        }
+      }
+    }
+  },
+  "changeLogV10": [
+    "라운드 결과 한마디가 빠지지 않도록 resultLineOverrides와 동적 팀장/사수/대표 반응 로직을 추가.",
+    "카드 금액 밸런스를 안정형/중간형/하이리스크 하이리턴/방어형으로 재조정.",
+    "결과 화면에서 순손익뿐 아니라 쓴 예산/회수 금액/순손익을 모두 보여주도록 app.js 보정.",
+    "카드가 상황 후보군에 들어와도 결과 대사가 어긋나지 않도록 라운드별 narration 우선 처리."
+  ],
+  "stageDefaultsPatch": {
+    "clearConditions": {
+      "scoreGte": 10,
+      "moneyGte": 300000,
+      "mentalGte": 1,
+      "trustGte": 4
+    },
+    "excellentClear": {
+      "scoreGte": 15,
+      "moneyGte": 430000,
+      "mentalGte": 3,
+      "trustGte": 7
+    },
+    "balanceNotes": {
+      "startingMoney": 100000,
+      "targetEndMoney": "일반 클리어는 300,000원 이상. 평균/무작위 플레이는 300,000원 아래에 머물도록 조정.",
+      "riskProfile": "안정형은 예산을 지키지만 300,000원 도달이 어렵고, 성과형/공격형은 카드 조합과 결과 운이 맞아야 300,000원 이상 가능."
+    }
+  },
+  "balanceProfileV11": {
+    "moneyMeterMax": 600000,
+    "moneyClampMax": 650000,
+    "generalTargetMoney": 300000,
+    "excellentTargetMoney": 430000,
+    "balanceIntent": "30만원은 신중한 선택과 일부 리스크 감수가 필요하도록 설정. 안정형만으로는 대체로 미달."
+  },
+  "changeLogV11": [
+    "일반 클리어 목표 예산을 70,000원에서 300,000원으로 상향.",
+    "우수 클리어 목표 예산을 120,000원에서 450,000원으로 상향.",
+    "app.js에서 storyOverlay.stageDefaultsPatch를 병합하도록 수정.",
+    "money clamp를 200,000원에서 650,000원으로 확장.",
+    "돈 meter 기준을 150,000원에서 600,000원으로 확장.",
+    "퍼포먼스/콘텐츠 카드는 확실히 돈이 움직이게, 운영/정치/브랜드 카드는 보조효과 중심으로 재조정."
+  ],
+  "balanceProfileV12": {
+    "moneyMeterMax": 600000,
+    "moneyClampMax": 650000,
+    "generalTargetMoney": 300000,
+    "excellentTargetMoney": 430000,
+    "balanceIntent": "30만원은 신중한 선택과 일부 리스크 감수가 필요하도록 설정. 안정형만으로는 대체로 미달."
+  },
+  "changeLogV12": [
+    "일반 클리어 목표는 300,000원 유지, 우수 클리어는 430,000원으로 조정.",
+    "안정형/방어형 선택지는 예산과 멘탈을 지키지만 300,000원 달성이 어렵도록 회수 기대값을 낮춤.",
+    "퍼포먼스/콘텐츠 고위험 선택지는 성공 시 30만원 돌파에 기여하지만 실패 시 손실이 크게 느껴지도록 비용과 회수 폭을 재조정.",
+    "보고/브랜드/운영 카드는 돈보다 신뢰·멘탈·리스크 방어 역할이 드러나도록 금액 기대값을 낮게 유지.",
+    "300회 이상 간이 시뮬레이션으로 랜덤/안정/균형/공격 플레이의 목표 달성률 확인."
   ]
 }
