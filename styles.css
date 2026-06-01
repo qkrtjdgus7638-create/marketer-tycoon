@@ -461,21 +461,12 @@ button {
 }
 
 .card-tagline {
-  display: flex;
-  min-width: 0;
   overflow: hidden;
-  gap: 5px;
   color: var(--purple);
   font-size: 11px;
   font-weight: 900;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.card-tagline span {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .choice-card h3 {
@@ -646,6 +637,53 @@ button {
     width: 62px;
     height: 62px;
   }
+}
+
+/* v9: 카드 계열별 컬러/아이콘 통일 */
+.choice-card {
+  border-color: rgba(25, 29, 36, 0.06);
+}
+.choice-card .card-icon,
+.choice-card .card-tagline span:first-child,
+.choice-card h3 {
+  transition: color 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+.choice-card.category-budget { --card-accent: #d6a631; --card-soft: rgba(214, 166, 49, 0.11); }
+.choice-card.category-performance { --card-accent: #ef6074; --card-soft: rgba(239, 96, 116, 0.11); }
+.choice-card.category-content { --card-accent: #4e7bd8; --card-soft: rgba(78, 123, 216, 0.11); }
+.choice-card.category-brand { --card-accent: #7657c8; --card-soft: rgba(118, 87, 200, 0.11); }
+.choice-card.category-politics { --card-accent: #2f9f7a; --card-soft: rgba(47, 159, 122, 0.11); }
+.choice-card.category-operations { --card-accent: #6f756f; --card-soft: rgba(111, 117, 111, 0.12); }
+.choice-card.category-default { --card-accent: var(--green); --card-soft: rgba(47, 159, 122, 0.1); }
+.choice-card .card-icon {
+  color: var(--card-accent);
+  background: var(--card-soft);
+  border-color: currentColor;
+}
+.choice-card .card-tagline {
+  color: var(--card-accent);
+}
+.choice-card:focus-visible,
+.choice-card:hover {
+  border-color: var(--card-accent);
+  background: linear-gradient(0deg, var(--card-soft), var(--card-soft)), rgba(255, 253, 248, 0.98);
+}
+.choice-card:nth-child(2) .card-icon,
+.choice-card:nth-child(3) .card-icon {
+  color: var(--card-accent);
+}
+
+/* Mobile layout guard: keep v9 choice-set UI readable on narrow screens. */
+.card-tagline {
+  display: flex;
+  min-width: 0;
+  gap: 5px;
+}
+
+.card-tagline span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media (max-width: 480px) {
