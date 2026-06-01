@@ -1,25 +1,21 @@
 {
-  "overlayTitle": "마케터로 살아남기 - 선택지 다양화/카드 확장 패치 v7",
-  "purpose": "상황당 선택지가 고정처럼 반복되는 문제를 해결하기 위해 카드 수를 늘리고, 라운드별 카드 후보군을 핵심/맥락/상태보정 3슬롯으로 확장한다.",
+  "overlayTitle": "마케터로 살아남기 - 선택지 다양성/맥락 자체 테스트 반영 패치 v8.2",
+  "purpose": "기존 구조를 크게 바꾸지 않고 카드 수와 라운드별 후보군, 선택지 가중치 로직을 보강해 같은 상황에서도 선택지가 덜 고정되고 카드-상황-대사가 더 자연스럽게 이어지도록 하는 패치.",
   "mergePolicy": {
     "cards": "기존 cards에는 cardPatches를 id 기준으로 병합하고, newCards는 cards 배열에 append한다.",
     "storyRounds": "기존 storyRounds를 v7 storyRounds로 교체한다. requiredCards는 사용하지 않는다.",
     "logic": "choiceSelectionLogic은 개발자 구현 가이드다. 데이터만 먼저 적용해도 후보군은 넓어지지만, recency/state 가중치를 적용하면 반복감이 더 줄어든다."
   },
   "choiceSelectionLogic": {
-    "version": "choice-variety-v7",
-    "summary": "선택지가 고정처럼 느껴지는 문제를 해결하기 위해 카드 수를 확장하고, 라운드별 후보군을 핵심/맥락/상태보정 3슬롯으로 재구성한다.",
-    "targetCardCount": "기본 20장 + 신규 22장 = 총 42장",
-    "selectionRules": [
-      "각 라운드는 cardSlots.핵심 / cardSlots.맥락 / cardSlots.상태보정에서 1장씩 총 3장을 제시한다.",
-      "각 슬롯 후보군은 최소 5장 이상으로 둔다. 라운드 전체 후보군은 9~13장 수준을 목표로 한다.",
-      "requiredCards는 제거한다. 특정 카드가 매번 고정 노출되지 않도록 한다.",
-      "최근 2턴에 제시되었거나 선택된 카드는 가중치를 크게 낮춘다.",
-      "현재 돈/성과/멘탈/신뢰/빌드 결핍 상태에 맞는 카드는 상태보정 슬롯에서 가중치를 높인다.",
-      "badFits와 현재 라운드 태그가 겹치는 카드는 슬롯 후보군에 있더라도 가중치를 낮추거나 제외한다.",
-      "같은 category가 3장 모두 나오면 마지막 카드를 다른 category 후보로 교체한다."
-    ],
-    "dropInPolicy": "기존 v3 data와 app 구조를 유지하되, story patch 교체 + pickStoryCards/cardWeight 함수 보강으로 적용한다."
+    "summary": "고정 스토리 라운드는 유지하되, 카드 제시는 핵심/맥락/상태보정 후보군 전체에서 가중치로 3장을 뽑는다. 핵심 카드 1장은 높은 확률로 보장하지만, requiredCards는 사용하지 않는다.",
+    "rules": [
+      "라운드별 후보군은 최소 12장 이상을 권장한다.",
+      "최근 2턴에 제시되거나 선택된 카드는 가중치를 크게 낮춘다.",
+      "직전 선택 카드와 같은 category는 가중치를 낮춘다.",
+      "돈/성과/멘탈/신뢰 부족 상태에 맞는 카드에는 보정 가중치를 준다.",
+      "현재 라운드 cardSlots 후보에서 나온 카드는 기본적으로 상황 적합으로 본다. 단 badFits가 라운드 태그와 겹치면 부적합 처리한다.",
+      "같은 category 카드가 2장을 초과하지 않도록 한다."
+    ]
   },
   "cardPatches": {
     "small_test": {
@@ -1408,6 +1404,576 @@
       "badFits": [
         "성과확장"
       ]
+    },
+    {
+      "id": "brief_rewrite",
+      "name": "브리프 다시 쓰기",
+      "category": "운영력",
+      "description": "애매한 지시를 실행 가능한 작업 범위로 다시 적습니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": -1,
+        "operations": 2
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": -2,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "운영",
+        "요청",
+        "방어"
+      ],
+      "note": "기준이 애매한 라운드에서 업무 범위를 명확히 하는 카드.",
+      "fits": [
+        "기준불명확",
+        "조사",
+        "요청",
+        "회의",
+        "수정요청"
+      ],
+      "badFits": [
+        "성과압박",
+        "기회"
+      ],
+      "slotRoles": [
+        "방어",
+        "정리"
+      ],
+      "contextDescriptions": {
+        "r01_reference_hell": "요청이 너무 넓으니, 찾을 범위와 기준을 다시 적어봅니다.",
+        "r03_final_files": "어떤 파일을 기준으로 작업할지 먼저 정리합니다.",
+        "r05_deadline_pressure": "오늘 안에 할 수 있는 수정 범위를 다시 적습니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "애매한 요청을 실행 가능한 범위로 다시 정리했습니다.",
+          "speaker": "팀장님",
+          "line": "이렇게 적어두면 서로 덜 헷갈리겠네요."
+        },
+        "missed": {
+          "narration": "범위를 정리했지만 지금 당장 숫자를 만드는 선택은 아니었습니다.",
+          "speaker": "팀장님",
+          "line": "정리는 좋은데, 결과도 같이 만들어야 해요."
+        }
+      }
+    },
+    {
+      "id": "meeting_summary",
+      "name": "회의 결론 뽑기",
+      "category": "사내정치",
+      "description": "흩어진 이야기를 결정사항과 다음 액션으로 묶습니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 1,
+        "operations": 1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": -1,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "보고",
+        "운영",
+        "요청"
+      ],
+      "note": "회의/보고 사이를 연결하는 정리 카드.",
+      "fits": [
+        "회의",
+        "보고",
+        "학습",
+        "기준불명확"
+      ],
+      "badFits": [
+        "반응저조",
+        "성과확장"
+      ],
+      "slotRoles": [
+        "정리",
+        "방어"
+      ],
+      "contextDescriptions": {
+        "r09_what_learned": "테스트에서 확인한 것과 다음 액션을 분리해 정리합니다.",
+        "r11_report_day": "보고 전에 결정사항과 미정사항을 나눠둡니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "흩어진 내용을 결정사항과 다음 액션으로 정리했습니다.",
+          "speaker": "팀장님",
+          "line": "좋아요. 이제 뭘 해야 하는지 보이네요."
+        },
+        "missed": {
+          "narration": "정리는 됐지만 지금 필요한 직접 대응은 부족했습니다.",
+          "speaker": "팀장님",
+          "line": "회의록보다 실행이 먼저일 때도 있어요."
+        }
+      }
+    },
+    {
+      "id": "audience_split",
+      "name": "타깃 쪼개기",
+      "category": "퍼포먼스",
+      "description": "모두에게 뿌리지 않고 반응 가능성이 큰 사람부터 나눠 봅니다.",
+      "cost": 15000,
+      "earned": [
+        10000,
+        50000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "성과",
+        "전환",
+        "테스트"
+      ],
+      "note": "집행 전후 타깃을 나눠보는 성과 카드.",
+      "fits": [
+        "광고집행",
+        "반응저조",
+        "전환문제",
+        "매출압박"
+      ],
+      "badFits": [
+        "파일관리",
+        "기준불명확"
+      ],
+      "slotRoles": [
+        "정석",
+        "공격"
+      ],
+      "contextDescriptions": {
+        "r06_test_budget": "10만 원을 한 번에 뿌리지 말고 타깃을 나눠봅니다.",
+        "r08_no_purchase": "눌러본 사람 중 구매 가능성이 큰 쪽을 다시 나눠봅니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "타깃을 나눠 반응 가능성이 큰 쪽부터 확인했습니다.",
+          "speaker": "팀장님",
+          "line": "이렇게 보면 어디에 더 태워야 할지 보이겠네요."
+        },
+        "missed": {
+          "narration": "타깃을 나눴지만 아직 기준이나 소재 문제가 더 컸습니다.",
+          "speaker": "팀장님",
+          "line": "타깃도 좋지만, 먼저 보여줄 게 정리돼야 해요."
+        }
+      }
+    },
+    {
+      "id": "cta_tighten",
+      "name": "CTA 조이기",
+      "category": "퍼포먼스",
+      "description": "눌렀던 사람이 다음 행동을 하도록 버튼과 문구를 정리합니다.",
+      "cost": 10000,
+      "earned": [
+        5000,
+        45000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 1,
+        "content": 1,
+        "brand": -1,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": 1,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "전환",
+        "성과",
+        "카피"
+      ],
+      "note": "클릭 이후 다음 행동을 유도하는 중간 퍼포먼스 카드.",
+      "fits": [
+        "전환문제",
+        "구매부족",
+        "상세페이지",
+        "매출압박"
+      ],
+      "badFits": [
+        "파일관리",
+        "조사"
+      ],
+      "slotRoles": [
+        "정석",
+        "공격"
+      ],
+      "contextDescriptions": {
+        "r08_no_purchase": "눌렀는데 안 사는 흐름에서 다음 행동 문구를 더 명확하게 잡습니다.",
+        "r12_final_number": "마지막으로 구매 행동을 유도할 문구를 정리합니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "클릭 이후 다음 행동이 더 분명해지도록 문구를 조였습니다.",
+          "speaker": "팀장님",
+          "line": "이제 눌렀던 사람이 뭘 해야 하는지 더 보이네요."
+        },
+        "missed": {
+          "narration": "행동 문구는 정리했지만 지금 문제는 아직 앞단에 있었습니다.",
+          "speaker": "팀장님",
+          "line": "좋은데, 지금은 먼저 들어오게 만드는 게 우선이에요."
+        }
+      }
+    },
+    {
+      "id": "product_page_fix",
+      "name": "상세 흐름 손보기",
+      "category": "퍼포먼스",
+      "description": "광고에서 들어온 사람이 이탈하지 않도록 상세 흐름을 손봅니다.",
+      "cost": 20000,
+      "earned": [
+        15000,
+        70000
+      ],
+      "score": [
+        1,
+        3
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 1
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": -1,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "전환",
+        "성과",
+        "운영"
+      ],
+      "note": "구매 전환 단계의 핵심 카드.",
+      "fits": [
+        "전환문제",
+        "구매부족",
+        "상세페이지"
+      ],
+      "badFits": [
+        "조사",
+        "파일관리"
+      ],
+      "slotRoles": [
+        "정석",
+        "공격"
+      ],
+      "contextDescriptions": {
+        "r08_no_purchase": "광고 이후 상세페이지에서 빠지는 구간을 손봅니다.",
+        "r12_final_number": "최종 평가 전에 구매로 이어질 흐름을 보강합니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "상세 흐름을 손봐 들어온 사람이 빠져나가는 구간을 줄였습니다.",
+          "speaker": "팀장님",
+          "line": "클릭 이후 흐름을 본 건 좋네요."
+        },
+        "missed": {
+          "narration": "상세 흐름을 손봤지만 아직 유입 자체가 충분하지 않았습니다.",
+          "speaker": "팀장님",
+          "line": "상세도 중요하지만, 먼저 들어오는 사람이 있어야 해요."
+        }
+      }
+    },
+    {
+      "id": "price_check",
+      "name": "가격 저항 확인",
+      "category": "예산관리",
+      "description": "사람들이 가격에서 멈추는지 먼저 확인합니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        20000
+      ],
+      "score": [
+        0,
+        2
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 1,
+        "performance": 1,
+        "content": 0,
+        "brand": -1,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -1,
+        "approvalRisk": 0,
+        "brandRisk": 1,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "예산",
+        "전환",
+        "테스트"
+      ],
+      "note": "구매 부족의 원인을 가격/혜택 관점에서 보는 카드.",
+      "fits": [
+        "전환문제",
+        "구매부족",
+        "매출압박",
+        "테스트"
+      ],
+      "badFits": [
+        "브랜드제동",
+        "파일관리"
+      ],
+      "slotRoles": [
+        "정리",
+        "방어"
+      ],
+      "contextDescriptions": {
+        "r08_no_purchase": "구매가 막히는 이유가 가격인지 혜택인지 먼저 확인합니다.",
+        "r09_what_learned": "가격 반응을 보고서에 넣을 근거로 정리합니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "구매를 막는 요인이 가격인지 혜택인지 확인했습니다.",
+          "speaker": "팀장님",
+          "line": "이 정도면 왜 안 샀는지 설명할 근거가 생기네요."
+        },
+        "missed": {
+          "narration": "가격을 보긴 했지만 현재 문제의 중심은 다른 곳에 있었습니다.",
+          "speaker": "팀장님",
+          "line": "가격만 볼 상황은 아닌 것 같아요."
+        }
+      }
+    },
+    {
+      "id": "approval_anchor",
+      "name": "컨펌 기준 박기",
+      "category": "사내정치",
+      "description": "바뀌기 쉬운 피드백을 기준 문장으로 고정합니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 2,
+        "operations": -1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -2,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "컨펌",
+        "보고",
+        "방어"
+      ],
+      "note": "컨펌/대표 피드백 라운드 방어 카드.",
+      "fits": [
+        "컨펌",
+        "대표피드백",
+        "시안피드백",
+        "기준불명확"
+      ],
+      "badFits": [
+        "반응저조",
+        "성과확장"
+      ],
+      "slotRoles": [
+        "방어",
+        "정리"
+      ],
+      "contextDescriptions": {
+        "r04_not_this_vibe": "피드백이 또 바뀌지 않도록 이번 기준을 문장으로 고정합니다.",
+        "r10_ceo_comment": "대표님 피드백을 바로 수정으로 받지 않고 기준으로 정리합니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "피드백을 기준 문장으로 고정해 다음 수정 범위를 줄였습니다.",
+          "speaker": "팀장님",
+          "line": "이 기준으로 보면 다음 수정은 덜 흔들리겠네요."
+        },
+        "missed": {
+          "narration": "컨펌 기준은 잡았지만 당장 성과를 만들진 못했습니다.",
+          "speaker": "팀장님",
+          "line": "기준은 좋은데, 숫자도 챙겨야 해요."
+        }
+      }
+    },
+    {
+      "id": "postmortem_note",
+      "name": "회고 한 줄 남기기",
+      "category": "보고",
+      "description": "이번 선택에서 배운 점을 다음 액션으로 남깁니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        1,
+        1
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 1,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 1,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -2,
+        "operationRisk": 0,
+        "burnoutRisk": -1
+      },
+      "tags": [
+        "보고",
+        "학습",
+        "방어"
+      ],
+      "note": "보고 라운드용 소형 안정 카드.",
+      "fits": [
+        "보고",
+        "학습",
+        "평가",
+        "테스트"
+      ],
+      "badFits": [
+        "기회",
+        "성과확장"
+      ],
+      "slotRoles": [
+        "방어",
+        "정리"
+      ],
+      "contextDescriptions": {
+        "r09_what_learned": "무엇을 배웠고 다음엔 뭘 할지 한 줄로 남깁니다.",
+        "r11_report_day": "보고서 마지막에 다음 액션을 짧게 정리합니다.",
+        "r12_final_number": "최종 평가에서 배운 점과 다음 액션을 남깁니다."
+      },
+      "resultLines": {
+        "matched": {
+          "narration": "이번 테스트에서 배운 점을 다음 액션으로 정리했습니다.",
+          "speaker": "팀장님",
+          "line": "좋아요. 다음에 뭘 할지가 보이면 의미가 있죠."
+        },
+        "missed": {
+          "narration": "회고는 남겼지만 지금 당장 필요한 성과는 부족했습니다.",
+          "speaker": "팀장님",
+          "line": "정리는 좋은데, 결과도 같이 필요합니다."
+        }
+      }
     }
   ],
   "contextDescriptions": {
@@ -1562,7 +2128,8 @@
         "핵심": [
           "reference_collect",
           "ask_first",
-          "angle_sort"
+          "angle_sort",
+          "brief_rewrite"
         ],
         "맥락": [
           "request_doc",
@@ -1577,10 +2144,9 @@
           "report_shield",
           "expectation_align",
           "task_slice",
-          "small_test"
+          "brief_rewrite"
         ]
-      },
-      "requiredCards": []
+      }
     },
     {
       "round": 2,
@@ -1609,14 +2175,18 @@
           "creative_boost",
           "message_cleanup",
           "tone_align",
-          "brand_mood"
+          "brand_mood",
+          "brief_rewrite"
         ],
         "맥락": [
           "hooking_copy",
           "split_test",
           "angle_sort",
           "reference_filter",
-          "test_goal"
+          "test_goal",
+          "message_cleanup",
+          "claim_check",
+          "brief_rewrite"
         ],
         "상태보정": [
           "ask_first",
@@ -1625,8 +2195,7 @@
           "small_test",
           "expectation_align"
         ]
-      },
-      "requiredCards": []
+      }
     },
     {
       "round": 3,
@@ -1653,7 +2222,8 @@
         "핵심": [
           "file_cleanup",
           "asset_request",
-          "request_doc"
+          "request_doc",
+          "brief_rewrite"
         ],
         "맥락": [
           "responsibility_split",
@@ -1665,10 +2235,9 @@
           "urgent_fix",
           "expectation_align",
           "pre_report",
-          "claim_check"
+          "approval_anchor"
         ]
-      },
-      "requiredCards": []
+      }
     },
     {
       "round": 4,
@@ -1696,14 +2265,16 @@
         "핵심": [
           "ask_first",
           "message_cleanup",
-          "creative_boost"
+          "creative_boost",
+          "approval_anchor"
         ],
         "맥락": [
           "tone_align",
           "brand_mood",
           "brand_guard",
           "hooking_copy",
-          "approval_dodge"
+          "approval_dodge",
+          "brief_rewrite"
         ],
         "상태보정": [
           "pre_report",
@@ -1712,8 +2283,7 @@
           "split_test",
           "claim_check"
         ]
-      },
-      "requiredCards": []
+      }
     },
     {
       "round": 5,
@@ -1741,23 +2311,23 @@
         "핵심": [
           "urgent_fix",
           "schedule_defense",
-          "task_slice"
+          "task_slice",
+          "brief_rewrite"
         ],
         "맥락": [
           "request_doc",
           "agency_call",
           "asset_request",
-          "approval_dodge"
+          "approval_dodge",
+          "brief_rewrite"
         ],
         "상태보정": [
           "responsibility_split",
           "expectation_align",
-          "channel_split",
-          "ad_stop",
-          "file_cleanup"
+          "file_cleanup",
+          "approval_anchor"
         ]
-      },
-      "requiredCards": []
+      }
     },
     {
       "round": 6,
@@ -1784,23 +2354,25 @@
         "핵심": [
           "small_test",
           "split_test",
-          "test_goal"
+          "test_goal",
+          "audience_split"
         ],
         "맥락": [
           "efficiency_track",
           "spend_pacing",
           "channel_split",
-          "early_boost"
+          "early_boost",
+          "price_check"
         ],
         "상태보정": [
           "budget_defense",
           "click_hook",
           "creative_boost",
           "pre_report",
-          "ad_stop"
+          "ad_stop",
+          "audience_split"
         ]
-      },
-      "requiredCards": []
+      }
     },
     {
       "round": 7,
@@ -1827,23 +2399,25 @@
         "핵심": [
           "click_hook",
           "creative_boost",
-          "thumbnail_reroll"
+          "thumbnail_reroll",
+          "audience_split"
         ],
         "맥락": [
           "hooking_copy",
           "split_test",
           "early_boost",
-          "message_cleanup"
+          "message_cleanup",
+          "cta_tighten"
         ],
         "상태보정": [
           "small_test",
           "efficiency_track",
           "ad_stop",
           "brand_guard",
-          "spend_pacing"
+          "spend_pacing",
+          "price_check"
         ]
-      },
-      "requiredCards": []
+      }
     },
     {
       "round": 8,
@@ -1870,23 +2444,27 @@
         "핵심": [
           "conversion_boost",
           "buyer_capture",
-          "landing_check"
+          "landing_check",
+          "product_page_fix",
+          "cta_tighten"
         ],
         "맥락": [
           "click_recovery",
           "review_collect",
           "offer_test",
-          "discount_restraint"
+          "discount_restraint",
+          "price_check",
+          "audience_split"
         ],
         "상태보정": [
           "report_shield",
           "efficiency_track",
           "brand_guard",
           "small_test",
-          "pre_report"
+          "pre_report",
+          "postmortem_note"
         ]
-      },
-      "requiredCards": []
+      }
     },
     {
       "round": 9,
@@ -1913,23 +2491,26 @@
         "핵심": [
           "efficiency_track",
           "split_test",
-          "report_shield"
+          "report_shield",
+          "meeting_summary",
+          "postmortem_note"
         ],
         "맥락": [
           "pre_report",
           "test_goal",
           "small_test",
-          "ask_first"
+          "ask_first",
+          "price_check"
         ],
         "상태보정": [
           "responsibility_split",
           "file_cleanup",
           "buyer_capture",
           "landing_check",
-          "message_cleanup"
+          "message_cleanup",
+          "approval_anchor"
         ]
-      },
-      "requiredCards": []
+      }
     },
     {
       "round": 10,
@@ -1957,23 +2538,26 @@
         "핵심": [
           "exec_persuasion",
           "brand_guard",
-          "message_cleanup"
+          "message_cleanup",
+          "approval_anchor"
         ],
         "맥락": [
           "brand_mood",
           "hooking_copy",
           "approval_dodge",
-          "discount_restraint"
+          "discount_restraint",
+          "brief_rewrite"
         ],
         "상태보정": [
           "pre_report",
           "report_shield",
           "creative_boost",
           "expectation_align",
-          "claim_check"
+          "claim_check",
+          "meeting_summary",
+          "postmortem_note"
         ]
-      },
-      "requiredCards": []
+      }
     },
     {
       "round": 11,
@@ -2001,23 +2585,27 @@
         "핵심": [
           "report_shield",
           "pre_report",
-          "efficiency_track"
+          "efficiency_track",
+          "meeting_summary",
+          "postmortem_note"
         ],
         "맥락": [
           "file_cleanup",
           "exec_persuasion",
           "responsibility_split",
-          "review_collect"
+          "review_collect",
+          "approval_anchor",
+          "price_check"
         ],
         "상태보정": [
           "buyer_capture",
           "budget_defense",
           "split_test",
           "test_goal",
-          "message_cleanup"
+          "message_cleanup",
+          "brief_rewrite"
         ]
-      },
-      "requiredCards": []
+      }
     },
     {
       "round": 12,
@@ -2045,23 +2633,28 @@
         "핵심": [
           "report_shield",
           "efficiency_track",
-          "buyer_capture"
+          "buyer_capture",
+          "postmortem_note",
+          "product_page_fix"
         ],
         "맥락": [
           "exec_persuasion",
           "conversion_boost",
           "pre_report",
-          "responsibility_split"
+          "responsibility_split",
+          "cta_tighten",
+          "price_check"
         ],
         "상태보정": [
           "budget_defense",
           "review_collect",
           "click_recovery",
           "brand_guard",
-          "test_goal"
+          "test_goal",
+          "meeting_summary",
+          "approval_anchor"
         ]
-      },
-      "requiredCards": []
+      }
     }
   ],
   "changeLog": [
@@ -2071,5 +2664,31 @@
     "각 라운드 전체 후보군을 9~13장 수준으로 확대.",
     "requiredCards 빈 배열 처리로 고정 선택지 문제 완화.",
     "기존 카드 설명은 카드명 유지 + 행동 설명 방식으로 정리."
+  ],
+  "selectionTestPolicy": {
+    "minCandidatesPerRound": 14,
+    "maxSameCategoryInOffer": 2,
+    "recentOfferPenaltyTurns": 2,
+    "recentPickPenaltyTurns": 3,
+    "stateBonusSlot": "상태보정"
+  },
+  "changeLogV8": [
+    "신규 카드 8장 추가: 총 카드풀은 기본 20장 + 패치 30장 = 50장 기준.",
+    "라운드별 후보군을 평균 12장에서 15장 이상으로 확장.",
+    "requiredCards를 제거해 첫 라운드부터 매번 같은 카드가 고정으로 뜨는 문제 완화.",
+    "선택 로직은 슬롯별 고정 1장 방식에서 후보군 전체 가중치 방식으로 변경 권장.",
+    "상황 적합 판정은 태그 일치뿐 아니라 현재 storyRound.cardSlots 포함 여부를 함께 사용."
+  ],
+  "changeLogV8_1": [
+    "100회 시뮬레이션 후 어색한 초반 카드 조합을 정리했다.",
+    "R1에서 회의 결론 뽑기/가격 저항 확인/회고 한 줄 남기기/감도 연출 계열을 제외했다.",
+    "R2에서 CTA 조이기처럼 전환 단계에 가까운 카드를 제외했다.",
+    "R5에서 채널 분산/광고 중단처럼 마감 요청과 약한 카드를 제외했다.",
+    "R6에서 회고 한 줄 남기기처럼 집행 전 단계와 어긋나는 카드를 제외했다."
+  ],
+  "changeLogV8_2": [
+    "v8.1 시뮬레이션에서 R1에 분할 실험/소액 테스트가 이른 단계로 보여 제외했다.",
+    "R3~R5에서 회의 결론 뽑기가 파일/피드백/마감 상황과 다소 어긋나 제외했다.",
+    "후보군은 여전히 라운드별 12장 이상 유지하도록 보존했다."
   ]
 }
