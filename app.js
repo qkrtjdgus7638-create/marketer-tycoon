@@ -181,7 +181,6 @@ function initialState(screen = "choice") {
     build: Object.fromEntries(data.buildStats.map((key) => [key, 2])),
     risk: Object.fromEntries(data.riskStats.map((key) => [key, 0])),
     recentCards: [],
-    recentOfferedCards: [],
     recentSituations: [],
     recentTags: [],
     triggeredSynergies: new Set(),
@@ -327,37 +326,137 @@ function pickCards(situation) {
 
 function pickStoryCards(storyRound) {
   const slots = normalizeCardSlots(storyRound.cardSlots);
+  const allCandidates = flattenStoryCandidates(storyRound, slots);
   const picked = [];
-  const offeredRecently = state.recentOfferedCards || [];
 
-  for (const slot of slots.slice(0, 3)) {
-    const candidates = slot.candidateCardIds
+  // 1) 핵심 후보는 높은 확률로 1장만 보장한다. 단, 고정 카드처럼 보이지 않도록 85% 확률로만 우선 선택한다.
+  const coreSlot = slots.find((slot) => ["핵심", "정석", "main"].includes(slot.role));
+  if (coreSlot && Math.random() < 0.85) {
+    const coreCandidates = coreSlot.candidateCardIds
       .map((id) => data.cards.find((card) => card.id === id))
-      .filter(Boolean)
-      .filter((card) => !picked.some((item) => item.id === card.id));
-    if (!candidates.length) continue;
-    picked.push(weightedPick(candidates.map((card) => ({
-      item: card,
-      weight: cardWeight(card, storyRound, slot.role, offeredRecently),
-    }))));
+      .filter(Boolean);
+    if (coreCandidates.length) {
+      const pickedCore = weightedPick(coreCandidates.map((card) => ({
+        item: attachChoiceMeta(card, coreSlot.role),
+        weight: storyCardWeight(card, storyRound, coreSlot.role),
+      })));
+      picked.push(pickedCore);
+    }
   }
 
-  const fallbackPool = data.cards.filter((card) => !picked.some((item) => item.id === card.id));
-  while (picked.length < 3 && fallbackPool.length) {
-    const fallback = weightedPick(fallbackPool.map((card) => ({
-      item: card,
-      weight: cardWeight(card, storyRound, "상태보정", offeredRecently),
+  // 2) 나머지는 모든 슬롯 후보군에서 가중치로 뽑는다. 슬롯별 1장 고정이 아니라 후보군 전체 경쟁 방식.
+  while (picked.length < 3 && allCandidates.length) {
+    const candidates = allCandidates
+      .filter(({ card }) => !picked.some((item) => item.id === card.id))
+      .filter(({ card }) => canAddCardWithoutCategoryFlood(card, picked));
+
+    if (!candidates.length) break;
+
+    const selected = weightedPick(candidates.map(({ card, role }) => ({
+      item: attachChoiceMeta(card, role),
+      weight: storyCardWeight(card, storyRound, role),
     })));
-    picked.push(fallback);
-    fallbackPool.splice(fallbackPool.findIndex((card) => card.id === fallback.id), 1);
+    picked.push(selected);
   }
 
-  const diversified = diversifyCategories(picked, storyRound);
-  state.recentOfferedCards = [
-    ...diversified.map((card) => card.id),
-    ...offeredRecently,
-  ].slice(0, 6);
-  return diversified.slice(0, 3);
+  // 3) 그래도 부족하면 전체 카드풀에서 맥락 태그가 맞는 카드로 보충한다.
+  const fallbackPool = data.cards
+    .filter((card) => !picked.some((item) => item.id === card.id))
+    .filter((card) => canAddCardWithoutCategoryFlood(card, picked));
+  while (picked.length < 3 && fallbackPool.length) {
+    const selected = weightedPick(fallbackPool.map((card) => ({
+      item: attachChoiceMeta(card, "보정"),
+      weight: Math.max(0.1, cardWeight(card, { preferredTags: storyRound.situationTags || [] }) * 0.35),
+    })));
+    picked.push(selected);
+    const idx = fallbackPool.findIndex((card) => card.id === selected.id);
+    if (idx >= 0) fallbackPool.splice(idx, 1);
+  }
+
+  return picked.slice(0, 3);
+}
+
+function flattenStoryCandidates(storyRound, slots) {
+  const map = new Map();
+  for (const slot of slots) {
+    for (const id of slot.candidateCardIds || []) {
+      const card = data.cards.find((item) => item.id === id);
+      if (!card) continue;
+      const existing = map.get(card.id);
+      if (existing) existing.roles.push(slot.role);
+      else map.set(card.id, { card, roles: [slot.role] });
+    }
+  }
+  return [...map.values()].map(({ card, roles }) => ({ card, role: roles[0] }));
+}
+
+function attachChoiceMeta(card, role) {
+  return { ...card, _choiceRole: normalizeChoiceRole(role) };
+}
+
+function normalizeChoiceRole(role = "선택") {
+  const mapping = {
+    핵심: "핵심 대응",
+    정석: "정석 대응",
+    맥락: "맥락 대응",
+    방어: "방어 대응",
+    정리: "정리 대응",
+    상태보정: "상태 대응",
+    공격: "공격 대응",
+    리스크: "리스크 대응",
+    보정: "보정 선택",
+  };
+  return mapping[role] || `${role} 대응`;
+}
+
+function canAddCardWithoutCategoryFlood(card, picked) {
+  return picked.filter((item) => item.category === card.category).length < 2;
+}
+
+function storyCardWeight(card, storyRound, role) {
+  let weight = 1;
+  const tags = storyRound.situationTags || [];
+  const fits = card.fits || [];
+  const badFits = card.badFits || [];
+
+  weight += card.tags.filter((tag) => tags.includes(tag)).length * 1.2;
+  weight += fits.filter((tag) => tags.includes(tag)).length * 1.8;
+  if (badFits.some((tag) => tags.includes(tag))) weight *= 0.25;
+
+  // 슬롯별 기본값. 핵심은 살리되 매번 고정되지 않도록 과하게 높이지 않는다.
+  if (["핵심", "정석", "main"].includes(role)) weight += 1.2;
+  if (["맥락", "정리"].includes(role)) weight += 0.9;
+  if (["상태보정", "보정"].includes(role)) weight += getStateNeedBonus(card) * 1.4;
+  else weight += getStateNeedBonus(card) * 0.8;
+
+  // 최근 카드 반복 방지
+  const recentPick = state.recentCards.find((recent) => recent.name === card.name);
+  if (recentPick) {
+    const age = state.round - recentPick.round;
+    if (age <= 1) weight *= 0.15;
+    else if (age <= 2) weight *= 0.35;
+    else if (age <= 3) weight *= 0.65;
+  }
+
+  const lastCardName = state.recentCards[0]?.name;
+  const lastCard = data.cards.find((item) => item.name === lastCardName);
+  if (lastCard && lastCard.category === card.category) weight *= 0.7;
+
+  return Math.max(0.05, weight);
+}
+
+function getStateNeedBonus(card) {
+  let bonus = 0;
+  if (state.money < data.stageDefaults.clearConditions.moneyGte && card.risk.budgetRisk < 0) bonus += 2;
+  if (state.score < Math.max(4, state.round * 0.75) && card.score[1] >= 2) bonus += 1.8;
+  if (state.mental <= 5 && card.secondary.mental > 0) bonus += 1.8;
+  if (state.trust <= 4 && card.secondary.trust > 0) bonus += 1.6;
+
+  const lowBuilds = Object.entries(state.build).sort((a, b) => a[1] - b[1]).slice(0, 2).map(([key]) => key);
+  for (const key of lowBuilds) {
+    if ((card.build[key] || 0) > 0) bonus += 0.9;
+  }
+  return bonus;
 }
 
 function normalizeCardSlots(cardSlots) {
@@ -366,57 +465,28 @@ function normalizeCardSlots(cardSlots) {
   return Object.entries(cardSlots).map(([role, candidateCardIds]) => ({ role, candidateCardIds }));
 }
 
-function cardWeight(card, context, slotRole = "", offeredRecently = []) {
-  const roundTags = context.situationTags || context.preferredTags || [];
-  let weight = 1;
-
-  weight += card.tags.filter((tag) => roundTags.includes(tag)).length * 1.2;
-  weight += (card.fits || []).filter((tag) => roundTags.includes(tag)).length * 1.5;
-
-  if ((card.badFits || []).some((tag) => roundTags.includes(tag))) weight -= 3;
-  if (slotRole && card.slotRoles?.includes(slotRole)) weight += 1;
-
-  if (offeredRecently.includes(card.id)) weight -= 3;
-  if (state.recentCards?.some((recent) => (recent.id === card.id || recent.name === card.name) && state.round - recent.round <= 2)) {
-    weight -= 4;
-  }
-
-  if (slotRole === "상태보정") {
-    if (state.money < data.stageDefaults.clearConditions.moneyGte && card.risk?.budgetRisk < 0) weight += 2.5;
-    if (state.score < Math.max(4, state.round / 2) && card.score?.[1] >= 2) weight += 2;
-    if (state.mental <= 4 && card.secondary?.mental > 0) weight += 2;
-    if (state.trust <= 4 && card.secondary?.trust > 0) weight += 2;
-    if ((state.build?.budgetControl || 0) <= 1 && card.build?.budgetControl > 0) weight += 1.5;
-    if ((state.build?.performance || 0) <= 1 && card.build?.performance > 0) weight += 1.5;
-    if ((state.build?.operations || 0) <= 1 && card.build?.operations > 0) weight += 1.5;
-  } else if (!slotRole) {
-    if (state.money < data.stageDefaults.clearConditions.moneyGte && card.risk?.budgetRisk < 0) weight += 1;
-    if (state.score < 6 && card.score?.[1] >= 2) weight += 1;
-    if (state.mental <= 4 && card.secondary?.mental > 0) weight += 1;
-    if (state.trust <= 3 && card.secondary?.trust > 0) weight += 1;
-  }
-
-  return Math.max(0.1, weight);
+function cardWeight(card, situation) {
+  let weight = 1 + card.tags.filter((tag) => situation.preferredTags.includes(tag)).length;
+  if (card.fits) weight += card.fits.filter((tag) => situation.preferredTags.includes(tag)).length * 1.5;
+  if (card.badFits?.some((tag) => situation.preferredTags.includes(tag))) weight *= 0.3;
+  if (state.money < data.stageDefaults.clearConditions.moneyGte && card.risk.budgetRisk < 0) weight += 1.5;
+  if (state.score < 6 && card.score[1] >= 2) weight += 1.3;
+  if (state.mental <= 4 && card.secondary.mental > 0) weight += 1.5;
+  if (state.trust <= 3 && card.secondary.trust > 0) weight += 1.5;
+  const recentPick = state.recentCards.find((recent) => recent.name === card.name);
+  if (recentPick && state.round - recentPick.round <= 2) weight *= 0.35;
+  return Math.max(0.05, weight);
 }
 
-function diversifyCategories(cards, storyRound) {
-  const result = [...cards];
-  if (result.length < 3) return result;
-
-  const categories = result.map((card) => card.category);
-  if (!categories.every((category) => category === categories[0])) return result;
-
-  const allCandidates = normalizeCardSlots(storyRound.cardSlots)
-    .flatMap((slot) => slot.candidateCardIds)
-    .map((id) => data.cards.find((card) => card.id === id))
-    .filter(Boolean)
-    .filter((card) => !result.some((picked) => picked.id === card.id))
-    .filter((card) => card.category !== categories[0]);
-
-  if (allCandidates.length) {
-    result[2] = weightedPick(allCandidates.map((card) => ({ item: card, weight: cardWeight(card, storyRound, "상태보정") })));
-  }
-  return result;
+function isCardContextMatch(card, situation) {
+  const storyRound = situation.storyRound;
+  const situationTags = situation.preferredTags || [];
+  if (card.badFits?.some((tag) => situationTags.includes(tag))) return false;
+  const inStorySlot = storyRound && normalizeCardSlots(storyRound.cardSlots)
+    .some((slot) => slot.candidateCardIds?.includes(card.id));
+  if (inStorySlot) return true;
+  if (card.fits?.some((tag) => situationTags.includes(tag))) return true;
+  return card.tags.some((tag) => situationTags.includes(tag));
 }
 
 function chooseCard(cardId) {
@@ -428,7 +498,7 @@ function chooseCard(cardId) {
   const cost = card.cost;
   const earned = rollRange(card.earned, 1000);
   const scoreGain = rollRange(card.score);
-  const matchedSituation = card.tags.some((tag) => situation.preferredTags.includes(tag));
+  const matchedSituation = isCardContextMatch(card, situation);
 
   state.money -= cost;
   state.money += earned;
@@ -439,7 +509,7 @@ function chooseCard(cardId) {
   applyObject(card.risk, state.risk);
   if (!matchedSituation) applySituationPressure(situation);
 
-  state.recentCards = [{ id: card.id, name: card.name, round: state.round }, ...state.recentCards].slice(0, 4);
+  state.recentCards = [{ name: card.name, round: state.round }, ...state.recentCards].slice(0, 4);
   state.recentTags = [...card.tags, ...state.recentTags].slice(0, 10);
 
   const synergyMessages = applySynergies();
@@ -652,17 +722,22 @@ function renderChoices() {
 
 function renderChoiceCard(card) {
   const displayDescription = getCardDescription(card);
+  const roleLabel = card._choiceRole || card.category;
   return `
     <button class="choice-card" type="button" data-card-id="${card.id}" ${state.finished ? "disabled" : ""}>
       <div class="card-icon" aria-hidden="true">${cardIcon(card)}</div>
       <div class="card-main">
-        <div class="card-tagline"><span>${card.category}</span><span>${card.tags.slice(0, 2).join(" · ")}</span></div>
+        <div class="card-tagline"><span>${roleLabel}</span><span>${card.category} · ${card.tags.slice(0, 2).join(" · ")}</span></div>
         <h3>${card.name}</h3>
         <p>${displayDescription}</p>
       </div>
       <div class="effect-list">
         <span class="cost-label">비용</span>
         <strong>${formatCostCompact(card.cost)}</strong>
+        <span class="cost-label">회수</span>
+        <strong>${formatRangeCompact(card.earned)}</strong>
+        <span class="cost-label">성과</span>
+        <strong>${formatScoreRange(card.score)}</strong>
       </div>
     </button>
   `;
@@ -814,6 +889,18 @@ function formatShortMoney(value) {
 function formatCost(value) {
   if (value === 0) return "0";
   return value.toLocaleString("ko-KR");
+}
+
+
+function formatRangeCompact(range) {
+  if (!range) return "-";
+  return `${formatShortMoney(range[0])}~${formatShortMoney(range[1])}`;
+}
+
+function formatScoreRange(range) {
+  if (!range) return "-";
+  if (range[0] === range[1]) return `${range[0] > 0 ? "+" : ""}${range[0]}`;
+  return `${range[0] > 0 ? "+" : ""}${range[0]}~+${range[1]}`;
 }
 
 function formatCostCompact(value) {
