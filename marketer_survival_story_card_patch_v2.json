@@ -1,20 +1,21 @@
 {
-  "overlayTitle": "마케터로 살아남기 - 선택지 다양성/맥락 자체 테스트 반영 패치 v8.2",
-  "purpose": "기존 구조를 크게 바꾸지 않고 카드 수와 라운드별 후보군, 선택지 가중치 로직을 보강해 같은 상황에서도 선택지가 덜 고정되고 카드-상황-대사가 더 자연스럽게 이어지도록 하는 패치.",
+  "overlayTitle": "마케터로 살아남기 - 선택지 상호작용 안정화 패치 v9",
+  "purpose": "무작위성은 유지하되, 선택지 3장이 한 상황 안에서 자연스럽게 읽히도록 라운드별 선택 세트를 도입한다. 카드 색/아이콘은 빌드 계열 기준으로 통일한다.",
   "mergePolicy": {
     "cards": "기존 cards에는 cardPatches를 id 기준으로 병합하고, newCards는 cards 배열에 append한다.",
-    "storyRounds": "기존 storyRounds를 v7 storyRounds로 교체한다. requiredCards는 사용하지 않는다.",
+    "storyRounds": "기존 storyRounds를 v9 storyRounds로 교체한다. cardSlots보다 choiceSets를 우선 사용한다.",
     "logic": "choiceSelectionLogic은 개발자 구현 가이드다. 데이터만 먼저 적용해도 후보군은 넓어지지만, recency/state 가중치를 적용하면 반복감이 더 줄어든다."
   },
   "choiceSelectionLogic": {
-    "summary": "고정 스토리 라운드는 유지하되, 카드 제시는 핵심/맥락/상태보정 후보군 전체에서 가중치로 3장을 뽑는다. 핵심 카드 1장은 높은 확률로 보장하지만, requiredCards는 사용하지 않는다.",
+    "version": "choice-set-v9",
+    "summary": "각 라운드는 여러 개의 choiceSets를 가진다. 하나의 choiceSet은 그 상황에서 동시에 말이 되는 3개 선택지 묶음이다. 세트 내부에서 카드 대안을 하나씩 뽑아 자연스러운 조합과 반복 방지를 동시에 달성한다.",
     "rules": [
-      "라운드별 후보군은 최소 12장 이상을 권장한다.",
-      "최근 2턴에 제시되거나 선택된 카드는 가중치를 크게 낮춘다.",
-      "직전 선택 카드와 같은 category는 가중치를 낮춘다.",
-      "돈/성과/멘탈/신뢰 부족 상태에 맞는 카드에는 보정 가중치를 준다.",
-      "현재 라운드 cardSlots 후보에서 나온 카드는 기본적으로 상황 적합으로 본다. 단 badFits가 라운드 태그와 겹치면 부적합 처리한다.",
-      "같은 category 카드가 2장을 초과하지 않도록 한다."
+      "storyRound.choiceSets가 있으면 cardSlots보다 우선한다.",
+      "choiceSet 하나를 상태/최근 사용 이력/라운드 적합도에 따라 가중치로 선택한다.",
+      "choiceSet.choices의 각 role에서 1장씩 뽑아 3장을 제시한다.",
+      "최근 2턴에 제시/선택된 카드는 감산한다.",
+      "카드 category는 색상과 아이콘의 기준이 된다.",
+      "choiceSet이 없는 경우 기존 cardSlots 로직으로 fallback한다."
     ]
   },
   "cardPatches": {
@@ -164,7 +165,7 @@
       ]
     },
     "brand_mood": {
-      "description": "시안의 분위기를 브랜드에 맞게 더 정돈합니다.",
+      "description": "잡힌 방향을 더 브랜드답게 보이도록 연출합니다.",
       "fits": [
         "시안피드백",
         "대표피드백",
@@ -2125,28 +2126,181 @@
         }
       ],
       "cardSlots": {
-        "핵심": [
-          "reference_collect",
+        "정석": [
           "ask_first",
-          "angle_sort",
-          "brief_rewrite"
+          "brief_rewrite",
+          "reference_collect",
+          "reference_filter",
+          "asset_request"
         ],
-        "맥락": [
+        "조사": [
+          "reference_collect",
+          "angle_sort"
+        ],
+        "정리": [
           "request_doc",
           "tone_align",
-          "efficiency_track",
-          "reference_filter",
+          "angle_sort",
+          "expectation_align",
+          "reference_filter"
+        ],
+        "기준": [
+          "ask_first",
           "test_goal"
         ],
-        "상태보정": [
-          "asset_request",
-          "file_cleanup",
-          "report_shield",
-          "expectation_align",
-          "task_slice",
-          "brief_rewrite"
+        "방어": [
+          "request_doc",
+          "brief_rewrite",
+          "ask_first"
+        ],
+        "보고": [
+          "test_goal",
+          "efficiency_track"
+        ],
+        "가벼운 확인": [
+          "tone_align",
+          "test_goal"
         ]
-      }
+      },
+      "choiceSets": [
+        {
+          "id": "r1 기준 먼저 잡기",
+          "label": "기준 먼저 잡기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "ask_first",
+                "brief_rewrite"
+              ]
+            },
+            {
+              "role": "조사",
+              "cardIds": [
+                "reference_collect",
+                "angle_sort"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "request_doc",
+                "tone_align"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r1 사례부터 모으기",
+          "label": "사례부터 모으기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "reference_collect",
+                "reference_filter"
+              ]
+            },
+            {
+              "role": "기준",
+              "cardIds": [
+                "ask_first",
+                "test_goal"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "angle_sort",
+                "tone_align"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r1 업무 범위 잠그기",
+          "label": "업무 범위 잠그기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "방어",
+              "cardIds": [
+                "request_doc",
+                "brief_rewrite"
+              ]
+            },
+            {
+              "role": "정석",
+              "cardIds": [
+                "reference_collect"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "expectation_align",
+                "tone_align"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r1 자료 정리형",
+          "label": "자료 정리형",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "reference_collect",
+                "asset_request"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "angle_sort",
+                "reference_filter"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "test_goal",
+                "efficiency_track"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r1 조심스러운 시작",
+          "label": "조심스러운 시작",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "방어",
+              "cardIds": [
+                "ask_first"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "request_doc"
+              ]
+            },
+            {
+              "role": "가벼운 확인",
+              "cardIds": [
+                "tone_align",
+                "test_goal"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "round": 2,
@@ -2171,31 +2325,191 @@
         }
       ],
       "cardSlots": {
-        "핵심": [
+        "정석": [
           "creative_boost",
-          "message_cleanup",
-          "tone_align",
-          "brand_mood",
-          "brief_rewrite"
-        ],
-        "맥락": [
-          "hooking_copy",
-          "split_test",
           "angle_sort",
-          "reference_filter",
-          "test_goal",
-          "message_cleanup",
-          "claim_check",
-          "brief_rewrite"
+          "brief_rewrite",
+          "message_cleanup"
         ],
-        "상태보정": [
+        "카피": [
+          "hooking_copy",
+          "message_cleanup"
+        ],
+        "기준": [
+          "tone_align",
+          "reference_filter",
           "ask_first",
-          "brand_guard",
-          "click_hook",
-          "small_test",
           "expectation_align"
+        ],
+        "브랜드": [
+          "tone_align",
+          "brand_mood"
+        ],
+        "테스트": [
+          "split_test",
+          "test_goal"
+        ],
+        "공격": [
+          "click_hook",
+          "hooking_copy"
+        ],
+        "안전": [
+          "small_test",
+          "split_test"
+        ],
+        "검수": [
+          "claim_check",
+          "message_cleanup"
+        ],
+        "정리": [
+          "brief_rewrite",
+          "angle_sort"
+        ],
+        "방어": [
+          "ask_first",
+          "test_goal"
         ]
-      }
+      },
+      "choiceSets": [
+        {
+          "id": "r2 눈에 띄게 잡기",
+          "label": "눈에 띄게 잡기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "creative_boost"
+              ]
+            },
+            {
+              "role": "카피",
+              "cardIds": [
+                "hooking_copy",
+                "message_cleanup"
+              ]
+            },
+            {
+              "role": "기준",
+              "cardIds": [
+                "tone_align",
+                "reference_filter"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2 방향 먼저 좁히기",
+          "label": "방향 먼저 좁히기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "angle_sort",
+                "brief_rewrite"
+              ]
+            },
+            {
+              "role": "브랜드",
+              "cardIds": [
+                "tone_align",
+                "brand_mood"
+              ]
+            },
+            {
+              "role": "테스트",
+              "cardIds": [
+                "split_test",
+                "test_goal"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2 반응 쪽으로 가기",
+          "label": "반응 쪽으로 가기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "공격",
+              "cardIds": [
+                "click_hook",
+                "hooking_copy"
+              ]
+            },
+            {
+              "role": "정석",
+              "cardIds": [
+                "creative_boost"
+              ]
+            },
+            {
+              "role": "안전",
+              "cardIds": [
+                "small_test",
+                "split_test"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2 브랜드 톤 지키기",
+          "label": "브랜드 톤 지키기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "브랜드",
+              "cardIds": [
+                "tone_align",
+                "brand_mood"
+              ]
+            },
+            {
+              "role": "검수",
+              "cardIds": [
+                "claim_check",
+                "message_cleanup"
+              ]
+            },
+            {
+              "role": "기준",
+              "cardIds": [
+                "ask_first",
+                "expectation_align"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2 애매한 브리프 정리",
+          "label": "애매한 브리프 정리",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정리",
+              "cardIds": [
+                "brief_rewrite",
+                "angle_sort"
+              ]
+            },
+            {
+              "role": "정석",
+              "cardIds": [
+                "creative_boost",
+                "message_cleanup"
+              ]
+            },
+            {
+              "role": "방어",
+              "cardIds": [
+                "ask_first",
+                "test_goal"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "round": 3,
@@ -2219,25 +2533,185 @@
         }
       ],
       "cardSlots": {
-        "핵심": [
+        "정석": [
           "file_cleanup",
           "asset_request",
+          "task_slice"
+        ],
+        "확인": [
+          "asset_request",
+          "request_doc"
+        ],
+        "방어": [
+          "responsibility_split",
+          "ask_first",
+          "request_doc",
+          "schedule_defense"
+        ],
+        "범위": [
           "request_doc",
           "brief_rewrite"
         ],
-        "맥락": [
-          "responsibility_split",
+        "일정": [
           "task_slice",
-          "ask_first",
           "schedule_defense"
         ],
-        "상태보정": [
-          "urgent_fix",
-          "expectation_align",
+        "정리": [
+          "file_cleanup"
+        ],
+        "공유": [
           "pre_report",
+          "expectation_align"
+        ],
+        "소스": [
+          "asset_request",
+          "file_cleanup"
+        ],
+        "기준": [
+          "request_doc",
           "approval_anchor"
+        ],
+        "응급": [
+          "urgent_fix"
         ]
-      }
+      },
+      "choiceSets": [
+        {
+          "id": "r3 파일부터 잠그기",
+          "label": "파일부터 잠그기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "file_cleanup"
+              ]
+            },
+            {
+              "role": "확인",
+              "cardIds": [
+                "asset_request",
+                "request_doc"
+              ]
+            },
+            {
+              "role": "방어",
+              "cardIds": [
+                "responsibility_split",
+                "ask_first"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r3 진짜 최종 찾기",
+          "label": "진짜 최종 찾기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "file_cleanup",
+                "asset_request"
+              ]
+            },
+            {
+              "role": "범위",
+              "cardIds": [
+                "request_doc",
+                "brief_rewrite"
+              ]
+            },
+            {
+              "role": "일정",
+              "cardIds": [
+                "task_slice",
+                "schedule_defense"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r3 사고 줄이기",
+          "label": "사고 줄이기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "방어",
+              "cardIds": [
+                "responsibility_split",
+                "request_doc"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "file_cleanup"
+              ]
+            },
+            {
+              "role": "공유",
+              "cardIds": [
+                "pre_report",
+                "expectation_align"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r3 작업 쪼개기",
+          "label": "작업 쪼개기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "task_slice"
+              ]
+            },
+            {
+              "role": "소스",
+              "cardIds": [
+                "asset_request",
+                "file_cleanup"
+              ]
+            },
+            {
+              "role": "기준",
+              "cardIds": [
+                "request_doc",
+                "approval_anchor"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r3 급한 것만 처리",
+          "label": "급한 것만 처리",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "응급",
+              "cardIds": [
+                "urgent_fix"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "file_cleanup"
+              ]
+            },
+            {
+              "role": "방어",
+              "cardIds": [
+                "schedule_defense",
+                "request_doc"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "round": 4,
@@ -2262,28 +2736,190 @@
         }
       ],
       "cardSlots": {
-        "핵심": [
+        "방어": [
           "ask_first",
+          "approval_anchor",
+          "brand_guard",
+          "discount_restraint",
+          "approval_dodge"
+        ],
+        "정석": [
           "message_cleanup",
-          "creative_boost",
+          "creative_boost"
+        ],
+        "브랜드": [
+          "tone_align",
+          "brand_guard",
+          "brand_mood"
+        ],
+        "설명": [
+          "pre_report",
+          "expectation_align"
+        ],
+        "공격": [
+          "hooking_copy",
+          "thumbnail_reroll"
+        ],
+        "안전": [
+          "split_test",
+          "message_cleanup"
+        ],
+        "정리": [
+          "message_cleanup",
+          "claim_check",
+          "brief_rewrite",
+          "angle_sort"
+        ],
+        "보고": [
+          "pre_report",
           "approval_anchor"
         ],
-        "맥락": [
-          "tone_align",
-          "brand_mood",
-          "brand_guard",
-          "hooking_copy",
-          "approval_dodge",
-          "brief_rewrite"
-        ],
-        "상태보정": [
-          "pre_report",
-          "expectation_align",
-          "discount_restraint",
-          "split_test",
-          "claim_check"
+        "반응": [
+          "creative_boost",
+          "hooking_copy"
         ]
-      }
+      },
+      "choiceSets": [
+        {
+          "id": "r4 기준 다시 묻기",
+          "label": "기준 다시 묻기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "방어",
+              "cardIds": [
+                "ask_first",
+                "approval_anchor"
+              ]
+            },
+            {
+              "role": "정석",
+              "cardIds": [
+                "message_cleanup",
+                "creative_boost"
+              ]
+            },
+            {
+              "role": "브랜드",
+              "cardIds": [
+                "tone_align",
+                "brand_guard"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r4 브랜드 쪽 보정",
+          "label": "브랜드 쪽 보정",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "브랜드",
+              "cardIds": [
+                "tone_align",
+                "brand_mood"
+              ]
+            },
+            {
+              "role": "방어",
+              "cardIds": [
+                "brand_guard",
+                "discount_restraint"
+              ]
+            },
+            {
+              "role": "설명",
+              "cardIds": [
+                "pre_report",
+                "expectation_align"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r4 반응 쪽 보정",
+          "label": "반응 쪽 보정",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "creative_boost"
+              ]
+            },
+            {
+              "role": "공격",
+              "cardIds": [
+                "hooking_copy",
+                "thumbnail_reroll"
+              ]
+            },
+            {
+              "role": "안전",
+              "cardIds": [
+                "split_test",
+                "message_cleanup"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r4 조용히 통과시키기",
+          "label": "조용히 통과시키기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "방어",
+              "cardIds": [
+                "approval_dodge",
+                "ask_first"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "message_cleanup",
+                "claim_check"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "pre_report",
+                "approval_anchor"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r4 방향 다시 쓰기",
+          "label": "방향 다시 쓰기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정리",
+              "cardIds": [
+                "brief_rewrite",
+                "angle_sort"
+              ]
+            },
+            {
+              "role": "브랜드",
+              "cardIds": [
+                "tone_align",
+                "brand_guard"
+              ]
+            },
+            {
+              "role": "반응",
+              "cardIds": [
+                "creative_boost",
+                "hooking_copy"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "round": 5,
@@ -2308,26 +2944,189 @@
         }
       ],
       "cardSlots": {
-        "핵심": [
-          "urgent_fix",
-          "schedule_defense",
-          "task_slice",
-          "brief_rewrite"
-        ],
-        "맥락": [
+        "방어": [
           "request_doc",
-          "agency_call",
+          "task_slice",
+          "responsibility_split"
+        ],
+        "일정": [
+          "schedule_defense",
+          "task_slice"
+        ],
+        "처리": [
+          "urgent_fix",
+          "agency_call"
+        ],
+        "응급": [
+          "urgent_fix"
+        ],
+        "소스": [
           "asset_request",
-          "approval_dodge",
+          "file_cleanup"
+        ],
+        "운영": [
+          "agency_call"
+        ],
+        "범위": [
+          "task_slice",
+          "request_doc"
+        ],
+        "보고": [
+          "pre_report",
+          "expectation_align"
+        ],
+        "정리": [
+          "request_doc",
+          "file_cleanup",
+          "asset_request"
+        ],
+        "수정": [
+          "urgent_fix",
           "brief_rewrite"
         ],
-        "상태보정": [
-          "responsibility_split",
-          "expectation_align",
-          "file_cleanup",
-          "approval_anchor"
+        "마감": [
+          "task_slice",
+          "schedule_defense"
         ]
-      }
+      },
+      "choiceSets": [
+        {
+          "id": "r5 범위부터 자르기",
+          "label": "범위부터 자르기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "방어",
+              "cardIds": [
+                "request_doc",
+                "task_slice"
+              ]
+            },
+            {
+              "role": "일정",
+              "cardIds": [
+                "schedule_defense"
+              ]
+            },
+            {
+              "role": "처리",
+              "cardIds": [
+                "urgent_fix",
+                "agency_call"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r5 급한 불 끄기",
+          "label": "급한 불 끄기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "응급",
+              "cardIds": [
+                "urgent_fix"
+              ]
+            },
+            {
+              "role": "소스",
+              "cardIds": [
+                "asset_request",
+                "file_cleanup"
+              ]
+            },
+            {
+              "role": "방어",
+              "cardIds": [
+                "request_doc",
+                "responsibility_split"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r5 외부 도움 붙이기",
+          "label": "외부 도움 붙이기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "운영",
+              "cardIds": [
+                "agency_call"
+              ]
+            },
+            {
+              "role": "범위",
+              "cardIds": [
+                "task_slice",
+                "request_doc"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "pre_report",
+                "expectation_align"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r5 오늘 가능한 만큼만",
+          "label": "오늘 가능한 만큼만",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "일정",
+              "cardIds": [
+                "schedule_defense",
+                "task_slice"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "request_doc"
+              ]
+            },
+            {
+              "role": "수정",
+              "cardIds": [
+                "urgent_fix",
+                "brief_rewrite"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r5 사고 없이 넘기기",
+          "label": "사고 없이 넘기기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "방어",
+              "cardIds": [
+                "responsibility_split",
+                "request_doc"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "file_cleanup",
+                "asset_request"
+              ]
+            },
+            {
+              "role": "마감",
+              "cardIds": [
+                "task_slice",
+                "schedule_defense"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "round": 6,
@@ -2351,28 +3150,201 @@
         }
       ],
       "cardSlots": {
-        "핵심": [
+        "정석": [
           "small_test",
-          "split_test",
           "test_goal",
           "audience_split"
         ],
-        "맥락": [
+        "비교": [
+          "split_test",
+          "audience_split"
+        ],
+        "효율": [
           "efficiency_track",
-          "spend_pacing",
-          "channel_split",
+          "spend_pacing"
+        ],
+        "공격": [
           "early_boost",
+          "click_hook"
+        ],
+        "안전": [
+          "spend_pacing",
+          "channel_split"
+        ],
+        "기준": [
+          "test_goal",
+          "small_test"
+        ],
+        "예산": [
+          "budget_defense",
+          "spend_pacing"
+        ],
+        "테스트": [
+          "small_test",
+          "split_test"
+        ],
+        "분석": [
+          "efficiency_track",
           "price_check"
         ],
-        "상태보정": [
-          "budget_defense",
+        "성과": [
           "click_hook",
+          "early_boost"
+        ],
+        "분산": [
+          "channel_split",
+          "spend_pacing"
+        ],
+        "목표": [
+          "test_goal",
+          "efficiency_track"
+        ],
+        "반응": [
           "creative_boost",
-          "pre_report",
-          "ad_stop",
-          "audience_split"
+          "click_hook"
         ]
-      }
+      },
+      "choiceSets": [
+        {
+          "id": "r6 작게 배우기",
+          "label": "작게 배우기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "small_test",
+                "test_goal"
+              ]
+            },
+            {
+              "role": "비교",
+              "cardIds": [
+                "split_test",
+                "audience_split"
+              ]
+            },
+            {
+              "role": "효율",
+              "cardIds": [
+                "efficiency_track",
+                "spend_pacing"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r6 반응 빨리 보기",
+          "label": "반응 빨리 보기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "공격",
+              "cardIds": [
+                "early_boost",
+                "click_hook"
+              ]
+            },
+            {
+              "role": "안전",
+              "cardIds": [
+                "spend_pacing",
+                "channel_split"
+              ]
+            },
+            {
+              "role": "기준",
+              "cardIds": [
+                "test_goal",
+                "small_test"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r6 예산 관리형",
+          "label": "예산 관리형",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "예산",
+              "cardIds": [
+                "budget_defense",
+                "spend_pacing"
+              ]
+            },
+            {
+              "role": "테스트",
+              "cardIds": [
+                "small_test",
+                "split_test"
+              ]
+            },
+            {
+              "role": "분석",
+              "cardIds": [
+                "efficiency_track",
+                "price_check"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r6 타깃 나눠보기",
+          "label": "타깃 나눠보기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "audience_split"
+              ]
+            },
+            {
+              "role": "테스트",
+              "cardIds": [
+                "split_test",
+                "small_test"
+              ]
+            },
+            {
+              "role": "성과",
+              "cardIds": [
+                "click_hook",
+                "early_boost"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r6 리스크 분산",
+          "label": "리스크 분산",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "분산",
+              "cardIds": [
+                "channel_split",
+                "spend_pacing"
+              ]
+            },
+            {
+              "role": "목표",
+              "cardIds": [
+                "test_goal",
+                "efficiency_track"
+              ]
+            },
+            {
+              "role": "반응",
+              "cardIds": [
+                "creative_boost",
+                "click_hook"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "round": 7,
@@ -2396,28 +3368,193 @@
         }
       ],
       "cardSlots": {
-        "핵심": [
-          "click_hook",
+        "정석": [
           "creative_boost",
-          "thumbnail_reroll",
-          "audience_split"
-        ],
-        "맥락": [
-          "hooking_copy",
-          "split_test",
-          "early_boost",
           "message_cleanup",
+          "audience_split",
+          "split_test",
+          "efficiency_track"
+        ],
+        "카피": [
+          "hooking_copy",
           "cta_tighten"
         ],
-        "상태보정": [
-          "small_test",
-          "efficiency_track",
-          "ad_stop",
-          "brand_guard",
+        "확인": [
+          "split_test",
+          "small_test"
+        ],
+        "공격": [
+          "click_hook",
+          "thumbnail_reroll",
+          "early_boost"
+        ],
+        "예산": [
           "spend_pacing",
-          "price_check"
+          "efficiency_track"
+        ],
+        "분석": [
+          "efficiency_track",
+          "small_test"
+        ],
+        "소재": [
+          "creative_boost",
+          "click_hook"
+        ],
+        "방어": [
+          "ad_stop",
+          "budget_defense"
+        ],
+        "수정": [
+          "creative_boost",
+          "thumbnail_reroll"
+        ],
+        "실험": [
+          "split_test"
+        ],
+        "정리": [
+          "message_cleanup",
+          "cta_tighten"
         ]
-      }
+      },
+      "choiceSets": [
+        {
+          "id": "r7 소재 고치기",
+          "label": "소재 고치기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "creative_boost",
+                "message_cleanup"
+              ]
+            },
+            {
+              "role": "카피",
+              "cardIds": [
+                "hooking_copy",
+                "cta_tighten"
+              ]
+            },
+            {
+              "role": "확인",
+              "cardIds": [
+                "split_test",
+                "small_test"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r7 더 눈에 띄게",
+          "label": "더 눈에 띄게",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "공격",
+              "cardIds": [
+                "click_hook",
+                "thumbnail_reroll"
+              ]
+            },
+            {
+              "role": "카피",
+              "cardIds": [
+                "hooking_copy"
+              ]
+            },
+            {
+              "role": "예산",
+              "cardIds": [
+                "spend_pacing",
+                "efficiency_track"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r7 타깃 다시 보기",
+          "label": "타깃 다시 보기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "audience_split"
+              ]
+            },
+            {
+              "role": "분석",
+              "cardIds": [
+                "efficiency_track",
+                "small_test"
+              ]
+            },
+            {
+              "role": "소재",
+              "cardIds": [
+                "creative_boost",
+                "click_hook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r7 손절/수정 판단",
+          "label": "손절/수정 판단",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "방어",
+              "cardIds": [
+                "ad_stop",
+                "budget_defense"
+              ]
+            },
+            {
+              "role": "정석",
+              "cardIds": [
+                "split_test",
+                "efficiency_track"
+              ]
+            },
+            {
+              "role": "수정",
+              "cardIds": [
+                "creative_boost",
+                "thumbnail_reroll"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r7 반응 실험",
+          "label": "반응 실험",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "실험",
+              "cardIds": [
+                "split_test"
+              ]
+            },
+            {
+              "role": "공격",
+              "cardIds": [
+                "early_boost",
+                "click_hook"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "message_cleanup",
+                "cta_tighten"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "round": 8,
@@ -2441,30 +3578,197 @@
         }
       ],
       "cardSlots": {
-        "핵심": [
+        "정석": [
           "conversion_boost",
-          "buyer_capture",
           "landing_check",
-          "product_page_fix",
-          "cta_tighten"
+          "product_page_fix"
         ],
-        "맥락": [
-          "click_recovery",
+        "CTA": [
+          "cta_tighten",
+          "product_page_fix"
+        ],
+        "근거": [
           "review_collect",
+          "price_check"
+        ],
+        "공격": [
+          "buyer_capture",
+          "click_recovery"
+        ],
+        "전환": [
+          "conversion_boost",
+          "offer_test",
+          "review_collect",
+          "product_page_fix"
+        ],
+        "분석": [
+          "efficiency_track",
+          "price_check"
+        ],
+        "신뢰": [
+          "review_collect",
+          "brand_guard"
+        ],
+        "제안": [
           "offer_test",
           "discount_restraint",
-          "price_check",
-          "audience_split"
+          "cta_tighten"
         ],
-        "상태보정": [
-          "report_shield",
-          "efficiency_track",
-          "brand_guard",
-          "small_test",
-          "pre_report",
-          "postmortem_note"
+        "구매": [
+          "buyer_capture",
+          "conversion_boost"
+        ],
+        "브랜드": [
+          "discount_restraint",
+          "brand_guard"
+        ],
+        "성과": [
+          "click_recovery",
+          "buyer_capture"
         ]
-      }
+      },
+      "choiceSets": [
+        {
+          "id": "r8 전환길 고치기",
+          "label": "전환길 고치기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "conversion_boost",
+                "landing_check"
+              ]
+            },
+            {
+              "role": "CTA",
+              "cardIds": [
+                "cta_tighten",
+                "product_page_fix"
+              ]
+            },
+            {
+              "role": "근거",
+              "cardIds": [
+                "review_collect",
+                "price_check"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r8 살 사람 다시 잡기",
+          "label": "살 사람 다시 잡기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "공격",
+              "cardIds": [
+                "buyer_capture",
+                "click_recovery"
+              ]
+            },
+            {
+              "role": "전환",
+              "cardIds": [
+                "conversion_boost",
+                "offer_test"
+              ]
+            },
+            {
+              "role": "분석",
+              "cardIds": [
+                "efficiency_track",
+                "price_check"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r8 상세/신뢰 보강",
+          "label": "상세/신뢰 보강",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "product_page_fix",
+                "landing_check"
+              ]
+            },
+            {
+              "role": "신뢰",
+              "cardIds": [
+                "review_collect",
+                "brand_guard"
+              ]
+            },
+            {
+              "role": "제안",
+              "cardIds": [
+                "offer_test",
+                "discount_restraint"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r8 가격/제안 확인",
+          "label": "가격/제안 확인",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "분석",
+              "cardIds": [
+                "price_check",
+                "efficiency_track"
+              ]
+            },
+            {
+              "role": "제안",
+              "cardIds": [
+                "offer_test",
+                "cta_tighten"
+              ]
+            },
+            {
+              "role": "구매",
+              "cardIds": [
+                "buyer_capture",
+                "conversion_boost"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r8 너무 세일몰 방지",
+          "label": "너무 세일몰 방지",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "브랜드",
+              "cardIds": [
+                "discount_restraint",
+                "brand_guard"
+              ]
+            },
+            {
+              "role": "전환",
+              "cardIds": [
+                "review_collect",
+                "product_page_fix"
+              ]
+            },
+            {
+              "role": "성과",
+              "cardIds": [
+                "click_recovery",
+                "buyer_capture"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "round": 9,
@@ -2488,29 +3792,196 @@
         }
       ],
       "cardSlots": {
-        "핵심": [
+        "정석": [
           "efficiency_track",
+          "postmortem_note",
           "split_test",
-          "report_shield",
-          "meeting_summary",
-          "postmortem_note"
+          "small_test"
         ],
-        "맥락": [
+        "보고": [
+          "report_shield",
           "pre_report",
-          "test_goal",
-          "small_test",
-          "ask_first",
+          "meeting_summary"
+        ],
+        "근거": [
+          "split_test",
+          "test_goal"
+        ],
+        "분석": [
+          "efficiency_track",
           "price_check"
         ],
-        "상태보정": [
+        "다음 액션": [
+          "test_goal",
+          "landing_check"
+        ],
+        "회고": [
+          "postmortem_note",
+          "efficiency_track"
+        ],
+        "공유": [
+          "pre_report",
+          "ask_first"
+        ],
+        "방어": [
           "responsibility_split",
+          "meeting_summary"
+        ],
+        "정리": [
           "file_cleanup",
+          "message_cleanup"
+        ],
+        "목표": [
+          "test_goal",
+          "postmortem_note"
+        ],
+        "성과": [
           "buyer_capture",
-          "landing_check",
-          "message_cleanup",
-          "approval_anchor"
+          "landing_check"
         ]
-      }
+      },
+      "choiceSets": [
+        {
+          "id": "r9 배운 점 정리",
+          "label": "배운 점 정리",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "efficiency_track",
+                "postmortem_note"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "report_shield",
+                "pre_report"
+              ]
+            },
+            {
+              "role": "근거",
+              "cardIds": [
+                "split_test",
+                "test_goal"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r9 숫자 논리 만들기",
+          "label": "숫자 논리 만들기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "보고",
+              "cardIds": [
+                "report_shield",
+                "meeting_summary"
+              ]
+            },
+            {
+              "role": "분석",
+              "cardIds": [
+                "efficiency_track",
+                "price_check"
+              ]
+            },
+            {
+              "role": "다음 액션",
+              "cardIds": [
+                "test_goal",
+                "landing_check"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r9 테스트 기준 회수",
+          "label": "테스트 기준 회수",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "split_test",
+                "small_test"
+              ]
+            },
+            {
+              "role": "회고",
+              "cardIds": [
+                "postmortem_note",
+                "efficiency_track"
+              ]
+            },
+            {
+              "role": "공유",
+              "cardIds": [
+                "pre_report",
+                "ask_first"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r9 책임과 결론 분리",
+          "label": "책임과 결론 분리",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "방어",
+              "cardIds": [
+                "responsibility_split",
+                "meeting_summary"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "report_shield",
+                "pre_report"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "file_cleanup",
+                "message_cleanup"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r9 다음 액션 만들기",
+          "label": "다음 액션 만들기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "목표",
+              "cardIds": [
+                "test_goal",
+                "postmortem_note"
+              ]
+            },
+            {
+              "role": "성과",
+              "cardIds": [
+                "buyer_capture",
+                "landing_check"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "pre_report",
+                "report_shield"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "round": 10,
@@ -2535,29 +4006,194 @@
         }
       ],
       "cardSlots": {
-        "핵심": [
+        "정석": [
           "exec_persuasion",
-          "brand_guard",
-          "message_cleanup",
           "approval_anchor"
         ],
-        "맥락": [
+        "브랜드": [
+          "brand_guard",
           "brand_mood",
-          "hooking_copy",
-          "approval_dodge",
           "discount_restraint",
-          "brief_rewrite"
+          "tone_align"
         ],
-        "상태보정": [
+        "보고": [
           "pre_report",
           "report_shield",
-          "creative_boost",
-          "expectation_align",
+          "meeting_summary"
+        ],
+        "공격": [
+          "hooking_copy",
+          "creative_boost"
+        ],
+        "안전": [
+          "brand_guard",
+          "claim_check"
+        ],
+        "설득": [
+          "exec_persuasion",
+          "expectation_align"
+        ],
+        "정리": [
+          "message_cleanup",
           "claim_check",
-          "meeting_summary",
-          "postmortem_note"
+          "brief_rewrite",
+          "angle_sort"
+        ],
+        "설명": [
+          "approval_anchor",
+          "exec_persuasion"
+        ],
+        "방어": [
+          "approval_dodge",
+          "approval_anchor"
+        ],
+        "임팩트": [
+          "hooking_copy",
+          "creative_boost"
         ]
-      }
+      },
+      "choiceSets": [
+        {
+          "id": "r10 윗선 언어로 정리",
+          "label": "윗선 언어로 정리",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "exec_persuasion",
+                "approval_anchor"
+              ]
+            },
+            {
+              "role": "브랜드",
+              "cardIds": [
+                "brand_guard",
+                "brand_mood"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "pre_report",
+                "report_shield"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r10 임팩트 올리기",
+          "label": "임팩트 올리기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "공격",
+              "cardIds": [
+                "hooking_copy",
+                "creative_boost"
+              ]
+            },
+            {
+              "role": "안전",
+              "cardIds": [
+                "brand_guard",
+                "claim_check"
+              ]
+            },
+            {
+              "role": "설득",
+              "cardIds": [
+                "exec_persuasion",
+                "expectation_align"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r10 브랜드 선 지키기",
+          "label": "브랜드 선 지키기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "브랜드",
+              "cardIds": [
+                "brand_guard",
+                "discount_restraint"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "message_cleanup",
+                "claim_check"
+              ]
+            },
+            {
+              "role": "설명",
+              "cardIds": [
+                "approval_anchor",
+                "exec_persuasion"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r10 크게 안 걸리게",
+          "label": "크게 안 걸리게",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "방어",
+              "cardIds": [
+                "approval_dodge",
+                "approval_anchor"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "brief_rewrite",
+                "message_cleanup"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "pre_report",
+                "meeting_summary"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r10 방향 다시 묶기",
+          "label": "방향 다시 묶기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정리",
+              "cardIds": [
+                "brief_rewrite",
+                "angle_sort"
+              ]
+            },
+            {
+              "role": "브랜드",
+              "cardIds": [
+                "brand_mood",
+                "tone_align"
+              ]
+            },
+            {
+              "role": "임팩트",
+              "cardIds": [
+                "hooking_copy",
+                "creative_boost"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "round": 11,
@@ -2582,30 +4218,192 @@
         }
       ],
       "cardSlots": {
-        "핵심": [
+        "정석": [
           "report_shield",
-          "pre_report",
+          "pre_report"
+        ],
+        "근거": [
           "efficiency_track",
-          "meeting_summary",
+          "price_check",
           "postmortem_note"
         ],
-        "맥락": [
-          "file_cleanup",
-          "exec_persuasion",
-          "responsibility_split",
-          "review_collect",
-          "approval_anchor",
-          "price_check"
+        "정리": [
+          "meeting_summary",
+          "file_cleanup"
         ],
-        "상태보정": [
+        "성과": [
           "buyer_capture",
+          "conversion_boost"
+        ],
+        "보고": [
+          "report_shield",
+          "exec_persuasion",
+          "pre_report"
+        ],
+        "보완": [
+          "review_collect",
+          "test_goal"
+        ],
+        "방어": [
+          "responsibility_split",
           "budget_defense",
-          "split_test",
+          "approval_anchor"
+        ],
+        "목표": [
           "test_goal",
-          "message_cleanup",
-          "brief_rewrite"
+          "postmortem_note"
+        ],
+        "분석": [
+          "efficiency_track",
+          "split_test"
+        ],
+        "설득": [
+          "exec_persuasion",
+          "pre_report"
         ]
-      }
+      },
+      "choiceSets": [
+        {
+          "id": "r11 보고 흐름 만들기",
+          "label": "보고 흐름 만들기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정석",
+              "cardIds": [
+                "report_shield",
+                "pre_report"
+              ]
+            },
+            {
+              "role": "근거",
+              "cardIds": [
+                "efficiency_track",
+                "price_check"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "meeting_summary",
+                "file_cleanup"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r11 성과 강조하기",
+          "label": "성과 강조하기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "성과",
+              "cardIds": [
+                "buyer_capture",
+                "conversion_boost"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "report_shield",
+                "exec_persuasion"
+              ]
+            },
+            {
+              "role": "보완",
+              "cardIds": [
+                "review_collect",
+                "test_goal"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r11 리스크 방어하기",
+          "label": "리스크 방어하기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "방어",
+              "cardIds": [
+                "responsibility_split",
+                "budget_defense"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "pre_report",
+                "report_shield"
+              ]
+            },
+            {
+              "role": "근거",
+              "cardIds": [
+                "efficiency_track",
+                "postmortem_note"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r11 다음 테스트 제안",
+          "label": "다음 테스트 제안",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "목표",
+              "cardIds": [
+                "test_goal",
+                "postmortem_note"
+              ]
+            },
+            {
+              "role": "분석",
+              "cardIds": [
+                "efficiency_track",
+                "split_test"
+              ]
+            },
+            {
+              "role": "설득",
+              "cardIds": [
+                "exec_persuasion",
+                "pre_report"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r11 자료 마감하기",
+          "label": "자료 마감하기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "정리",
+              "cardIds": [
+                "file_cleanup",
+                "meeting_summary"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "report_shield",
+                "pre_report"
+              ]
+            },
+            {
+              "role": "방어",
+              "cardIds": [
+                "responsibility_split",
+                "approval_anchor"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "round": 12,
@@ -2630,31 +4428,195 @@
         }
       ],
       "cardSlots": {
-        "핵심": [
+        "성과": [
+          "buyer_capture",
+          "conversion_boost",
+          "product_page_fix",
+          "cta_tighten",
+          "click_recovery"
+        ],
+        "보고": [
           "report_shield",
           "efficiency_track",
-          "buyer_capture",
           "postmortem_note",
-          "product_page_fix"
+          "pre_report"
         ],
-        "맥락": [
+        "설득": [
           "exec_persuasion",
-          "conversion_boost",
           "pre_report",
-          "responsibility_split",
-          "cta_tighten",
+          "approval_anchor"
+        ],
+        "효율": [
+          "efficiency_track",
+          "budget_defense"
+        ],
+        "다음 액션": [
+          "test_goal",
+          "split_test"
+        ],
+        "목표": [
+          "test_goal",
+          "postmortem_note"
+        ],
+        "근거": [
+          "review_collect",
           "price_check"
         ],
-        "상태보정": [
-          "budget_defense",
-          "review_collect",
-          "click_recovery",
-          "brand_guard",
-          "test_goal",
+        "방어": [
+          "responsibility_split",
+          "brand_guard"
+        ],
+        "정리": [
           "meeting_summary",
-          "approval_anchor"
+          "postmortem_note"
+        ],
+        "예산": [
+          "budget_defense",
+          "efficiency_track"
         ]
-      }
+      },
+      "choiceSets": [
+        {
+          "id": "r12 숫자로 밀기",
+          "label": "숫자로 밀기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "성과",
+              "cardIds": [
+                "buyer_capture",
+                "conversion_boost"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "report_shield",
+                "efficiency_track"
+              ]
+            },
+            {
+              "role": "설득",
+              "cardIds": [
+                "exec_persuasion",
+                "pre_report"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r12 효율로 방어하기",
+          "label": "효율로 방어하기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "효율",
+              "cardIds": [
+                "efficiency_track",
+                "budget_defense"
+              ]
+            },
+            {
+              "role": "보고",
+              "cardIds": [
+                "report_shield",
+                "postmortem_note"
+              ]
+            },
+            {
+              "role": "다음 액션",
+              "cardIds": [
+                "test_goal",
+                "split_test"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r12 다음 단계 제안",
+          "label": "다음 단계 제안",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "목표",
+              "cardIds": [
+                "test_goal",
+                "postmortem_note"
+              ]
+            },
+            {
+              "role": "성과",
+              "cardIds": [
+                "product_page_fix",
+                "cta_tighten"
+              ]
+            },
+            {
+              "role": "설득",
+              "cardIds": [
+                "exec_persuasion",
+                "approval_anchor"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r12 신뢰로 통과하기",
+          "label": "신뢰로 통과하기",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "보고",
+              "cardIds": [
+                "pre_report",
+                "report_shield"
+              ]
+            },
+            {
+              "role": "근거",
+              "cardIds": [
+                "review_collect",
+                "price_check"
+              ]
+            },
+            {
+              "role": "방어",
+              "cardIds": [
+                "responsibility_split",
+                "brand_guard"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r12 마지막 보정",
+          "label": "마지막 보정",
+          "weight": 1.0,
+          "choices": [
+            {
+              "role": "성과",
+              "cardIds": [
+                "click_recovery",
+                "conversion_boost"
+              ]
+            },
+            {
+              "role": "정리",
+              "cardIds": [
+                "meeting_summary",
+                "postmortem_note"
+              ]
+            },
+            {
+              "role": "예산",
+              "cardIds": [
+                "budget_defense",
+                "efficiency_track"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "changeLog": [
@@ -2690,5 +4652,12 @@
     "v8.1 시뮬레이션에서 R1에 분할 실험/소액 테스트가 이른 단계로 보여 제외했다.",
     "R3~R5에서 회의 결론 뽑기가 파일/피드백/마감 상황과 다소 어긋나 제외했다.",
     "후보군은 여전히 라운드별 12장 이상 유지하도록 보존했다."
+  ],
+  "changeLogV9": [
+    "순수 후보군 랜덤 방식에서 라운드별 choiceSets 방식으로 변경",
+    "R1~R12 각 라운드에 자연스럽게 같이 등장할 수 있는 선택지 묶음 5개씩 추가",
+    "카드 설명을 기능 설명보다 상황 대응 행동으로 다듬음",
+    "카드 색/아이콘을 category 기준으로 통일하는 앱/CSS 보정 포함",
+    "50장 카드풀은 유지하되, 초반 라운드에는 실행/전환/대표 대응 카드가 섞이지 않게 정리"
   ]
 }
