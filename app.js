@@ -181,6 +181,8 @@ function initialState(screen = "choice") {
     build: Object.fromEntries(data.buildStats.map((key) => [key, 2])),
     risk: Object.fromEntries(data.riskStats.map((key) => [key, 0])),
     recentCards: [],
+    recentOfferedCards: [],
+    recentChoiceSets: [],
     recentSituations: [],
     recentTags: [],
     triggeredSynergies: new Set(),
@@ -208,6 +210,7 @@ function nextRound() {
   state.currentSituation = pickSituation();
   state.currentStoryRound = state.currentSituation.storyRound || null;
   state.offeredCards = pickCards(state.currentSituation);
+  state.recentOfferedCards = [...state.offeredCards.map((card) => ({ id: card.id, name: card.name, round: state.round })), ...state.recentOfferedCards].slice(0, 12);
   state.recentSituations = [state.currentSituation.id, ...state.recentSituations].slice(0, 2);
   render();
 }
@@ -325,13 +328,14 @@ function pickCards(situation) {
 }
 
 function pickStoryCards(storyRound) {
+  if (storyRound.choiceSets?.length) return pickChoiceSetCards(storyRound);
+
   const slots = normalizeCardSlots(storyRound.cardSlots);
   const allCandidates = flattenStoryCandidates(storyRound, slots);
   const picked = [];
 
-  // 1) 핵심 후보는 높은 확률로 1장만 보장한다. 단, 고정 카드처럼 보이지 않도록 85% 확률로만 우선 선택한다.
   const coreSlot = slots.find((slot) => ["핵심", "정석", "main"].includes(slot.role));
-  if (coreSlot && Math.random() < 0.85) {
+  if (coreSlot && Math.random() < 0.75) {
     const coreCandidates = coreSlot.candidateCardIds
       .map((id) => data.cards.find((card) => card.id === id))
       .filter(Boolean);
@@ -344,7 +348,6 @@ function pickStoryCards(storyRound) {
     }
   }
 
-  // 2) 나머지는 모든 슬롯 후보군에서 가중치로 뽑는다. 슬롯별 1장 고정이 아니라 후보군 전체 경쟁 방식.
   while (picked.length < 3 && allCandidates.length) {
     const candidates = allCandidates
       .filter(({ card }) => !picked.some((item) => item.id === card.id))
@@ -359,21 +362,79 @@ function pickStoryCards(storyRound) {
     picked.push(selected);
   }
 
-  // 3) 그래도 부족하면 전체 카드풀에서 맥락 태그가 맞는 카드로 보충한다.
+  return fillChoiceFallback(picked, storyRound).slice(0, 3);
+}
+
+function pickChoiceSetCards(storyRound) {
+  const sets = storyRound.choiceSets.filter((set) => matchesVariantCondition(set.condition || "default"));
+  const selectedSet = weightedPick(sets.map((set) => ({
+    item: set,
+    weight: choiceSetWeight(set, storyRound),
+  })));
+
+  state.recentChoiceSets = [{ id: selectedSet.id, round: state.round }, ...state.recentChoiceSets].slice(0, 6);
+
+  const picked = [];
+  for (const choice of selectedSet.choices || []) {
+    const pool = (choice.cardIds || [])
+      .map((id) => data.cards.find((card) => card.id === id))
+      .filter(Boolean)
+      .filter((card) => !picked.some((item) => item.id === card.id));
+
+    if (!pool.length) continue;
+    const selected = weightedPick(pool.map((card) => ({
+      item: attachChoiceMeta(card, choice.role || selectedSet.label || "선택"),
+      weight: storyCardWeight(card, storyRound, choice.role || selectedSet.label || "선택") * offeredPenalty(card),
+    })));
+    picked.push(selected);
+  }
+
+  return fillChoiceFallback(picked, storyRound).slice(0, 3);
+}
+
+function choiceSetWeight(set, storyRound) {
+  let weight = set.weight || 1;
+  const recent = state.recentChoiceSets.find((item) => item.id === set.id);
+  if (recent) {
+    const age = state.round - recent.round;
+    if (age <= 2) weight *= 0.35;
+    else if (age <= 4) weight *= 0.65;
+  }
+
+  const allIds = (set.choices || []).flatMap((choice) => choice.cardIds || []);
+  const stateBonus = allIds
+    .map((id) => data.cards.find((card) => card.id === id))
+    .filter(Boolean)
+    .reduce((sum, card) => sum + getStateNeedBonus(card) * 0.12, 0);
+  return Math.max(0.1, weight + stateBonus);
+}
+
+function offeredPenalty(card) {
+  const recent = state.recentOfferedCards?.find((item) => item.id === card.id || item.name === card.name);
+  if (!recent) return 1;
+  const age = state.round - recent.round;
+  if (age <= 1) return 0.1;
+  if (age <= 2) return 0.3;
+  if (age <= 3) return 0.55;
+  return 0.8;
+}
+
+function fillChoiceFallback(picked, storyRound) {
   const fallbackPool = data.cards
     .filter((card) => !picked.some((item) => item.id === card.id))
-    .filter((card) => canAddCardWithoutCategoryFlood(card, picked));
+    .filter((card) => canAddCardWithoutCategoryFlood(card, picked))
+    .filter((card) => !card.badFits?.some((tag) => (storyRound.situationTags || []).includes(tag)));
+
   while (picked.length < 3 && fallbackPool.length) {
     const selected = weightedPick(fallbackPool.map((card) => ({
       item: attachChoiceMeta(card, "보정"),
-      weight: Math.max(0.1, cardWeight(card, { preferredTags: storyRound.situationTags || [] }) * 0.35),
+      weight: Math.max(0.1, cardWeight(card, { preferredTags: storyRound.situationTags || [] }) * 0.25 * offeredPenalty(card)),
     })));
     picked.push(selected);
     const idx = fallbackPool.findIndex((card) => card.id === selected.id);
     if (idx >= 0) fallbackPool.splice(idx, 1);
   }
-
-  return picked.slice(0, 3);
+  return picked;
 }
 
 function flattenStoryCandidates(storyRound, slots) {
@@ -724,7 +785,7 @@ function renderChoiceCard(card) {
   const displayDescription = getCardDescription(card);
   const roleLabel = card._choiceRole || card.category;
   return `
-    <button class="choice-card" type="button" data-card-id="${card.id}" ${state.finished ? "disabled" : ""}>
+    <button class="choice-card ${categoryClass(card.category)}" type="button" data-card-id="${card.id}" ${state.finished ? "disabled" : ""}>
       <div class="card-icon" aria-hidden="true">${cardIcon(card)}</div>
       <div class="card-main">
         <div class="card-tagline"><span>${roleLabel}</span><span>${card.category} · ${card.tags.slice(0, 2).join(" · ")}</span></div>
@@ -734,10 +795,6 @@ function renderChoiceCard(card) {
       <div class="effect-list">
         <span class="cost-label">비용</span>
         <strong>${formatCostCompact(card.cost)}</strong>
-        <span class="cost-label">회수</span>
-        <strong>${formatRangeCompact(card.earned)}</strong>
-        <span class="cost-label">성과</span>
-        <strong>${formatScoreRange(card.score)}</strong>
       </div>
     </button>
   `;
@@ -762,12 +819,27 @@ function getCardDescription(card) {
 }
 
 function cardIcon(card) {
-  if (card.tags.includes("반응")) return "⌕";
-  if (card.tags.includes("브랜드")) return "◆";
-  if (card.tags.includes("운영")) return "▣";
-  if (card.tags.includes("예산")) return "▰";
-  if (card.tags.includes("보고")) return "☷";
-  return "✦";
+  const icons = {
+    "예산관리": "₩",
+    "퍼포먼스": "↗",
+    "콘텐츠": "✎",
+    "브랜드": "◆",
+    "사내정치": "☷",
+    "운영력": "▣",
+  };
+  return icons[card.category] || "✦";
+}
+
+function categoryClass(category = "") {
+  const mapping = {
+    "예산관리": "category-budget",
+    "퍼포먼스": "category-performance",
+    "콘텐츠": "category-content",
+    "브랜드": "category-brand",
+    "사내정치": "category-politics",
+    "운영력": "category-operations",
+  };
+  return mapping[category] || "category-default";
 }
 
 function renderTurnResult() {
