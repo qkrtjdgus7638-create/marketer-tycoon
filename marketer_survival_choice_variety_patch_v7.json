@@ -1,0 +1,2075 @@
+{
+  "overlayTitle": "마케터로 살아남기 - 선택지 다양화/카드 확장 패치 v7",
+  "purpose": "상황당 선택지가 고정처럼 반복되는 문제를 해결하기 위해 카드 수를 늘리고, 라운드별 카드 후보군을 핵심/맥락/상태보정 3슬롯으로 확장한다.",
+  "mergePolicy": {
+    "cards": "기존 cards에는 cardPatches를 id 기준으로 병합하고, newCards는 cards 배열에 append한다.",
+    "storyRounds": "기존 storyRounds를 v7 storyRounds로 교체한다. requiredCards는 사용하지 않는다.",
+    "logic": "choiceSelectionLogic은 개발자 구현 가이드다. 데이터만 먼저 적용해도 후보군은 넓어지지만, recency/state 가중치를 적용하면 반복감이 더 줄어든다."
+  },
+  "choiceSelectionLogic": {
+    "version": "choice-variety-v7",
+    "summary": "선택지가 고정처럼 느껴지는 문제를 해결하기 위해 카드 수를 확장하고, 라운드별 후보군을 핵심/맥락/상태보정 3슬롯으로 재구성한다.",
+    "targetCardCount": "기본 20장 + 신규 22장 = 총 42장",
+    "selectionRules": [
+      "각 라운드는 cardSlots.핵심 / cardSlots.맥락 / cardSlots.상태보정에서 1장씩 총 3장을 제시한다.",
+      "각 슬롯 후보군은 최소 5장 이상으로 둔다. 라운드 전체 후보군은 9~13장 수준을 목표로 한다.",
+      "requiredCards는 제거한다. 특정 카드가 매번 고정 노출되지 않도록 한다.",
+      "최근 2턴에 제시되었거나 선택된 카드는 가중치를 크게 낮춘다.",
+      "현재 돈/성과/멘탈/신뢰/빌드 결핍 상태에 맞는 카드는 상태보정 슬롯에서 가중치를 높인다.",
+      "badFits와 현재 라운드 태그가 겹치는 카드는 슬롯 후보군에 있더라도 가중치를 낮추거나 제외한다.",
+      "같은 category가 3장 모두 나오면 마지막 카드를 다른 category 후보로 교체한다."
+    ],
+    "dropInPolicy": "기존 v3 data와 app 구조를 유지하되, story patch 교체 + pickStoryCards/cardWeight 함수 보강으로 적용한다."
+  },
+  "cardPatches": {
+    "small_test": {
+      "description": "작은 예산으로 먼저 반응을 확인합니다.",
+      "fits": [
+        "테스트",
+        "예산",
+        "반응불확실",
+        "기준불명확",
+        "보고"
+      ],
+      "badFits": [
+        "전환문제",
+        "대표피드백"
+      ]
+    },
+    "budget_defense": {
+      "description": "추가 집행을 줄이고 남은 예산을 지킵니다.",
+      "fits": [
+        "예산부족",
+        "돈녹음",
+        "효율악화",
+        "성과부족"
+      ],
+      "badFits": [
+        "기회",
+        "성과확장"
+      ]
+    },
+    "channel_split": {
+      "description": "한 곳에 몰지 않고 여러 채널로 위험을 나눕니다.",
+      "fits": [
+        "예산",
+        "광고집행",
+        "위험분산",
+        "운영"
+      ],
+      "badFits": [
+        "파일관리",
+        "기준불명확"
+      ]
+    },
+    "buyer_capture": {
+      "description": "구매 가능성이 높은 사람에게 예산을 집중합니다.",
+      "fits": [
+        "전환문제",
+        "구매부족",
+        "매출압박",
+        "최종평가"
+      ],
+      "badFits": [
+        "파일관리",
+        "기준불명확",
+        "조사"
+      ]
+    },
+    "click_hook": {
+      "description": "그냥 지나치지 않도록 소재의 첫 반응을 키웁니다.",
+      "fits": [
+        "반응저조",
+        "클릭부족",
+        "소재문제"
+      ],
+      "badFits": [
+        "파일관리",
+        "보고"
+      ]
+    },
+    "early_boost": {
+      "description": "초반 반응을 빠르게 확인하기 위해 예산을 더 실어봅니다.",
+      "fits": [
+        "광고집행",
+        "기회",
+        "성과확장",
+        "반응저조"
+      ],
+      "badFits": [
+        "예산부족",
+        "파일관리",
+        "기준불명확"
+      ]
+    },
+    "creative_boost": {
+      "description": "현재 소재를 더 눈에 띄는 방향으로 다듬습니다.",
+      "fits": [
+        "소재문제",
+        "시안피드백",
+        "반응저조",
+        "클릭부족"
+      ],
+      "badFits": [
+        "파일관리",
+        "보고"
+      ]
+    },
+    "split_test": {
+      "description": "여러 안을 작게 비교해 더 나은 방향을 고릅니다.",
+      "fits": [
+        "테스트",
+        "반응불확실",
+        "학습",
+        "광고집행",
+        "보고"
+      ],
+      "badFits": [
+        "일정압박"
+      ]
+    },
+    "hooking_copy": {
+      "description": "첫 문장에서 멈춰 보게 할 표현을 강화합니다.",
+      "fits": [
+        "반응저조",
+        "시안피드백",
+        "대표피드백",
+        "카피"
+      ],
+      "badFits": [
+        "파일관리",
+        "예산부족"
+      ]
+    },
+    "reference_collect": {
+      "description": "비슷한 브랜드 사례를 모아 방향을 잡습니다.",
+      "fits": [
+        "조사",
+        "방향성",
+        "기준불명확"
+      ],
+      "badFits": [
+        "전환문제",
+        "마감압박",
+        "최종평가"
+      ]
+    },
+    "thumbnail_reroll": {
+      "description": "반응이 약한 썸네일을 다른 방향으로 다시 잡습니다.",
+      "fits": [
+        "반응저조",
+        "클릭부족",
+        "소재문제"
+      ],
+      "badFits": [
+        "조사",
+        "파일관리",
+        "보고"
+      ]
+    },
+    "brand_mood": {
+      "description": "시안의 분위기를 브랜드에 맞게 더 정돈합니다.",
+      "fits": [
+        "시안피드백",
+        "대표피드백",
+        "브랜드제동",
+        "방향설정"
+      ],
+      "badFits": [
+        "조사",
+        "파일관리",
+        "전환문제"
+      ]
+    },
+    "tone_align": {
+      "description": "문구와 비주얼을 브랜드 톤에 맞게 정리합니다.",
+      "fits": [
+        "조사",
+        "방향성",
+        "시안피드백",
+        "브랜드제동",
+        "카피"
+      ],
+      "badFits": [
+        "전환문제",
+        "예산부족"
+      ]
+    },
+    "ask_first": {
+      "description": "작업 전에 원하는 기준과 방향을 먼저 확인합니다.",
+      "fits": [
+        "기준불명확",
+        "컨펌",
+        "시안피드백",
+        "보고",
+        "대표피드백"
+      ],
+      "badFits": [
+        "성과확장"
+      ]
+    },
+    "approval_dodge": {
+      "description": "큰 방향 변경 없이 걸릴 만한 부분만 조용히 정리합니다.",
+      "fits": [
+        "컨펌",
+        "시안피드백",
+        "대표피드백"
+      ],
+      "badFits": [
+        "조사",
+        "전환문제"
+      ]
+    },
+    "report_shield": {
+      "description": "애매한 결과도 설명 가능한 근거로 정리합니다.",
+      "fits": [
+        "보고",
+        "학습",
+        "최종평가",
+        "성과부족"
+      ],
+      "badFits": [
+        "파일관리",
+        "반응저조"
+      ]
+    },
+    "file_cleanup": {
+      "description": "작업 전에 진짜 최종 파일과 사용 파일을 정리합니다.",
+      "fits": [
+        "파일관리",
+        "실수위험",
+        "운영"
+      ],
+      "badFits": [
+        "반응저조",
+        "전환문제"
+      ]
+    },
+    "schedule_defense": {
+      "description": "오늘 처리 가능한 범위를 정하고 일정을 조정합니다.",
+      "fits": [
+        "일정압박",
+        "마감압박",
+        "번아웃"
+      ],
+      "badFits": [
+        "기회",
+        "성과확장"
+      ]
+    },
+    "request_doc": {
+      "description": "요청 내용을 문서로 남겨 수정 범위를 확정합니다.",
+      "fits": [
+        "기준불명확",
+        "파일관리",
+        "수정요청",
+        "일정압박",
+        "회의"
+      ],
+      "badFits": [
+        "전환문제",
+        "성과확장"
+      ]
+    },
+    "urgent_fix": {
+      "description": "가장 급한 문제부터 처리해 일정 지연을 막습니다.",
+      "fits": [
+        "수정요청",
+        "마감압박",
+        "파일관리",
+        "위기"
+      ],
+      "badFits": [
+        "조사",
+        "보고"
+      ]
+    }
+  },
+  "newCards": [
+    {
+      "id": "efficiency_track",
+      "name": "효율 추적",
+      "category": "예산관리",
+      "description": "쓴 예산 대비 어떤 반응이 남았는지 확인합니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        15000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 2,
+        "performance": -1,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "예산",
+        "보고",
+        "테스트"
+      ],
+      "note": "돈을 많이 쓰지 않고 배운 점을 만드는 카드.",
+      "fits": [
+        "예산",
+        "보고",
+        "학습",
+        "데이터해석",
+        "테스트"
+      ],
+      "badFits": [
+        "브랜드제동",
+        "파일관리"
+      ]
+    },
+    {
+      "id": "ad_stop",
+      "name": "광고 중단",
+      "category": "예산관리",
+      "description": "반응 없는 집행을 멈추고 손실을 줄입니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        -1,
+        0
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": -1
+      },
+      "build": {
+        "budgetControl": 2,
+        "performance": -2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -3,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "예산",
+        "방어",
+        "중단"
+      ],
+      "note": "손절 판단 카드.",
+      "fits": [
+        "예산부족",
+        "돈녹음",
+        "효율악화",
+        "반응저조"
+      ],
+      "badFits": [
+        "기회",
+        "성과확장",
+        "대표피드백"
+      ]
+    },
+    {
+      "id": "conversion_boost",
+      "name": "전환 보강",
+      "category": "퍼포먼스",
+      "description": "클릭 이후 구매까지 이어지도록 전환 요소를 보강합니다.",
+      "cost": 25000,
+      "earned": [
+        20000,
+        75000
+      ],
+      "score": [
+        1,
+        3
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "전환",
+        "성과",
+        "구매"
+      ],
+      "note": "전환문제 핵심 카드.",
+      "fits": [
+        "전환문제",
+        "구매부족",
+        "매출압박",
+        "상세페이지"
+      ],
+      "badFits": [
+        "파일관리",
+        "기준불명확"
+      ]
+    },
+    {
+      "id": "click_recovery",
+      "name": "클릭 회수",
+      "category": "퍼포먼스",
+      "description": "이미 반응한 사람에게 다시 노출해 구매 가능성을 높입니다.",
+      "cost": 20000,
+      "earned": [
+        15000,
+        65000
+      ],
+      "score": [
+        1,
+        3
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 2,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "전환",
+        "회수",
+        "성과"
+      ],
+      "note": "앞 라운드 반응을 성과로 이어붙이는 카드.",
+      "fits": [
+        "전환문제",
+        "구매부족",
+        "기회",
+        "반응회복"
+      ],
+      "badFits": [
+        "파일관리",
+        "조사"
+      ]
+    },
+    {
+      "id": "brand_guard",
+      "name": "브랜드 가드",
+      "category": "브랜드",
+      "description": "반응을 노리되 브랜드가 가벼워 보이지 않게 조정합니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        15000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 2
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": -1,
+        "brand": 2,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": -3,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "방어",
+        "컨펌"
+      ],
+      "note": "브랜드팀 제동/세일몰 위험 방어.",
+      "fits": [
+        "브랜드제동",
+        "톤붕괴",
+        "세일몰위험",
+        "대표피드백",
+        "컨펌"
+      ],
+      "badFits": [
+        "반응저조",
+        "예산부족"
+      ]
+    },
+    {
+      "id": "review_collect",
+      "name": "리뷰 확보",
+      "category": "브랜드",
+      "description": "구매를 망설이는 사람에게 보여줄 신뢰 근거를 챙깁니다.",
+      "cost": 10000,
+      "earned": [
+        0,
+        25000
+      ],
+      "score": [
+        0,
+        2
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 1,
+        "content": -1,
+        "brand": 1,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": -1,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "전환",
+        "신뢰"
+      ],
+      "note": "브랜드와 전환을 잇는 카드.",
+      "fits": [
+        "전환문제",
+        "구매부족",
+        "신뢰부족",
+        "보고"
+      ],
+      "badFits": [
+        "파일관리",
+        "일정압박"
+      ]
+    },
+    {
+      "id": "discount_restraint",
+      "name": "할인 절제",
+      "category": "브랜드",
+      "description": "과한 할인 표현을 줄여 브랜드 부담을 낮춥니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": -1,
+        "content": 0,
+        "brand": 2,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -1,
+        "approvalRisk": 0,
+        "brandRisk": -2,
+        "reportPressure": 1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "방어",
+        "안정"
+      ],
+      "note": "가격 후킹으로 싸보이는 문제를 막는 카드.",
+      "fits": [
+        "세일몰위험",
+        "브랜드제동",
+        "대표피드백",
+        "톤붕괴"
+      ],
+      "badFits": [
+        "성과압박",
+        "기회"
+      ]
+    },
+    {
+      "id": "exec_persuasion",
+      "name": "대표 설득",
+      "category": "사내정치",
+      "description": "대표가 보는 기준에 맞춰 선택의 이유를 설명합니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        15000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 2
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 2,
+        "operations": -1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -2,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 1,
+        "burnoutRisk": 1
+      },
+      "tags": [
+        "사내정치",
+        "컨펌",
+        "보고"
+      ],
+      "note": "대표 피드백/보고 라운드 대응.",
+      "fits": [
+        "대표피드백",
+        "보고",
+        "최종평가",
+        "컨펌"
+      ],
+      "badFits": [
+        "파일관리",
+        "반응저조"
+      ]
+    },
+    {
+      "id": "responsibility_split",
+      "name": "책임 분산",
+      "category": "사내정치",
+      "description": "요청과 결정 과정을 남겨 책임 범위를 분명히 합니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 2,
+        "operations": -1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 1,
+        "burnoutRisk": -1
+      },
+      "tags": [
+        "사내정치",
+        "방어",
+        "보고"
+      ],
+      "note": "유관부서/보고 상황 피해 감소.",
+      "fits": [
+        "파일관리",
+        "유관부서",
+        "보고",
+        "수정요청",
+        "회의"
+      ],
+      "badFits": [
+        "반응저조",
+        "기회"
+      ]
+    },
+    {
+      "id": "agency_call",
+      "name": "대행사 호출",
+      "category": "운영력",
+      "description": "내부에서 처리하기 어려운 작업은 외부 도움으로 분리합니다.",
+      "cost": 20000,
+      "earned": [
+        5000,
+        40000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": -1,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 2
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": -2,
+        "burnoutRisk": -1
+      },
+      "tags": [
+        "운영",
+        "수정",
+        "외부도움"
+      ],
+      "note": "일정 압박/긴급 수정 대응.",
+      "fits": [
+        "일정압박",
+        "수정요청",
+        "마감압박",
+        "운영"
+      ],
+      "badFits": [
+        "예산부족",
+        "보고"
+      ]
+    },
+    {
+      "id": "test_goal",
+      "name": "테스트 목표 설정",
+      "category": "예산관리",
+      "description": "집행 전에 무엇을 성공으로 볼지 먼저 정합니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 1,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 1,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "예산",
+        "테스트",
+        "보고"
+      ],
+      "note": "초반/보고 라운드의 기준 정리 카드.",
+      "fits": [
+        "기준불명확",
+        "테스트",
+        "보고",
+        "학습"
+      ],
+      "badFits": [
+        "전환문제"
+      ]
+    },
+    {
+      "id": "spend_pacing",
+      "name": "예산 속도 조절",
+      "category": "예산관리",
+      "description": "한 번에 다 쓰지 않도록 집행 속도를 나눕니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 0
+      },
+      "build": {
+        "budgetControl": 2,
+        "performance": -1,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": -2,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": -1
+      },
+      "tags": [
+        "예산",
+        "방어",
+        "운영"
+      ],
+      "note": "예산 소진을 늦추는 카드.",
+      "fits": [
+        "광고집행",
+        "예산부족",
+        "돈녹음",
+        "기회"
+      ],
+      "badFits": [
+        "최종평가"
+      ]
+    },
+    {
+      "id": "landing_check",
+      "name": "랜딩 확인",
+      "category": "퍼포먼스",
+      "description": "광고를 누른 뒤 어디서 빠지는지 확인합니다.",
+      "cost": 10000,
+      "earned": [
+        5000,
+        30000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 1,
+        "content": 0,
+        "brand": 0,
+        "politics": 0,
+        "operations": 1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": -1,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "전환",
+        "운영",
+        "성과"
+      ],
+      "note": "클릭 이후 문제를 찾는 카드.",
+      "fits": [
+        "전환문제",
+        "구매부족",
+        "상세페이지",
+        "학습"
+      ],
+      "badFits": [
+        "조사",
+        "파일관리"
+      ]
+    },
+    {
+      "id": "offer_test",
+      "name": "제안 테스트",
+      "category": "퍼포먼스",
+      "description": "어떤 혜택 표현이 구매를 움직이는지 작게 비교합니다.",
+      "cost": 15000,
+      "earned": [
+        10000,
+        50000
+      ],
+      "score": [
+        1,
+        2
+      ],
+      "secondary": {
+        "mental": -1,
+        "trust": 0
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 2,
+        "content": 0,
+        "brand": -1,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 1,
+        "approvalRisk": 0,
+        "brandRisk": 1,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "전환",
+        "테스트",
+        "성과"
+      ],
+      "note": "전환 보강의 공격형 변주.",
+      "fits": [
+        "전환문제",
+        "구매부족",
+        "기회",
+        "성과압박"
+      ],
+      "badFits": [
+        "브랜드제동",
+        "파일관리"
+      ]
+    },
+    {
+      "id": "angle_sort",
+      "name": "각도 정리",
+      "category": "콘텐츠",
+      "description": "모은 레퍼런스를 몇 가지 방향으로 묶어봅니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        20000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 1,
+        "brand": 0,
+        "politics": 1,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "콘텐츠",
+        "조사",
+        "방향성"
+      ],
+      "note": "R1/R2에서 레퍼런스가 산으로 가지 않게 해주는 카드.",
+      "fits": [
+        "조사",
+        "방향성",
+        "기준불명확",
+        "시안피드백"
+      ],
+      "badFits": [
+        "전환문제",
+        "예산부족"
+      ]
+    },
+    {
+      "id": "message_cleanup",
+      "name": "메시지 정리",
+      "category": "콘텐츠",
+      "description": "하고 싶은 말을 한 문장으로 정리합니다.",
+      "cost": 5000,
+      "earned": [
+        0,
+        25000
+      ],
+      "score": [
+        0,
+        2
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 1,
+        "brand": 1,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "콘텐츠",
+        "브랜드",
+        "컨펌"
+      ],
+      "note": "콘텐츠와 브랜드 사이 균형 카드.",
+      "fits": [
+        "방향설정",
+        "시안피드백",
+        "카피",
+        "대표피드백"
+      ],
+      "badFits": [
+        "예산부족",
+        "파일관리"
+      ]
+    },
+    {
+      "id": "reference_filter",
+      "name": "브랜드 기준 필터",
+      "category": "브랜드",
+      "description": "모은 사례 중 우리 브랜드와 맞는 것만 남깁니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 2,
+        "politics": 0,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": -1,
+        "reportPressure": 0,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "조사",
+        "방향성"
+      ],
+      "note": "R1에서 감도 연출 대신 쓰기 좋은 조사형 브랜드 카드.",
+      "fits": [
+        "조사",
+        "방향성",
+        "브랜드제동",
+        "기준불명확"
+      ],
+      "badFits": [
+        "전환문제",
+        "반응저조"
+      ]
+    },
+    {
+      "id": "claim_check",
+      "name": "표현 검수",
+      "category": "브랜드",
+      "description": "과장되거나 걸릴 만한 표현을 먼저 걷어냅니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 1,
+        "politics": 0,
+        "operations": 1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": -1,
+        "reportPressure": 0,
+        "operationRisk": -1,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "브랜드",
+        "컨펌",
+        "방어"
+      ],
+      "note": "피드백/대표 라운드 안전장치.",
+      "fits": [
+        "컨펌",
+        "시안피드백",
+        "대표피드백",
+        "브랜드제동"
+      ],
+      "badFits": [
+        "기회",
+        "성과확장"
+      ]
+    },
+    {
+      "id": "expectation_align",
+      "name": "기대치 맞추기",
+      "category": "사내정치",
+      "description": "이 작업으로 어디까지 볼 수 있는지 먼저 맞춥니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        0
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 2,
+        "operations": -1
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "사내정치",
+        "컨펌",
+        "방어"
+      ],
+      "note": "성과 기대치가 과도하게 올라가는 것을 막는 카드.",
+      "fits": [
+        "기준불명확",
+        "보고",
+        "컨펌",
+        "성과압박",
+        "대표피드백"
+      ],
+      "badFits": [
+        "전환문제"
+      ]
+    },
+    {
+      "id": "pre_report",
+      "name": "중간 공유",
+      "category": "사내정치",
+      "description": "결과가 완성되기 전에 현재 방향을 먼저 공유합니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 2
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": 1,
+        "operations": 0
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": 0,
+        "reportPressure": -1,
+        "operationRisk": 0,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "보고",
+        "사내정치",
+        "컨펌"
+      ],
+      "note": "보고 전에 신뢰를 쌓는 카드.",
+      "fits": [
+        "보고",
+        "컨펌",
+        "대표피드백",
+        "학습"
+      ],
+      "badFits": [
+        "반응저조",
+        "파일관리"
+      ]
+    },
+    {
+      "id": "asset_request",
+      "name": "소스 요청",
+      "category": "운영력",
+      "description": "작업에 필요한 이미지와 파일을 먼저 받아둡니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        5000
+      ],
+      "score": [
+        0,
+        0
+      ],
+      "secondary": {
+        "mental": 0,
+        "trust": 1
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": -1,
+        "operations": 2
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": -1,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": -2,
+        "burnoutRisk": 0
+      },
+      "tags": [
+        "운영",
+        "파일",
+        "요청"
+      ],
+      "note": "파일 혼선과 재작업을 줄이는 카드.",
+      "fits": [
+        "파일관리",
+        "수정요청",
+        "운영",
+        "기준불명확"
+      ],
+      "badFits": [
+        "전환문제",
+        "기회"
+      ]
+    },
+    {
+      "id": "task_slice",
+      "name": "작업 쪼개기",
+      "category": "운영력",
+      "description": "오늘 처리할 것과 넘길 것을 분리합니다.",
+      "cost": 0,
+      "earned": [
+        0,
+        10000
+      ],
+      "score": [
+        0,
+        1
+      ],
+      "secondary": {
+        "mental": 1,
+        "trust": 0
+      },
+      "build": {
+        "budgetControl": 0,
+        "performance": 0,
+        "content": 0,
+        "brand": 0,
+        "politics": -1,
+        "operations": 2
+      },
+      "risk": {
+        "budgetRisk": 0,
+        "approvalRisk": 0,
+        "brandRisk": 0,
+        "reportPressure": 0,
+        "operationRisk": -1,
+        "burnoutRisk": -2
+      },
+      "tags": [
+        "운영",
+        "일정",
+        "방어"
+      ],
+      "note": "일정 압박에서 부담을 쪼개는 카드.",
+      "fits": [
+        "일정압박",
+        "마감압박",
+        "수정요청",
+        "번아웃"
+      ],
+      "badFits": [
+        "성과확장"
+      ]
+    }
+  ],
+  "contextDescriptions": {
+    "r01_reference_hell": {
+      "reference_collect": "비슷한 브랜드 사례를 모아 첫 방향을 잡습니다.",
+      "ask_first": "레퍼런스를 찾기 전에 팀장님이 원하는 기준을 먼저 확인합니다.",
+      "request_doc": "요청 내용을 짧게 남겨 레퍼런스 범위를 정합니다.",
+      "tone_align": "모은 사례 중 우리 브랜드 말투와 가까운 쪽을 추립니다.",
+      "efficiency_track": "잘한 사례가 실제로 어떤 반응을 만들었는지 같이 봅니다.",
+      "angle_sort": "모은 레퍼런스를 몇 가지 방향으로 묶어 봅니다.",
+      "reference_filter": "좋아 보이는 사례 중 우리 브랜드와 맞는 것만 남깁니다.",
+      "test_goal": "이번 레퍼런스 조사로 무엇을 판단할지 먼저 정합니다.",
+      "asset_request": "레퍼런스를 고르기 전에 필요한 기존 자료와 제품 이미지를 받아둡니다.",
+      "expectation_align": "레퍼런스 결과물이 어느 정도까지 필요한지 기대치를 맞춥니다."
+    },
+    "r02_creative_direction": {
+      "creative_boost": "첫 소재를 조금 더 눈에 띄는 방향으로 잡습니다.",
+      "message_cleanup": "소재가 말하려는 핵심을 한 문장으로 정리합니다.",
+      "tone_align": "소재 방향이 브랜드 말투에서 벗어나지 않게 정리합니다.",
+      "brand_mood": "첫 시안의 분위기를 브랜드에 맞게 끌어올립니다.",
+      "hooking_copy": "첫 줄에서 멈춰 보게 할 문구를 잡습니다.",
+      "split_test": "두 방향을 작게 비교해 어느 쪽이 나은지 봅니다.",
+      "angle_sort": "레퍼런스에서 뽑은 방향을 몇 가지 콘셉트로 정리합니다.",
+      "reference_filter": "좋아 보이는 방향 중 브랜드에 맞는 방향만 남깁니다.",
+      "test_goal": "첫 소재에서 확인할 목표를 먼저 정합니다."
+    },
+    "r03_final_files": {
+      "file_cleanup": "진짜 최종 파일과 사용 파일을 먼저 정리합니다.",
+      "asset_request": "필요한 소스 파일을 다시 요청해 빠진 자료를 채웁니다.",
+      "request_doc": "어떤 파일로 작업해야 하는지 확인 내용을 남깁니다.",
+      "responsibility_split": "파일 기준을 남겨 나중에 책임이 꼬이지 않게 합니다.",
+      "task_slice": "정리할 파일과 지금 작업할 파일을 나눕니다.",
+      "schedule_defense": "오늘 안에 정리 가능한 범위부터 조정합니다.",
+      "urgent_fix": "당장 잘못된 파일로 진행되는 것부터 막습니다.",
+      "ask_first": "무작정 열기 전에 어떤 파일이 맞는지 먼저 물어봅니다."
+    },
+    "r04_not_this_vibe": {
+      "ask_first": "어떤 느낌이 아닌지, 다시 기준을 확인합니다.",
+      "message_cleanup": "피드백을 반영해 메시지를 더 명확하게 정리합니다.",
+      "creative_boost": "시안을 다시 손봐 더 눈에 들어오게 만듭니다.",
+      "tone_align": "브랜드 톤에서 튀는 부분을 먼저 정리합니다.",
+      "brand_mood": "시안의 분위기를 조금 더 브랜드답게 다듬습니다.",
+      "brand_guard": "반응을 노리되 너무 싸보이는 방향은 막습니다.",
+      "hooking_copy": "피드백을 반영해 첫 문장을 더 강하게 잡습니다.",
+      "approval_dodge": "큰 방향 변경 없이 걸릴 만한 부분만 조용히 수정합니다.",
+      "claim_check": "과하거나 애매한 표현을 먼저 걷어냅니다."
+    },
+    "r05_deadline_pressure": {
+      "urgent_fix": "지금 터진 수정부터 처리해 마감 지연을 막습니다.",
+      "schedule_defense": "오늘 처리 가능한 범위를 먼저 정합니다.",
+      "task_slice": "오늘 할 것과 내일로 넘길 것을 나눕니다.",
+      "request_doc": "오늘 안에 해야 할 수정 범위를 문서로 확정합니다.",
+      "agency_call": "내부에서 모두 처리하기 어려운 작업은 외부 도움으로 분리합니다.",
+      "asset_request": "수정에 필요한 소스를 먼저 받아 재작업을 줄입니다.",
+      "responsibility_split": "추가 요청이 어디서 왔는지 남겨 후폭풍을 줄입니다.",
+      "approval_dodge": "크게 바꾸지 않고 지금 걸릴 부분만 정리합니다."
+    },
+    "r06_test_budget": {
+      "small_test": "작은 예산으로 먼저 반응을 확인합니다.",
+      "split_test": "여러 안을 작게 태워 더 나은 방향을 찾습니다.",
+      "test_goal": "10만 원으로 무엇을 확인할지 먼저 정합니다.",
+      "efficiency_track": "집행 전후로 어떤 반응을 볼지 기준을 잡습니다.",
+      "spend_pacing": "10만 원이 한 번에 녹지 않게 속도를 조절합니다.",
+      "channel_split": "한 채널에 몰지 않고 위험을 나눕니다.",
+      "early_boost": "초반 반응을 빠르게 확인하기 위해 예산을 더 싣습니다.",
+      "budget_defense": "성과가 불확실한 구간에서 예산 손실을 줄입니다."
+    },
+    "r07_low_click": {
+      "click_hook": "그냥 지나치지 않게 첫 반응을 키웁니다.",
+      "creative_boost": "소재를 더 눈에 띄게 다듬습니다.",
+      "thumbnail_reroll": "썸네일을 다른 방향으로 다시 잡습니다.",
+      "hooking_copy": "첫 문장에서 멈춰 보게 만듭니다.",
+      "split_test": "다른 소재안과 비교해 반응이 있는 쪽을 찾습니다.",
+      "early_boost": "반응을 더 빨리 보기 위해 예산을 조금 더 싣습니다.",
+      "small_test": "큰돈을 쓰기 전에 작게 반응을 다시 확인합니다.",
+      "ad_stop": "반응 없는 집행을 멈추고 손실을 줄입니다."
+    },
+    "r08_no_purchase": {
+      "conversion_boost": "클릭 이후 구매까지 이어지도록 전환 요소를 보강합니다.",
+      "buyer_capture": "구매 가능성이 높은 사람에게 예산을 집중합니다.",
+      "landing_check": "누른 뒤 어디서 빠지는지 확인합니다.",
+      "click_recovery": "이미 반응한 사람을 다시 데려와 구매 가능성을 높입니다.",
+      "review_collect": "구매를 망설이는 사람에게 신뢰 근거를 붙입니다.",
+      "offer_test": "어떤 혜택 표현이 구매를 움직이는지 비교합니다.",
+      "discount_restraint": "전환을 노리되 너무 싸보이는 표현은 줄입니다.",
+      "report_shield": "구매가 안 붙은 이유를 보고 가능한 근거로 정리합니다."
+    },
+    "r09_what_learned": {
+      "efficiency_track": "테스트에서 무엇이 남았는지 숫자로 정리합니다.",
+      "split_test": "비교 결과를 근거로 다음 액션을 잡습니다.",
+      "report_shield": "애매한 결과도 설명 가능한 근거로 정리합니다.",
+      "pre_report": "최종 보고 전에 현재 해석을 먼저 공유합니다.",
+      "test_goal": "다음 테스트에서 확인할 목표를 다시 정합니다.",
+      "small_test": "적은 예산으로 확인한 점을 정리합니다.",
+      "ask_first": "팀장님이 보고 싶어 하는 기준을 다시 확인합니다.",
+      "responsibility_split": "누가 어떤 결정을 했는지 남겨 보고 리스크를 줄입니다."
+    },
+    "r10_ceo_comment": {
+      "exec_persuasion": "대표가 보는 기준에 맞춰 방향을 설명합니다.",
+      "brand_guard": "임팩트 요청이 브랜드를 망치지 않게 선을 잡습니다.",
+      "message_cleanup": "대표 피드백에 맞춰 핵심 메시지를 정리합니다.",
+      "brand_mood": "화면의 분위기를 더 브랜드답게 다듬습니다.",
+      "hooking_copy": "임팩트 있는 첫 문장으로 방향을 보강합니다.",
+      "approval_dodge": "큰 수정 없이 걸릴 부분만 조용히 정리합니다.",
+      "discount_restraint": "임팩트가 과한 할인 표현으로 흐르지 않게 막습니다.",
+      "pre_report": "피드백을 받기 전에 현재 의도를 짧게 공유합니다."
+    },
+    "r11_report_day": {
+      "report_shield": "애매한 결과도 설명 가능한 근거로 정리합니다.",
+      "pre_report": "보고 전에 해석 방향을 미리 정리해둡니다.",
+      "efficiency_track": "보고서에 넣을 효율 기준을 정리합니다.",
+      "file_cleanup": "보고 자료와 파일을 다시 확인합니다.",
+      "exec_persuasion": "윗선이 이해할 언어로 결과를 설명합니다.",
+      "responsibility_split": "결정 과정과 요청 내역을 남겨 보고 리스크를 줄입니다.",
+      "review_collect": "리뷰나 반응을 보고서의 보조 근거로 씁니다.",
+      "test_goal": "이번 테스트의 목적과 확인한 점을 연결합니다."
+    },
+    "r12_final_number": {
+      "report_shield": "최종 평가에서 설명 가능한 숫자를 중심으로 정리합니다.",
+      "efficiency_track": "예산 대비 남긴 결과를 정리합니다.",
+      "buyer_capture": "마지막으로 구매 가능성이 높은 쪽에 집중합니다.",
+      "exec_persuasion": "최종 평가 기준에 맞춰 선택의 이유를 설명합니다.",
+      "conversion_boost": "최종 전환 근거를 조금 더 보강합니다.",
+      "pre_report": "최종 보고 전에 평가 포인트를 정리합니다.",
+      "responsibility_split": "성과와 결정 과정을 분리해 설명합니다.",
+      "budget_defense": "마지막에 예산이 더 무너지지 않게 막습니다."
+    }
+  },
+  "storyRounds": [
+    {
+      "round": 1,
+      "id": "r01_reference_hell",
+      "situationId": "reference_hell",
+      "title": "레퍼런스 지옥",
+      "phase": "업무 수령",
+      "situationTags": [
+        "조사",
+        "방향성",
+        "기준불명확"
+      ],
+      "baseText": "첫 업무는 레퍼런스 조사입니다. 문제는 잘하는 기준이 아무도 모른다는 겁니다.",
+      "speaker": "팀장님",
+      "line": "요즘 잘하는 브랜드 레퍼런스 좀 찾아봐요.",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "어디서부터 봐야 할지 막막합니다. 조사 방향을 잘 잡아야 다음 작업이 편해집니다."
+        }
+      ],
+      "cardSlots": {
+        "핵심": [
+          "reference_collect",
+          "ask_first",
+          "angle_sort"
+        ],
+        "맥락": [
+          "request_doc",
+          "tone_align",
+          "efficiency_track",
+          "reference_filter",
+          "test_goal"
+        ],
+        "상태보정": [
+          "asset_request",
+          "file_cleanup",
+          "report_shield",
+          "expectation_align",
+          "task_slice",
+          "small_test"
+        ]
+      },
+      "requiredCards": []
+    },
+    {
+      "round": 2,
+      "id": "r02_creative_direction",
+      "situationId": "calm_thumbnail",
+      "title": "첫 소재 방향",
+      "phase": "방향 설정",
+      "situationTags": [
+        "콘텐츠",
+        "방향설정",
+        "반응",
+        "브랜드"
+      ],
+      "baseText": "레퍼런스를 바탕으로 첫 광고 소재 방향을 잡아야 합니다.",
+      "speaker": "팀장님",
+      "line": "이제 이걸 우리 소재로 바꿔봐요.",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "클릭을 노릴지, 브랜드 톤을 지킬지 선택해야 합니다."
+        }
+      ],
+      "cardSlots": {
+        "핵심": [
+          "creative_boost",
+          "message_cleanup",
+          "tone_align",
+          "brand_mood"
+        ],
+        "맥락": [
+          "hooking_copy",
+          "split_test",
+          "angle_sort",
+          "reference_filter",
+          "test_goal"
+        ],
+        "상태보정": [
+          "ask_first",
+          "brand_guard",
+          "click_hook",
+          "small_test",
+          "expectation_align"
+        ]
+      },
+      "requiredCards": []
+    },
+    {
+      "round": 3,
+      "id": "r03_final_files",
+      "situationId": "final_files",
+      "title": "파일명이 전부 최종",
+      "phase": "실무 정리",
+      "situationTags": [
+        "파일관리",
+        "운영",
+        "실수위험"
+      ],
+      "baseText": "폴더를 열었더니 최종.psd, 진짜최종.psd, 진짜진짜최종_수정.psd가 나옵니다.",
+      "speaker": "사수",
+      "line": "아마 이 중에 맞는 파일이 있을 거예요.",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "어느 파일이 진짜 최종인지 확인하지 않으면 오늘 하루가 날아갈 수 있습니다."
+        }
+      ],
+      "cardSlots": {
+        "핵심": [
+          "file_cleanup",
+          "asset_request",
+          "request_doc"
+        ],
+        "맥락": [
+          "responsibility_split",
+          "task_slice",
+          "ask_first",
+          "schedule_defense"
+        ],
+        "상태보정": [
+          "urgent_fix",
+          "expectation_align",
+          "pre_report",
+          "claim_check"
+        ]
+      },
+      "requiredCards": []
+    },
+    {
+      "round": 4,
+      "id": "r04_not_this_vibe",
+      "situationId": "not_this_vibe",
+      "title": "이런 느낌 말고",
+      "phase": "첫 피드백",
+      "situationTags": [
+        "컨펌",
+        "시안피드백",
+        "수정",
+        "브랜드"
+      ],
+      "baseText": "팀장님이 첫 시안을 보고 방향을 다시 잡자고 합니다.",
+      "speaker": "팀장님",
+      "line": "음... 이런 느낌 말고요.",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "무슨 느낌이 아닌지는 알겠는데, 어떤 느낌이어야 하는지는 아직 애매합니다."
+        }
+      ],
+      "cardSlots": {
+        "핵심": [
+          "ask_first",
+          "message_cleanup",
+          "creative_boost"
+        ],
+        "맥락": [
+          "tone_align",
+          "brand_mood",
+          "brand_guard",
+          "hooking_copy",
+          "approval_dodge"
+        ],
+        "상태보정": [
+          "pre_report",
+          "expectation_align",
+          "discount_restraint",
+          "split_test",
+          "claim_check"
+        ]
+      },
+      "requiredCards": []
+    },
+    {
+      "round": 5,
+      "id": "r05_deadline_pressure",
+      "situationId": "today_possible",
+      "title": "오늘 안에 가능하죠?",
+      "phase": "마감 압박",
+      "situationTags": [
+        "일정압박",
+        "수정요청",
+        "멘탈",
+        "운영"
+      ],
+      "baseText": "퇴근 시간이 다가올 때쯤 수정 요청이 옵니다.",
+      "speaker": "팀장님",
+      "line": "이거 오늘 안에만 부탁드려요.",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "무작정 다 받으면 멘탈이 갈리고, 너무 자르면 신뢰가 흔들릴 수 있습니다."
+        }
+      ],
+      "cardSlots": {
+        "핵심": [
+          "urgent_fix",
+          "schedule_defense",
+          "task_slice"
+        ],
+        "맥락": [
+          "request_doc",
+          "agency_call",
+          "asset_request",
+          "approval_dodge"
+        ],
+        "상태보정": [
+          "responsibility_split",
+          "expectation_align",
+          "channel_split",
+          "ad_stop",
+          "file_cleanup"
+        ]
+      },
+      "requiredCards": []
+    },
+    {
+      "round": 6,
+      "id": "r06_test_budget",
+      "situationId": "ten_thousand_test",
+      "title": "테스트 예산 10만 원",
+      "phase": "광고 집행",
+      "situationTags": [
+        "테스트",
+        "예산",
+        "광고집행"
+      ],
+      "baseText": "드디어 작은 예산으로 광고를 집행해봅니다.",
+      "speaker": "팀장님",
+      "line": "10만 원만 태워보고 감 좀 봅시다.",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "이제는 준비보다 숫자가 필요합니다."
+        }
+      ],
+      "cardSlots": {
+        "핵심": [
+          "small_test",
+          "split_test",
+          "test_goal"
+        ],
+        "맥락": [
+          "efficiency_track",
+          "spend_pacing",
+          "channel_split",
+          "early_boost"
+        ],
+        "상태보정": [
+          "budget_defense",
+          "click_hook",
+          "creative_boost",
+          "pre_report",
+          "ad_stop"
+        ]
+      },
+      "requiredCards": []
+    },
+    {
+      "round": 7,
+      "id": "r07_low_click",
+      "situationId": "no_click",
+      "title": "클릭이 안 붙는다",
+      "phase": "반응 문제",
+      "situationTags": [
+        "반응저조",
+        "클릭부족",
+        "소재문제"
+      ],
+      "baseText": "광고는 나갔지만 사람들이 그냥 지나갑니다.",
+      "speaker": "팀장님",
+      "line": "소재가 약한가요?",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "반응을 키울지, 예산을 아낄지 판단해야 합니다."
+        }
+      ],
+      "cardSlots": {
+        "핵심": [
+          "click_hook",
+          "creative_boost",
+          "thumbnail_reroll"
+        ],
+        "맥락": [
+          "hooking_copy",
+          "split_test",
+          "early_boost",
+          "message_cleanup"
+        ],
+        "상태보정": [
+          "small_test",
+          "efficiency_track",
+          "ad_stop",
+          "brand_guard",
+          "spend_pacing"
+        ]
+      },
+      "requiredCards": []
+    },
+    {
+      "round": 8,
+      "id": "r08_no_purchase",
+      "situationId": "visitor_no_buy",
+      "title": "사람은 왔는데 안 산다",
+      "phase": "전환 문제",
+      "situationTags": [
+        "전환문제",
+        "구매부족",
+        "매출압박"
+      ],
+      "baseText": "사람들은 눌렀습니다. 그런데 구매로 이어지지 않습니다.",
+      "speaker": "팀장님",
+      "line": "클릭은 좋은데, 그래서 구매는요?",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "이제 반응을 성과로 바꿔야 합니다."
+        }
+      ],
+      "cardSlots": {
+        "핵심": [
+          "conversion_boost",
+          "buyer_capture",
+          "landing_check"
+        ],
+        "맥락": [
+          "click_recovery",
+          "review_collect",
+          "offer_test",
+          "discount_restraint"
+        ],
+        "상태보정": [
+          "report_shield",
+          "efficiency_track",
+          "brand_guard",
+          "small_test",
+          "pre_report"
+        ]
+      },
+      "requiredCards": []
+    },
+    {
+      "round": 9,
+      "id": "r09_what_learned",
+      "situationId": "what_learned",
+      "title": "그래서 배운 게 뭐죠?",
+      "phase": "학습 정리",
+      "situationTags": [
+        "보고",
+        "학습",
+        "데이터해석"
+      ],
+      "baseText": "팀장님이 테스트 결과를 보며 다음 액션을 묻습니다.",
+      "speaker": "팀장님",
+      "line": "그래서 다음엔 뭘 하면 되죠?",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "어떤 숫자를 근거로 삼을지 정해야 합니다."
+        }
+      ],
+      "cardSlots": {
+        "핵심": [
+          "efficiency_track",
+          "split_test",
+          "report_shield"
+        ],
+        "맥락": [
+          "pre_report",
+          "test_goal",
+          "small_test",
+          "ask_first"
+        ],
+        "상태보정": [
+          "responsibility_split",
+          "file_cleanup",
+          "buyer_capture",
+          "landing_check",
+          "message_cleanup"
+        ]
+      },
+      "requiredCards": []
+    },
+    {
+      "round": 10,
+      "id": "r10_ceo_comment",
+      "situationId": "ceo_comment",
+      "title": "대표님 지나가다 한마디",
+      "phase": "윗선 피드백",
+      "situationTags": [
+        "대표피드백",
+        "컨펌",
+        "임팩트",
+        "브랜드"
+      ],
+      "baseText": "대표님이 모니터를 보더니 임팩트를 더 달라고 합니다.",
+      "speaker": "대표님",
+      "line": "이거 좀 더 임팩트 있게 안 돼?",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "눈에 띄게 만들수록 브랜드 리스크도 같이 올라갑니다."
+        }
+      ],
+      "cardSlots": {
+        "핵심": [
+          "exec_persuasion",
+          "brand_guard",
+          "message_cleanup"
+        ],
+        "맥락": [
+          "brand_mood",
+          "hooking_copy",
+          "approval_dodge",
+          "discount_restraint"
+        ],
+        "상태보정": [
+          "pre_report",
+          "report_shield",
+          "creative_boost",
+          "expectation_align",
+          "claim_check"
+        ]
+      },
+      "requiredCards": []
+    },
+    {
+      "round": 11,
+      "id": "r11_report_day",
+      "situationId": "report_day",
+      "title": "보고 D-day",
+      "phase": "최종 보고 준비",
+      "situationTags": [
+        "보고",
+        "평가",
+        "신뢰",
+        "정리"
+      ],
+      "baseText": "오늘은 테스트 결과를 공유하는 날입니다.",
+      "speaker": "팀장님",
+      "line": "좋은 숫자도 있고, 애매한 숫자도 있네요.",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "보고서에 무엇을 크게 보여줄지 정해야 합니다."
+        }
+      ],
+      "cardSlots": {
+        "핵심": [
+          "report_shield",
+          "pre_report",
+          "efficiency_track"
+        ],
+        "맥락": [
+          "file_cleanup",
+          "exec_persuasion",
+          "responsibility_split",
+          "review_collect"
+        ],
+        "상태보정": [
+          "buyer_capture",
+          "budget_defense",
+          "split_test",
+          "test_goal",
+          "message_cleanup"
+        ]
+      },
+      "requiredCards": []
+    },
+    {
+      "round": 12,
+      "id": "r12_final_number",
+      "situationId": "number_not_effort",
+      "title": "열심히 말고 숫자로",
+      "phase": "최종 평가",
+      "situationTags": [
+        "최종평가",
+        "성과",
+        "신뢰",
+        "숫자"
+      ],
+      "baseText": "마지막 평가는 결국 숫자로 돌아옵니다.",
+      "speaker": "팀장님",
+      "line": "열심히 한 건 알겠는데, 숫자로 보면 어때요?",
+      "variants": [
+        {
+          "id": "default",
+          "condition": "default",
+          "text": "성과, 남은 예산, 신뢰, 멘탈이 함께 평가됩니다."
+        }
+      ],
+      "cardSlots": {
+        "핵심": [
+          "report_shield",
+          "efficiency_track",
+          "buyer_capture"
+        ],
+        "맥락": [
+          "exec_persuasion",
+          "conversion_boost",
+          "pre_report",
+          "responsibility_split"
+        ],
+        "상태보정": [
+          "budget_defense",
+          "review_collect",
+          "click_recovery",
+          "brand_guard",
+          "test_goal"
+        ]
+      },
+      "requiredCards": []
+    }
+  ],
+  "changeLog": [
+    "신규 카드 22장 구성. 기존 v3 20장 기준 총 42장 카드풀.",
+    "R1 레퍼런스 지옥에서 감도 연출/브랜드 가드 고정 노출 제거.",
+    "12라운드 cardSlots를 핵심/맥락/상태보정 구조로 재작성.",
+    "각 라운드 전체 후보군을 9~13장 수준으로 확대.",
+    "requiredCards 빈 배열 처리로 고정 선택지 문제 완화.",
+    "기존 카드 설명은 카드명 유지 + 행동 설명 방식으로 정리."
+  ]
+}
