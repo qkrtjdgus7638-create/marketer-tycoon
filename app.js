@@ -181,6 +181,7 @@ function initialState(screen = "choice") {
     build: Object.fromEntries(data.buildStats.map((key) => [key, 2])),
     risk: Object.fromEntries(data.riskStats.map((key) => [key, 0])),
     recentCards: [],
+    recentOfferedCards: [],
     recentSituations: [],
     recentTags: [],
     triggeredSynergies: new Set(),
@@ -325,31 +326,38 @@ function pickCards(situation) {
 }
 
 function pickStoryCards(storyRound) {
-  const picked = [];
   const slots = normalizeCardSlots(storyRound.cardSlots);
-  const situation = {
-    preferredTags: storyRound.situationTags || [],
-    slotRole: "",
-  };
+  const picked = [];
+  const offeredRecently = state.recentOfferedCards || [];
 
-  for (const slot of slots) {
+  for (const slot of slots.slice(0, 3)) {
     const candidates = slot.candidateCardIds
       .map((id) => data.cards.find((card) => card.id === id))
       .filter(Boolean)
       .filter((card) => !picked.some((item) => item.id === card.id));
     if (!candidates.length) continue;
-    situation.slotRole = slot.role;
-    picked.push(weightedPick(candidates.map((card) => ({ item: card, weight: cardWeight(card, situation) }))));
+    picked.push(weightedPick(candidates.map((card) => ({
+      item: card,
+      weight: cardWeight(card, storyRound, slot.role, offeredRecently),
+    }))));
   }
 
   const fallbackPool = data.cards.filter((card) => !picked.some((item) => item.id === card.id));
   while (picked.length < 3 && fallbackPool.length) {
-    situation.slotRole = "보정";
-    const fallback = weightedPick(fallbackPool.map((card) => ({ item: card, weight: cardWeight(card, situation) })));
+    const fallback = weightedPick(fallbackPool.map((card) => ({
+      item: card,
+      weight: cardWeight(card, storyRound, "상태보정", offeredRecently),
+    })));
     picked.push(fallback);
     fallbackPool.splice(fallbackPool.findIndex((card) => card.id === fallback.id), 1);
   }
-  return picked.slice(0, 3);
+
+  const diversified = diversifyCategories(picked, storyRound);
+  state.recentOfferedCards = [
+    ...diversified.map((card) => card.id),
+    ...offeredRecently,
+  ].slice(0, 6);
+  return diversified.slice(0, 3);
 }
 
 function normalizeCardSlots(cardSlots) {
@@ -358,29 +366,57 @@ function normalizeCardSlots(cardSlots) {
   return Object.entries(cardSlots).map(([role, candidateCardIds]) => ({ role, candidateCardIds }));
 }
 
-function cardWeight(card, situation) {
-  const preferredTags = situation.preferredTags || [];
-  const matchingTags = card.tags.filter((tag) => preferredTags.includes(tag)).length;
-  let weight = 1 + matchingTags * 1.4;
+function cardWeight(card, context, slotRole = "", offeredRecently = []) {
+  const roundTags = context.situationTags || context.preferredTags || [];
+  let weight = 1;
 
-  if (card.fits?.some((tag) => preferredTags.includes(tag))) weight += 1.2;
-  if (card.badFits?.some((tag) => preferredTags.includes(tag))) weight -= 1.5;
-  if (situation.slotRole && card.slotRoles?.includes(situation.slotRole)) weight += 1;
+  weight += card.tags.filter((tag) => roundTags.includes(tag)).length * 1.2;
+  weight += (card.fits || []).filter((tag) => roundTags.includes(tag)).length * 1.5;
 
-  if (state.money < data.stageDefaults.clearConditions.moneyGte && card.risk.budgetRisk < 0) weight += 1.8;
-  if (state.money <= data.stageDefaults.startingMoney * 0.35 && card.cost <= 10000) weight += 1.2;
-  if (state.score < 6 && card.score[1] >= 2) weight += 1.4;
-  if (state.mental <= 4 && card.secondary.mental > 0) weight += 2;
-  if (state.mental <= 4 && card.risk.burnoutRisk > 0) weight -= 1.2;
-  if (state.trust <= 3 && card.secondary.trust > 0) weight += 1.6;
-  if (state.trust <= 3 && card.risk.approvalRisk > 0) weight -= 0.8;
+  if ((card.badFits || []).some((tag) => roundTags.includes(tag))) weight -= 3;
+  if (slotRole && card.slotRoles?.includes(slotRole)) weight += 1;
 
-  const recentIndex = state.recentCards.findIndex((recent) => recent.id === card.id || recent.name === card.name);
-  if (recentIndex === 0) weight *= 0.08;
-  else if (recentIndex === 1) weight *= 0.25;
-  else if (recentIndex === 2) weight *= 0.55;
+  if (offeredRecently.includes(card.id)) weight -= 3;
+  if (state.recentCards?.some((recent) => (recent.id === card.id || recent.name === card.name) && state.round - recent.round <= 2)) {
+    weight -= 4;
+  }
 
-  return Math.max(0.05, weight);
+  if (slotRole === "상태보정") {
+    if (state.money < data.stageDefaults.clearConditions.moneyGte && card.risk?.budgetRisk < 0) weight += 2.5;
+    if (state.score < Math.max(4, state.round / 2) && card.score?.[1] >= 2) weight += 2;
+    if (state.mental <= 4 && card.secondary?.mental > 0) weight += 2;
+    if (state.trust <= 4 && card.secondary?.trust > 0) weight += 2;
+    if ((state.build?.budgetControl || 0) <= 1 && card.build?.budgetControl > 0) weight += 1.5;
+    if ((state.build?.performance || 0) <= 1 && card.build?.performance > 0) weight += 1.5;
+    if ((state.build?.operations || 0) <= 1 && card.build?.operations > 0) weight += 1.5;
+  } else if (!slotRole) {
+    if (state.money < data.stageDefaults.clearConditions.moneyGte && card.risk?.budgetRisk < 0) weight += 1;
+    if (state.score < 6 && card.score?.[1] >= 2) weight += 1;
+    if (state.mental <= 4 && card.secondary?.mental > 0) weight += 1;
+    if (state.trust <= 3 && card.secondary?.trust > 0) weight += 1;
+  }
+
+  return Math.max(0.1, weight);
+}
+
+function diversifyCategories(cards, storyRound) {
+  const result = [...cards];
+  if (result.length < 3) return result;
+
+  const categories = result.map((card) => card.category);
+  if (!categories.every((category) => category === categories[0])) return result;
+
+  const allCandidates = normalizeCardSlots(storyRound.cardSlots)
+    .flatMap((slot) => slot.candidateCardIds)
+    .map((id) => data.cards.find((card) => card.id === id))
+    .filter(Boolean)
+    .filter((card) => !result.some((picked) => picked.id === card.id))
+    .filter((card) => card.category !== categories[0]);
+
+  if (allCandidates.length) {
+    result[2] = weightedPick(allCandidates.map((card) => ({ item: card, weight: cardWeight(card, storyRound, "상태보정") })));
+  }
+  return result;
 }
 
 function chooseCard(cardId) {
