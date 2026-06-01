@@ -842,6 +842,10 @@ function applySynergyEffect(effect) {
 
 function continueAfterResult() {
   if (state.finished || state.screen !== "result") return;
+  if (shouldFinish()) {
+    finishGame();
+    return;
+  }
   state.turnResult = null;
   state.screen = "choice";
   nextRound();
