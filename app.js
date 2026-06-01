@@ -327,18 +327,27 @@ function pickCards(situation) {
 function pickStoryCards(storyRound) {
   const picked = [];
   const slots = normalizeCardSlots(storyRound.cardSlots);
+  const situation = {
+    preferredTags: storyRound.situationTags || [],
+    slotRole: "",
+  };
+
   for (const slot of slots) {
     const candidates = slot.candidateCardIds
       .map((id) => data.cards.find((card) => card.id === id))
       .filter(Boolean)
       .filter((card) => !picked.some((item) => item.id === card.id));
     if (!candidates.length) continue;
-    picked.push(weightedPick(candidates.map((card) => ({ item: card, weight: cardWeight(card, { preferredTags: storyRound.situationTags || [] }) }))));
+    situation.slotRole = slot.role;
+    picked.push(weightedPick(candidates.map((card) => ({ item: card, weight: cardWeight(card, situation) }))));
   }
 
   const fallbackPool = data.cards.filter((card) => !picked.some((item) => item.id === card.id));
   while (picked.length < 3 && fallbackPool.length) {
-    picked.push(fallbackPool.splice(Math.floor(Math.random() * fallbackPool.length), 1)[0]);
+    situation.slotRole = "보정";
+    const fallback = weightedPick(fallbackPool.map((card) => ({ item: card, weight: cardWeight(card, situation) })));
+    picked.push(fallback);
+    fallbackPool.splice(fallbackPool.findIndex((card) => card.id === fallback.id), 1);
   }
   return picked.slice(0, 3);
 }
@@ -350,12 +359,28 @@ function normalizeCardSlots(cardSlots) {
 }
 
 function cardWeight(card, situation) {
-  let weight = 1 + card.tags.filter((tag) => situation.preferredTags.includes(tag)).length;
-  if (state.money < data.stageDefaults.clearConditions.moneyGte && card.risk.budgetRisk < 0) weight += 1;
-  if (state.score < 6 && card.score[1] >= 2) weight += 1;
-  if (state.mental <= 4 && card.secondary.mental > 0) weight += 1;
-  if (state.trust <= 3 && card.secondary.trust > 0) weight += 1;
-  return weight;
+  const preferredTags = situation.preferredTags || [];
+  const matchingTags = card.tags.filter((tag) => preferredTags.includes(tag)).length;
+  let weight = 1 + matchingTags * 1.4;
+
+  if (card.fits?.some((tag) => preferredTags.includes(tag))) weight += 1.2;
+  if (card.badFits?.some((tag) => preferredTags.includes(tag))) weight -= 1.5;
+  if (situation.slotRole && card.slotRoles?.includes(situation.slotRole)) weight += 1;
+
+  if (state.money < data.stageDefaults.clearConditions.moneyGte && card.risk.budgetRisk < 0) weight += 1.8;
+  if (state.money <= data.stageDefaults.startingMoney * 0.35 && card.cost <= 10000) weight += 1.2;
+  if (state.score < 6 && card.score[1] >= 2) weight += 1.4;
+  if (state.mental <= 4 && card.secondary.mental > 0) weight += 2;
+  if (state.mental <= 4 && card.risk.burnoutRisk > 0) weight -= 1.2;
+  if (state.trust <= 3 && card.secondary.trust > 0) weight += 1.6;
+  if (state.trust <= 3 && card.risk.approvalRisk > 0) weight -= 0.8;
+
+  const recentIndex = state.recentCards.findIndex((recent) => recent.id === card.id || recent.name === card.name);
+  if (recentIndex === 0) weight *= 0.08;
+  else if (recentIndex === 1) weight *= 0.25;
+  else if (recentIndex === 2) weight *= 0.55;
+
+  return Math.max(0.05, weight);
 }
 
 function chooseCard(cardId) {
@@ -378,7 +403,7 @@ function chooseCard(cardId) {
   applyObject(card.risk, state.risk);
   if (!matchedSituation) applySituationPressure(situation);
 
-  state.recentCards = [{ name: card.name, round: state.round }, ...state.recentCards].slice(0, 4);
+  state.recentCards = [{ id: card.id, name: card.name, round: state.round }, ...state.recentCards].slice(0, 4);
   state.recentTags = [...card.tags, ...state.recentTags].slice(0, 10);
 
   const synergyMessages = applySynergies();
