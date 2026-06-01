@@ -461,12 +461,21 @@ button {
 }
 
 .card-tagline {
+  display: flex;
+  min-width: 0;
   overflow: hidden;
+  gap: 5px;
   color: var(--purple);
   font-size: 11px;
   font-weight: 900;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.card-tagline span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .choice-card h3 {
@@ -636,5 +645,284 @@ button {
   .card-icon {
     width: 62px;
     height: 62px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .topbar {
+    min-height: 42px;
+    gap: 8px;
+  }
+
+  .brand {
+    gap: 8px;
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+  }
+
+  .brand h1 {
+    font-size: 20px;
+    letter-spacing: -0.03em;
+  }
+
+  .round-pill {
+    min-height: 32px;
+    padding: 6px 11px;
+    font-size: 12px;
+  }
+
+  .menu-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 13px;
+    font-size: 19px;
+  }
+
+  .resource-grid {
+    height: 76px;
+    grid-template-columns: 1.25fr 1.25fr 0.82fr 0.82fr;
+    border-radius: 20px;
+  }
+
+  .meter-card {
+    padding: 10px 9px;
+  }
+
+  .meter-head span {
+    font-size: 10px;
+  }
+
+  .meter-head strong {
+    font-size: 20px;
+  }
+
+  .money-card strong {
+    font-size: 19px;
+  }
+
+  .meter {
+    height: 9px;
+    margin-top: 8px;
+  }
+
+  .hp-card .meter {
+    height: 12px;
+    margin-top: 9px;
+  }
+
+  .main-stage {
+    grid-template-rows: 176px auto minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .situation-card {
+    padding: 18px 18px 16px;
+    border-radius: 20px;
+  }
+
+  .situation-card::after {
+    right: 16px;
+    bottom: 12px;
+    width: 116px;
+    height: 70px;
+    opacity: 0.12;
+    background:
+      linear-gradient(var(--ink), var(--ink)) 0 58px / 116px 5px no-repeat,
+      linear-gradient(var(--blue), var(--blue)) 12px 36px / 17px 22px no-repeat,
+      linear-gradient(var(--green), var(--green)) 41px 18px / 17px 40px no-repeat,
+      linear-gradient(var(--gold), var(--gold)) 70px 42px / 17px 16px no-repeat,
+      linear-gradient(#df5b4f, #df5b4f) 99px 31px / 17px 27px no-repeat;
+  }
+
+  .situation-meta {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .situation-meta span {
+    min-height: 25px;
+    padding: 4px 9px;
+    font-size: 11px;
+  }
+
+  .situation-card h2 {
+    max-width: 100%;
+    font-size: 28px;
+  }
+
+  .situation-card p {
+    max-width: 100%;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.42;
+    -webkit-line-clamp: 2;
+  }
+
+  .cards-head h2 {
+    font-size: 20px;
+  }
+
+  .icon-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 13px;
+    font-size: 18px;
+  }
+
+  .card-grid {
+    gap: 8px;
+  }
+
+  .choice-card {
+    grid-template-columns: 58px minmax(0, 1fr) 62px;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 17px;
+  }
+
+  .card-icon {
+    width: 50px;
+    height: 50px;
+    border-width: 3px;
+    border-radius: 12px;
+    font-size: 26px;
+  }
+
+  .card-tagline {
+    gap: 4px;
+    font-size: 10px;
+  }
+
+  .choice-card h3 {
+    margin-top: 3px;
+    font-size: 21px;
+    line-height: 1.08;
+  }
+
+  .choice-card p {
+    margin-top: 5px;
+    font-size: 13px;
+    line-height: 1.28;
+    -webkit-line-clamp: 1;
+  }
+
+  .effect-list {
+    gap: 3px;
+    padding-left: 8px;
+  }
+
+  .cost-label {
+    font-size: 11px;
+  }
+
+  .effect-list strong {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 380px), (max-height: 720px) {
+  .app {
+    gap: 7px;
+    padding: 8px 10px;
+  }
+
+  .brand h1 {
+    font-size: 18px;
+  }
+
+  .round-pill {
+    padding-inline: 9px;
+    font-size: 11px;
+  }
+
+  .resource-grid {
+    height: 70px;
+    border-radius: 18px;
+  }
+
+  .meter-card {
+    padding: 9px 8px;
+  }
+
+  .meter-head {
+    gap: 4px;
+  }
+
+  .meter-head strong,
+  .score-card strong,
+  .trust-card strong {
+    font-size: 18px;
+  }
+
+  .money-card strong {
+    font-size: 17px;
+  }
+
+  .main-stage {
+    grid-template-rows: 158px auto minmax(0, 1fr);
+    gap: 7px;
+  }
+
+  .situation-card {
+    padding: 15px;
+  }
+
+  .situation-meta {
+    margin-bottom: 9px;
+  }
+
+  .situation-card h2 {
+    font-size: 24px;
+  }
+
+  .situation-card p {
+    margin-top: 9px;
+    font-size: 13px;
+    line-height: 1.36;
+  }
+
+  .cards-head h2 {
+    font-size: 18px;
+  }
+
+  .choice-card {
+    grid-template-columns: 50px minmax(0, 1fr) 54px;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 23px;
+  }
+
+  .card-tagline {
+    font-size: 9px;
+  }
+
+  .choice-card h3 {
+    font-size: 18px;
+  }
+
+  .choice-card p {
+    font-size: 12px;
+  }
+
+  .cost-label {
+    font-size: 10px;
+  }
+
+  .effect-list strong {
+    font-size: 19px;
   }
 }
