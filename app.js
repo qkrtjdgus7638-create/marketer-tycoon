@@ -3,7 +3,7 @@ const STORY_OVERLAY_URL = "./marketer_survival_story_card_patch_v2.json";
 
 const effectLabels = {
   money: "돈",
-  score: "성과",
+  score: "EXP",
   mental: "멘탈",
   trust: "신뢰",
   budgetControl: "예산관리",
@@ -556,6 +556,198 @@ function isCardContextMatch(card, situation) {
   return card.tags.some((tag) => situationTags.includes(tag));
 }
 
+const categoryBuildKey = {
+  "예산관리": "budgetControl",
+  "퍼포먼스": "performance",
+  "콘텐츠": "content",
+  "브랜드": "brand",
+  "사내정치": "politics",
+  "운영력": "operations",
+  "보고": "politics",
+};
+
+const categoryRiskKey = {
+  "예산관리": "budgetRisk",
+  "퍼포먼스": "budgetRisk",
+  "콘텐츠": "approvalRisk",
+  "브랜드": "brandRisk",
+  "사내정치": "reportPressure",
+  "운영력": "operationRisk",
+  "보고": "reportPressure",
+};
+
+function calculateEarnedMoney(card, situation, baseEarned, cost, matched) {
+  const profile = storyOverlay?.earnedMultiplierProfile || {};
+  const mainKey = categoryBuildKey[card.category];
+  const mainStat = mainKey ? state.build[mainKey] || 0 : 2;
+  const supportStat = getSupportStat(card);
+  const riskKey = categoryRiskKey[card.category];
+  const riskValue = riskKey ? state.risk[riskKey] || 0 : 0;
+
+  let multiplier = 1;
+  multiplier *= 0.76 + Math.min(mainStat, 10) * 0.045;
+  multiplier *= 0.86 + Math.min(supportStat, 10) * 0.026;
+  multiplier *= matched ? 1.04 : 0.62;
+  multiplier *= Math.max(0.72, 1 - riskValue * 0.045);
+
+  if (cost >= 50000 && mainStat < 4) multiplier *= 0.65;
+  if (cost >= 50000 && (state.build.budgetControl || 0) < 4) multiplier *= 0.82;
+  if (card.category === "퍼포먼스" && (state.build.performance || 0) < 4 && (state.build.content || 0) < 4) multiplier *= 0.74;
+  if (card.category === "콘텐츠" && (state.build.content || 0) >= 5 && (state.build.performance || 0) >= 4) multiplier *= 1.08;
+  if (card.category === "브랜드" && (state.build.brand || 0) >= 5 && (state.trust || 0) >= 7) multiplier *= 1.06;
+  if (card.category === "운영력" && (state.build.operations || 0) >= 5 && (state.mental || 0) >= 7) multiplier *= 1.05;
+
+  const minMultiplier = profile.minMultiplier ?? 0.22;
+  const maxMultiplier = profile.maxMultiplier ?? 1.45;
+  multiplier = Math.max(minMultiplier, Math.min(maxMultiplier, multiplier));
+
+  const tier = pickOutcomeTier(card, matched, mainStat, supportStat, riskValue);
+  const tierMultiplier = rollRange(outcomeTierMultiplierRange(tier), 0.05);
+  const amount = Math.max(0, Math.round((baseEarned * multiplier * tierMultiplier) / 1000) * 1000);
+
+  return {
+    amount,
+    baseEarned,
+    multiplier,
+    tierMultiplier,
+    tier,
+    outcome: tier.id,
+    mainKey,
+    mainStat,
+    supportStat,
+    riskKey,
+    riskValue,
+    matched,
+    probabilities: tier.probabilities,
+  };
+}
+
+const outcomeTierMeta = {
+  bigFail: { label: "대실패", className: "tier-big-fail" },
+  fail: { label: "실패", className: "tier-fail" },
+  breakEven: { label: "본전", className: "tier-break-even" },
+  success: { label: "성공", className: "tier-success" },
+  bigSuccess: { label: "대성공", className: "tier-big-success" },
+};
+
+function pickOutcomeTier(card, matched, mainStat, supportStat, riskValue) {
+  const probabilities = outcomeTierProbabilities(card, matched, mainStat, supportStat, riskValue);
+  const roll = Math.random() * 100;
+  let cursor = 0;
+  for (const [id, value] of Object.entries(probabilities)) {
+    cursor += value;
+    if (roll <= cursor) return { id, ...outcomeTierMeta[id], probabilities };
+  }
+  return { id: "breakEven", ...outcomeTierMeta.breakEven, probabilities };
+}
+
+function outcomeTierProbabilities(card, matched, mainStat, supportStat, riskValue) {
+  const profile = outcomeProfileType(card);
+  const base = {
+    defense: { bigFail: 2, fail: 10, breakEven: 60, success: 25, bigSuccess: 3 },
+    stable: { bigFail: 3, fail: 12, breakEven: 50, success: 30, bigSuccess: 5 },
+    medium: { bigFail: 7, fail: 18, breakEven: 40, success: 27, bigSuccess: 8 },
+    risky: { bigFail: 15, fail: 25, breakEven: 25, success: 22, bigSuccess: 13 },
+  }[profile];
+  const p = { ...base };
+
+  const expStage = Math.min(4, Math.floor((state.score || 0) / 5));
+  p.bigFail -= expStage * 0.5;
+  p.fail -= expStage * 1;
+  p.breakEven -= expStage * 0.5;
+  p.success += expStage * 1.2;
+  p.bigSuccess += expStage * 0.8;
+
+  if (matched) {
+    p.fail -= 2;
+    p.success += 1.3;
+    p.bigSuccess += 0.7;
+  } else {
+    p.bigFail += 4;
+    p.fail += 5;
+    p.success -= 4;
+    p.bigSuccess -= 2;
+  }
+
+  if (mainStat >= 6) {
+    p.fail -= 1.5;
+    p.success += 1;
+    p.bigSuccess += 0.8;
+  }
+  if (supportStat >= 6) {
+    p.fail -= 1;
+    p.success += 0.8;
+    p.bigSuccess += 0.5;
+  }
+  if (mainStat < 3) {
+    p.bigFail += 2;
+    p.fail += 2;
+    p.success -= 2;
+  }
+  if (riskValue >= 4) {
+    p.bigFail += 2.5;
+    p.fail += 2;
+    p.bigSuccess -= 1.2;
+  }
+
+  if (card.cost >= 50000 && (state.build.budgetControl || 0) < 4) {
+    p.bigFail += 2;
+    p.fail += 2;
+    p.success -= 2;
+  }
+
+  return normalizeOutcomeProbabilities(p);
+}
+
+function outcomeProfileType(card) {
+  if (card.tags?.includes("고위험") || card.tags?.includes("도박") || card.cost >= 50000) return "risky";
+  if (card.category === "운영력" || card.category === "사내정치") return "defense";
+  if (card.category === "예산관리" || card.category === "브랜드") return "stable";
+  return "medium";
+}
+
+function normalizeOutcomeProbabilities(probabilities) {
+  const min = { bigFail: 0.5, fail: 3, breakEven: 10, success: 5, bigSuccess: 1 };
+  const adjusted = {};
+  for (const key of Object.keys(probabilities)) adjusted[key] = Math.max(min[key] || 0, probabilities[key]);
+  const total = Object.values(adjusted).reduce((sum, value) => sum + value, 0);
+  for (const key of Object.keys(adjusted)) adjusted[key] = (adjusted[key] / total) * 100;
+  return adjusted;
+}
+
+function outcomeTierMultiplierRange(tier) {
+  const ranges = {
+    bigFail: [0, 0],
+    fail: [0.25, 0.6],
+    breakEven: [0.8, 1.08],
+    success: [1.2, 1.6],
+    bigSuccess: [2.0, 2.8],
+  };
+  return ranges[tier.id] || ranges.breakEven;
+}
+
+function calculateExpGain(card, baseExp, earnedBreakdown) {
+  const id = earnedBreakdown?.tier?.id || earnedBreakdown?.outcome || "breakEven";
+  const bonus = { bigFail: -baseExp, fail: -Math.max(0, baseExp - 1), breakEven: 0, success: 1, bigSuccess: 3 }[id] || 0;
+  return Math.max(0, baseExp + bonus);
+}
+
+function getSupportStat(card) {
+  if (card.category === "퍼포먼스") return averageNumbers([state.build.content, state.build.brand, state.trust]);
+  if (card.category === "콘텐츠") return averageNumbers([state.build.performance, state.build.brand]);
+  if (card.category === "브랜드") return averageNumbers([state.build.content, state.trust]);
+  if (card.category === "사내정치" || card.category === "보고") return averageNumbers([state.build.operations, state.trust]);
+  if (card.category === "운영력") return averageNumbers([state.build.politics, state.mental]);
+  if (card.category === "예산관리") return averageNumbers([state.build.performance, state.score]);
+  return 2;
+}
+
+function averageNumbers(values) {
+  const clean = values.filter((value) => Number.isFinite(value));
+  if (!clean.length) return 2;
+  return clean.reduce((sum, value) => sum + value, 0) / clean.length;
+}
+
 function chooseCard(cardId) {
   if (state.finished || state.screen !== "choice") return;
 
@@ -563,9 +755,12 @@ function chooseCard(cardId) {
   const situation = state.currentSituation;
   const before = snapshotCore();
   const cost = card.cost;
-  const earned = rollRange(card.earned, 1000);
-  const scoreGain = rollRange(card.score);
+  const baseEarned = rollRange(card.earned, 1000);
+  const baseExpGain = rollRange(card.score);
   const matchedSituation = isCardContextMatch(card, situation);
+  const earnedBreakdown = calculateEarnedMoney(card, situation, baseEarned, cost, matchedSituation);
+  const earned = earnedBreakdown.amount;
+  const scoreGain = calculateExpGain(card, baseExpGain, earnedBreakdown);
 
   state.money -= cost;
   state.money += earned;
@@ -584,14 +779,14 @@ function chooseCard(cardId) {
   clampState();
 
   const delta = diffCore(before, snapshotCore());
-  const resultText = buildResultText(card, situation, cost, earned, scoreGain, matchedSituation, synergyMessages);
+  const resultText = buildResultText(card, situation, cost, earned, scoreGain, matchedSituation, synergyMessages, earnedBreakdown);
   state.turnResult = {
     round: state.round,
     cardName: card.name,
     text: resultText,
     delta,
   };
-  addLog(`${state.round}R ${card.name}`, resultText);
+  addLog(`${state.round}R ${card.name}`, stripHtml(resultText));
 
   state.round += 1;
   state.screen = "result";
@@ -675,7 +870,7 @@ function finishGame() {
   els.resultSummary.textContent = resultSummary(cleared, excellentClear);
   els.resultStats.innerHTML = [
     ["돈", formatMoney(state.money)],
-    ["성과", state.score],
+    ["EXP", state.score],
     ["멘탈", state.mental],
     ["신뢰", state.trust],
   ]
@@ -692,11 +887,11 @@ function failTitle() {
 }
 
 function resultSummary(cleared, excellent) {
-  if (excellent) return "성과와 예산 회수까지 모두 챙겼습니다. 다음 캠페인 예산을 맡겨볼 만합니다.";
-  if (cleared) return "목표 예산과 성과 기준을 넘겼습니다. 인턴 테스트는 통과입니다.";
-  if (state.score < data.stageDefaults.clearConditions.scoreGte) return "열심히 한 흔적은 있지만 성과 점수가 부족했습니다.";
+  if (excellent) return "EXP와 예산 회수까지 모두 챙겼습니다. 다음 캠페인 예산을 맡겨볼 만합니다.";
+  if (cleared) return "목표 예산과 EXP 기준을 넘겼습니다. 인턴 테스트는 통과입니다.";
+  if (state.score < data.stageDefaults.clearConditions.scoreGte) return "열심히 한 흔적은 있지만 EXP가 부족했습니다.";
   if (state.money < data.stageDefaults.clearConditions.moneyGte) return "숫자는 만들었지만 남은 예산이 너무 얇습니다.";
-  if (state.trust < data.stageDefaults.clearConditions.trustGte) return "성과는 있지만 보고와 컨펌에서 신뢰를 잃었습니다.";
+  if (state.trust < data.stageDefaults.clearConditions.trustGte) return "EXP는 있지만 보고와 컨펌에서 신뢰를 잃었습니다.";
   return "클리어 기준에 아깝게 닿지 못했습니다.";
 }
 
@@ -715,7 +910,7 @@ function render() {
 
   setMeter("money", state.money, storyOverlay?.balanceProfileV12?.moneyMeterMax || storyOverlay?.balanceProfileV11?.moneyMeterMax || 600000);
   setMeter("mental", state.mental, 15);
-  setMeter("performance", state.score, 18);
+  setMeter("performance", state.score, 22);
   setMeter("trust", state.trust, 12);
 
   renderBuildStats();
@@ -852,7 +1047,7 @@ function renderTurnResult() {
   if (!state.turnResult) return;
   els.turnResultBadge.textContent = `${state.turnResult.round}R 선택 결과`;
   els.turnResultTitle.textContent = state.turnResult.cardName;
-  els.turnResultText.textContent = state.turnResult.text;
+  els.turnResultText.innerHTML = state.turnResult.text;
   els.turnResultDelta.innerHTML = state.turnResult.delta
     .map((part) => `<span>${part}</span>`)
     .join("");
@@ -866,19 +1061,42 @@ function renderLogs() {
     .join("");
 }
 
-function buildResultText(card, situation, cost, earned, scoreGain, matched, synergies) {
+function buildResultText(card, situation, cost, earned, scoreGain, matched, synergies, earnedBreakdown) {
   const patchedLine = getPatchedResultLine(card, matched, situation);
-  const narration = patchedLine?.narration || fallbackResultNarration(card, situation, matched);
-  const dialogue = patchedLine?.line
-    ? formatDialogue(patchedLine.speaker || getResultSpeaker(situation), patchedLine.line)
-    : makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, matched);
+  const noRecovery = earnedBreakdown?.outcome === "no_recovery" && cost > 0;
+  const narration = noRecovery
+    ? noRecoveryNarration(card)
+    : patchedLine?.narration || fallbackResultNarration(card, situation, matched);
+  const dialogue = noRecovery
+    ? makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, matched)
+    : patchedLine?.line
+      ? formatDialogue(patchedLine.speaker || getResultSpeaker(situation), patchedLine.line)
+      : makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, matched);
 
-  const spentText = cost > 0 ? `쓴 예산 -${cost.toLocaleString("ko-KR")}원.` : "쓴 예산 0원.";
-  const earnedText = `회수 금액 +${earned.toLocaleString("ko-KR")}원.`;
-  const netText = `순손익 ${formatMoneyDelta(earned - cost)}.`;
-  const scoreText = scoreGain > 0 ? `성과 +${scoreGain}.` : scoreGain < 0 ? `성과 ${scoreGain}.` : "성과 변화 없음.";
+  const net = earned - cost;
+  const scoreText = scoreGain > 0 ? `+${scoreGain}` : `${scoreGain}`;
+  const tierMeta = earnedBreakdown?.tier || outcomeTierMeta.breakEven;
+  const multiplierText = earnedBreakdown
+    ? `회수 보정 ×${earnedBreakdown.multiplier.toFixed(2)} · 결과 배수 ×${earnedBreakdown.tierMultiplier.toFixed(2)} · ${effectLabels[earnedBreakdown.mainKey] || "상태"} ${earnedBreakdown.mainStat.toFixed(1)}`
+    : "";
 
-  return [narration, dialogue, spentText, earnedText, netText, scoreText, ...synergies].filter(Boolean).join(" ");
+  const synergyHtml = synergies.length
+    ? `<div class="result-synergy">${synergies.map((item) => `<span>${item}</span>`).join("")}</div>`
+    : "";
+
+  return `
+    <div class="result-tier ${tierMeta.className}">${tierMeta.label}</div>
+    <span class="result-narration">${narration}</span>
+    <div class="result-dialogue"><span>${dialogueSpeaker(dialogue)}</span><strong>${dialogueLine(dialogue)}</strong></div>
+    <div class="result-money-grid">
+      <div><span>쓴 예산</span><strong>-${cost.toLocaleString("ko-KR")}원</strong></div>
+      <div class="${earned > 0 ? "" : "is-zero-recovery"}"><span>회수 금액</span><strong>${formatRecoveryMoney(earned)}</strong></div>
+      <div class="${net >= 0 ? "is-positive" : "is-negative"}"><span>순손익</span><strong>${formatMoneyDelta(net)}</strong></div>
+      <div><span>EXP</span><strong>${scoreText}</strong></div>
+    </div>
+    ${multiplierText ? `<div class="result-multiplier">${multiplierText}</div>` : ""}
+    ${synergyHtml}
+  `;
 }
 
 function getPatchedResultLine(card, matched, situation) {
@@ -893,6 +1111,18 @@ function getPatchedResultLine(card, matched, situation) {
   const cardDefault = card.resultLines?.[mode];
   if (cardDefault) return cardDefault;
   return null;
+}
+
+function noRecoveryNarration(card) {
+  const byCategory = {
+    "예산관리": "판단은 했지만 이번 선택에서는 뚜렷한 회수 금액을 만들지 못했습니다.",
+    "퍼포먼스": "예산을 태웠지만 이번 집행에서는 구매나 회수로 이어지지 않았습니다.",
+    "콘텐츠": "소재를 손봤지만 이번에는 반응이 숫자로 돌아오지 않았습니다.",
+    "브랜드": "톤은 정리했지만 당장 회수되는 돈은 없었습니다.",
+    "사내정치": "설명할 여지는 만들었지만 이번 선택 자체로 회수된 금액은 없었습니다.",
+    "운영력": "일은 정리했지만 이번 선택에서 바로 돌아온 돈은 없었습니다.",
+  };
+  return byCategory[card.category] || "이번 선택에서는 돈이 바로 돌아오지 않았습니다.";
 }
 
 function fallbackResultNarration(card, situation, matched) {
@@ -913,7 +1143,11 @@ function makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, mat
   const net = earned - cost;
   let line = "좋아요. 다음 선택에서 이 흐름을 이어가봅시다.";
 
-  if (!matched) {
+  if (cost > 0 && earned <= 0) {
+    line = card.category === "퍼포먼스" || card.category === "콘텐츠"
+      ? "이번엔 돈이 바로 돌아오진 않았어요. 다음 선택에서 왜 안 먹혔는지 잡아야 합니다."
+      : "이번 선택은 바로 돈으로 돌아오진 않았지만, 다음 리스크를 줄이는 쪽으로 봐야 해요.";
+  } else if (!matched) {
     line = "의미는 있는데, 지금 문제랑은 조금 빗나갔어요. 다음 선택에서 바로잡아봅시다.";
   } else if (net >= 60000 || scoreGain >= 4) {
     line = card.category === "퍼포먼스"
@@ -946,6 +1180,22 @@ function getResultSpeaker(situation) {
 function formatDialogue(speaker, line) {
   if (!speaker || !line) return "";
   return `${speaker}: “${line}”`;
+}
+
+function dialogueSpeaker(dialogue) {
+  const index = dialogue.indexOf(":");
+  if (index === -1) return "팀장님";
+  return dialogue.slice(0, index);
+}
+
+function dialogueLine(dialogue) {
+  const index = dialogue.indexOf(":");
+  const raw = index === -1 ? dialogue : dialogue.slice(index + 1).trim();
+  return raw.replace(/^[“”"']+|[“”"']+$/g, "");
+}
+
+function stripHtml(value) {
+  return String(value || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
 
 function diffCore(before, after) {
@@ -983,7 +1233,7 @@ function decayRisks() {
 
 function clampState() {
   state.money = Math.min(storyOverlay?.balanceProfileV12?.moneyClampMax || storyOverlay?.balanceProfileV11?.moneyClampMax || 650000, state.money);
-  state.score = Math.min(18, state.score);
+  state.score = Math.min(24, state.score);
   state.mental = Math.min(15, state.mental);
   state.trust = Math.min(12, state.trust);
   for (const key of data.buildStats) state.build[key] = Math.max(0, Math.min(12, state.build[key]));
@@ -1047,6 +1297,11 @@ function formatCostCompact(value) {
 
 function formatStatusMoney(value) {
   return Math.max(0, value).toLocaleString("ko-KR");
+}
+
+function formatRecoveryMoney(value) {
+  if (value <= 0) return "회수 없음";
+  return `+${value.toLocaleString("ko-KR")}원`;
 }
 
 function formatMoneyDelta(value) {
