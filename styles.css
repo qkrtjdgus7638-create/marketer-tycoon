@@ -673,21 +673,183 @@ button {
   color: var(--card-accent);
 }
 
-/* Mobile layout guard: v10 keeps choice cards compact and prevents copy overlap. */
+/* Dynamic balance/result readability update */
+.result-narration {
+  display: block;
+  margin: 8px 0 12px;
+  color: #424941;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.result-dialogue {
+  position: relative;
+  margin: 12px 0 16px;
+  padding: 2px 0 2px 14px;
+  border-left: 3px solid var(--green);
+  background: transparent;
+}
+
+.result-dialogue span {
+  display: block;
+  margin-bottom: 4px;
+  color: #167260;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.result-dialogue strong {
+  display: block;
+  color: #143d34;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.42;
+}
+
+.result-dialogue strong::before {
+  content: "“";
+  margin-right: 1px;
+  color: var(--green);
+}
+
+.result-dialogue strong::after {
+  content: "”";
+  margin-left: 1px;
+  color: var(--green);
+}
+
+.result-money-grid .is-zero-recovery strong {
+  color: #8b4c25;
+}
+
+.result-money-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.result-money-grid div {
+  min-width: 0;
+  padding: 10px 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel-soft);
+}
+
+.result-money-grid span {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.result-money-grid strong {
+  display: block;
+  overflow: hidden;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-money-grid .is-positive strong {
+  color: var(--green);
+}
+
+.result-money-grid .is-negative strong {
+  color: var(--red);
+}
+
+.result-multiplier {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(25, 29, 36, 0.05);
+  color: #5b625b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.result-synergy {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.result-synergy span {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #fff5d9;
+  color: #765a11;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+@media (max-width: 520px) {
+  .result-money-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .result-dialogue strong {
+    font-size: 16px;
+  }
+}
+
+
+/* v11 EXP/outcome tier update */
+.result-tier {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 6px 0 4px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(25, 29, 36, 0.06);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: -0.01em;
+}
+.result-tier.tier-big-fail { color: #a33b45; background: rgba(239, 96, 116, 0.14); }
+.result-tier.tier-fail { color: #8b4c25; background: rgba(214, 166, 49, 0.14); }
+.result-tier.tier-break-even { color: #5c615d; background: rgba(111, 117, 111, 0.12); }
+.result-tier.tier-success { color: #167260; background: rgba(47, 159, 122, 0.12); }
+.result-tier.tier-big-success { color: #4c3c9d; background: rgba(118, 87, 200, 0.14); }
+
+/* Mobile layout guard: keep v11 result logic while preventing card text from being covered. */
+.card-main {
+  min-width: 0;
+}
+
 .card-tagline {
   display: flex;
   min-width: 0;
-  gap: 5px;
+  gap: 4px;
 }
 
 .card-tagline span {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.card-main {
-  min-width: 0;
+.card-tagline span:first-child {
+  flex: 0 0 auto;
+}
+
+.card-tagline span:last-child {
+  flex: 1 1 auto;
+}
+
+.effect-list {
+  align-self: stretch;
+  justify-content: center;
 }
 
 @media (max-width: 480px) {
@@ -713,7 +875,11 @@ button {
 
   .brand h1 {
     font-size: 19px;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
+  }
+
+  .brand p {
+    font-size: 11px;
   }
 
   .round-pill {
@@ -840,7 +1006,6 @@ button {
   }
 
   .card-tagline {
-    gap: 4px;
     font-size: 9.5px;
   }
 
@@ -868,6 +1033,10 @@ button {
 
   .effect-list strong {
     font-size: 20px;
+  }
+
+  .result-dialogue strong {
+    font-size: 15px;
   }
 }
 
