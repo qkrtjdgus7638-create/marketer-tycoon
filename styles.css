@@ -1140,7 +1140,7 @@ button {
   }
 }
 
-/* UI stability pass: one fixed mobile game board, no overlapping text. */
+/* UI stability pass: one fixed mobile game board, visible CTA, no overlapping text. */
 .app {
   grid-template-rows: auto auto minmax(0, 1fr);
 }
