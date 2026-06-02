@@ -6971,5 +6971,32 @@
     "라운드별 moneyWeight 추가: R1~R5 준비/리스크, R6~R8 수익, R9~R12 보고/평가 리듬 강화",
     "결과 등급 확률을 role 기반으로 조정하고 EXP/빌드/위험/상황 적합/콤보 보정을 연결",
     "결과 화면에 상승/하락 요인과 팀장 해석 대사를 출력하도록 app 패치와 연결"
+  ],
+  "managerDialoguePatch": {
+    "title": "팀장 대사 고도화 패치",
+    "purpose": "팀장 대사가 matched/missed 중심으로 반복되는 문제를 줄이고, 라운드/카드 role/결과등급/금액결과/빌드요인을 조합해 더 맥락 있는 한마디를 출력한다.",
+    "rules": [
+      "카드별 고정 resultLines는 narration 용도로 우선 활용하고, 팀장 한마디는 동적 생성한다.",
+      "팀장 한마디는 role(prep/improve/revenue/defense/report/gamble)과 outcomeTier(대실패/실패/본전/성공/대성공)를 먼저 본다.",
+      "라운드 id를 보고 현재 라운드의 핵심 문맥을 대사 이유에 섞는다.",
+      "최근 빌드 루트가 이어졌거나 관련 역량이 높으면 긍정 이유를 넣는다.",
+      "상황 부적합, 리스크 누적, 큰 예산 대비 준비 부족, 손실 발생 시 부정 이유를 넣는다.",
+      "같은 성공이라도 카드 role과 라운드가 다르면 다른 말투가 나오도록 한다."
+    ],
+    "dialoguePriority": [
+      "결과등급",
+      "카드 role",
+      "라운드 문맥",
+      "빌드루트/스탯/리스크 요인",
+      "금액 결과"
+    ]
+  },
+  "changeLogManagerDialoguePatch": [
+    "makeDynamicResultDialogue를 makeContextualManagerDialogue로 교체",
+    "patched resultLines.line이 반복 대사를 고정시키지 않도록 팀장 대사는 동적 생성 우선으로 변경",
+    "6개 카드 role × 5개 결과등급 대사 풀 추가",
+    "12개 라운드별 context reason 추가",
+    "순손익/회수없음/고비용준비부족/리스크누적/빌드루트 연결에 따른 대사 이유 조합 추가",
+    "같은 결과등급이라도 role과 라운드에 따라 다른 한마디가 나오도록 seed 기반 대사 선택 적용"
   ]
 }
