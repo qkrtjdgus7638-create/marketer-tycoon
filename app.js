@@ -581,32 +581,75 @@ const categoryRiskKey = {
   "보고": "reportPressure",
 };
 
+const roleLabels = {
+  prep: "준비",
+  improve: "개선",
+  revenue: "수익",
+  defense: "방어",
+  report: "보고",
+  gamble: "도박",
+};
+
+const routeLabels = {
+  test_route: "테스트형",
+  content_burst: "콘텐츠 폭발형",
+  conversion_route: "전환형",
+  brand_stable: "브랜드 안정형",
+  politics_route: "정치 생존형",
+  ops_route: "운영 안정형",
+  budget_route: "예산 관리형",
+};
+
+const roleOutcomeProbabilities = {
+  prep: { bigFail: 2, fail: 8, breakEven: 60, success: 27, bigSuccess: 3 },
+  defense: { bigFail: 1, fail: 9, breakEven: 65, success: 23, bigSuccess: 2 },
+  improve: { bigFail: 6, fail: 18, breakEven: 38, success: 30, bigSuccess: 8 },
+  revenue: { bigFail: 12, fail: 24, breakEven: 27, success: 25, bigSuccess: 12 },
+  gamble: { bigFail: 18, fail: 25, breakEven: 20, success: 22, bigSuccess: 15 },
+  report: { bigFail: 3, fail: 12, breakEven: 50, success: 30, bigSuccess: 5 },
+};
+
+const moneyWeightScale = {
+  low: 0.25,
+  lowMid: 0.52,
+  mid: 0.82,
+  high: 1.25,
+  veryHigh: 1.45,
+  eval: 0.45,
+};
+
 function calculateEarnedMoney(card, situation, baseEarned, cost, matched) {
-  const profile = storyOverlay?.earnedMultiplierProfile || {};
   const mainKey = categoryBuildKey[card.category];
   const mainStat = mainKey ? state.build[mainKey] || 0 : 2;
   const supportStat = getSupportStat(card);
   const riskKey = categoryRiskKey[card.category];
   const riskValue = riskKey ? state.risk[riskKey] || 0 : 0;
+  const role = card.role || outcomeProfileType(card);
+  const routeCombo = getRouteCombo(card);
+  const moneyWeight = situation.storyRound?.moneyWeight || "mid";
+  const roundScale = moneyWeightScale[moneyWeight] ?? 0.72;
 
   let multiplier = 1;
-  multiplier *= 0.76 + Math.min(mainStat, 10) * 0.045;
-  multiplier *= 0.86 + Math.min(supportStat, 10) * 0.026;
-  multiplier *= matched ? 1.04 : 0.62;
-  multiplier *= Math.max(0.72, 1 - riskValue * 0.045);
+  multiplier *= 0.74 + Math.min(mainStat, 10) * 0.045;
+  multiplier *= 0.86 + Math.min(supportStat, 10) * 0.024;
+  multiplier *= matched ? 1.05 : 0.58;
+  multiplier *= Math.max(0.62, 1 - riskValue * 0.052);
+  multiplier *= roundScale;
+  multiplier *= routeCombo.multiplier;
 
-  if (cost >= 50000 && mainStat < 4) multiplier *= 0.65;
-  if (cost >= 50000 && (state.build.budgetControl || 0) < 4) multiplier *= 0.82;
-  if (card.category === "퍼포먼스" && (state.build.performance || 0) < 4 && (state.build.content || 0) < 4) multiplier *= 0.74;
-  if (card.category === "콘텐츠" && (state.build.content || 0) >= 5 && (state.build.performance || 0) >= 4) multiplier *= 1.08;
-  if (card.category === "브랜드" && (state.build.brand || 0) >= 5 && (state.trust || 0) >= 7) multiplier *= 1.06;
-  if (card.category === "운영력" && (state.build.operations || 0) >= 5 && (state.mental || 0) >= 7) multiplier *= 1.05;
+  // 준비 없이 큰돈을 쓰면 회수 실패 가능성을 확실히 키운다.
+  if (cost >= 50000 && mainStat < 4) multiplier *= 0.58;
+  if (cost >= 50000 && (state.build.budgetControl || 0) < 4) multiplier *= 0.76;
+  if ((role === "revenue" || role === "gamble") && state.score < 6 && !routeCombo.count) multiplier *= 0.82;
+  if (card.category === "퍼포먼스" && (state.build.performance || 0) < 4 && (state.build.content || 0) < 4) multiplier *= 0.72;
+  if (role === "prep" || role === "defense" || role === "report") multiplier *= 0.82;
 
-  const minMultiplier = profile.minMultiplier ?? 0.22;
-  const maxMultiplier = profile.maxMultiplier ?? 1.45;
+  const profile = storyOverlay?.earnedMultiplierProfile || {};
+  const minMultiplier = profile.minMultiplier ?? 0.12;
+  const maxMultiplier = profile.maxMultiplier ?? 1.7;
   multiplier = Math.max(minMultiplier, Math.min(maxMultiplier, multiplier));
 
-  const tier = pickOutcomeTier(card, matched, mainStat, supportStat, riskValue);
+  const tier = pickOutcomeTier(card, matched, mainStat, supportStat, riskValue, routeCombo);
   const tierMultiplier = rollRange(outcomeTierMultiplierRange(tier), 0.05);
   const amount = Math.max(0, Math.round((baseEarned * multiplier * tierMultiplier) / 1000) * 1000);
 
@@ -617,12 +660,16 @@ function calculateEarnedMoney(card, situation, baseEarned, cost, matched) {
     tierMultiplier,
     tier,
     outcome: tier.id,
+    role,
     mainKey,
     mainStat,
     supportStat,
     riskKey,
     riskValue,
     matched,
+    moneyWeight,
+    roundScale,
+    routeCombo,
     probabilities: tier.probabilities,
   };
 }
@@ -635,8 +682,8 @@ const outcomeTierMeta = {
   bigSuccess: { label: "대성공", className: "tier-big-success" },
 };
 
-function pickOutcomeTier(card, matched, mainStat, supportStat, riskValue) {
-  const probabilities = outcomeTierProbabilities(card, matched, mainStat, supportStat, riskValue);
+function pickOutcomeTier(card, matched, mainStat, supportStat, riskValue, routeCombo = { count: 0 }) {
+  const probabilities = outcomeTierProbabilities(card, matched, mainStat, supportStat, riskValue, routeCombo);
   const roll = Math.random() * 100;
   let cursor = 0;
   for (const [id, value] of Object.entries(probabilities)) {
@@ -646,14 +693,9 @@ function pickOutcomeTier(card, matched, mainStat, supportStat, riskValue) {
   return { id: "breakEven", ...outcomeTierMeta.breakEven, probabilities };
 }
 
-function outcomeTierProbabilities(card, matched, mainStat, supportStat, riskValue) {
-  const profile = outcomeProfileType(card);
-  const base = {
-    defense: { bigFail: 2, fail: 10, breakEven: 60, success: 25, bigSuccess: 3 },
-    stable: { bigFail: 3, fail: 12, breakEven: 50, success: 30, bigSuccess: 5 },
-    medium: { bigFail: 7, fail: 18, breakEven: 40, success: 27, bigSuccess: 8 },
-    risky: { bigFail: 15, fail: 25, breakEven: 25, success: 22, bigSuccess: 13 },
-  }[profile];
+function outcomeTierProbabilities(card, matched, mainStat, supportStat, riskValue, routeCombo = { count: 0 }) {
+  const role = card.role || outcomeProfileType(card);
+  const base = { ...(roleOutcomeProbabilities[role] || roleOutcomeProbabilities.improve) };
   const p = { ...base };
 
   const expStage = Math.min(4, Math.floor((state.score || 0) / 5));
@@ -664,18 +706,25 @@ function outcomeTierProbabilities(card, matched, mainStat, supportStat, riskValu
   p.bigSuccess += expStage * 0.8;
 
   if (matched) {
-    p.fail -= 2;
-    p.success += 1.3;
+    p.fail -= 2.2;
+    p.success += 1.5;
     p.bigSuccess += 0.7;
   } else {
-    p.bigFail += 4;
-    p.fail += 5;
-    p.success -= 4;
-    p.bigSuccess -= 2;
+    p.bigFail += 4.5;
+    p.fail += 5.5;
+    p.success -= 4.2;
+    p.bigSuccess -= 2.2;
+  }
+
+  if (routeCombo.count) {
+    p.bigFail -= routeCombo.count * 0.6;
+    p.fail -= routeCombo.count * 1.1;
+    p.success += routeCombo.count * 1.0;
+    p.bigSuccess += routeCombo.count * 0.7;
   }
 
   if (mainStat >= 6) {
-    p.fail -= 1.5;
+    p.fail -= 1.4;
     p.success += 1;
     p.bigSuccess += 0.8;
   }
@@ -685,19 +734,19 @@ function outcomeTierProbabilities(card, matched, mainStat, supportStat, riskValu
     p.bigSuccess += 0.5;
   }
   if (mainStat < 3) {
-    p.bigFail += 2;
-    p.fail += 2;
-    p.success -= 2;
+    p.bigFail += 2.2;
+    p.fail += 2.4;
+    p.success -= 2.1;
   }
   if (riskValue >= 4) {
-    p.bigFail += 2.5;
-    p.fail += 2;
-    p.bigSuccess -= 1.2;
+    p.bigFail += 3;
+    p.fail += 2.3;
+    p.bigSuccess -= 1.4;
   }
 
-  if (card.cost >= 50000 && (state.build.budgetControl || 0) < 4) {
-    p.bigFail += 2;
-    p.fail += 2;
+  if ((role === "revenue" || role === "gamble") && card.cost >= 50000 && (state.build.budgetControl || 0) < 4) {
+    p.bigFail += 2.5;
+    p.fail += 2.5;
     p.success -= 2;
   }
 
@@ -705,10 +754,42 @@ function outcomeTierProbabilities(card, matched, mainStat, supportStat, riskValu
 }
 
 function outcomeProfileType(card) {
-  if (card.tags?.includes("고위험") || card.tags?.includes("도박") || card.cost >= 50000) return "risky";
+  if (card.role) return card.role;
+  if (card.tags?.includes("고위험") || card.tags?.includes("도박") || card.cost >= 50000) return "gamble";
   if (card.category === "운영력" || card.category === "사내정치") return "defense";
-  if (card.category === "예산관리" || card.category === "브랜드") return "stable";
-  return "medium";
+  if (card.category === "예산관리" || card.category === "브랜드") return "prep";
+  if (card.category === "퍼포먼스") return "revenue";
+  return "improve";
+}
+
+function getRouteCombo(card) {
+  const cardRoutes = card.routeTags || [];
+  if (!cardRoutes.length) return { count: 0, route: null, label: null, multiplier: 1, expBonus: 0 };
+  const recent = state.recentCards
+    .map((recentCard) => data.cards.find((item) => item.name === recentCard.name))
+    .filter(Boolean)
+    .slice(0, 4);
+
+  let bestRoute = null;
+  let bestCount = 0;
+  for (const route of cardRoutes) {
+    const count = recent.filter((recentCard) => (recentCard.routeTags || []).includes(route)).length;
+    if (count > bestCount) {
+      bestRoute = route;
+      bestCount = count;
+    }
+  }
+
+  if (!bestCount) return { count: 0, route: null, label: null, multiplier: 1, expBonus: 0 };
+  const multiplier = Math.min(1.24, 1 + bestCount * 0.08);
+  const expBonus = bestCount >= 2 ? 1 : 0;
+  return {
+    count: bestCount,
+    route: bestRoute,
+    label: routeLabels[bestRoute] || bestRoute,
+    multiplier,
+    expBonus,
+  };
 }
 
 function normalizeOutcomeProbabilities(probabilities) {
@@ -734,7 +815,8 @@ function outcomeTierMultiplierRange(tier) {
 function calculateExpGain(card, baseExp, earnedBreakdown) {
   const id = earnedBreakdown?.tier?.id || earnedBreakdown?.outcome || "breakEven";
   const bonus = { bigFail: -baseExp, fail: -Math.max(0, baseExp - 1), breakEven: 0, success: 1, bigSuccess: 3 }[id] || 0;
-  return Math.max(0, baseExp + bonus);
+  const comboBonus = earnedBreakdown?.routeCombo?.expBonus || 0;
+  return Math.max(0, baseExp + bonus + comboBonus);
 }
 
 function getSupportStat(card) {
@@ -1100,22 +1182,23 @@ function renderLogs() {
 
 function buildResultText(card, situation, cost, earned, scoreGain, matched, synergies, earnedBreakdown) {
   const patchedLine = getPatchedResultLine(card, matched, situation);
-  const noRecovery = earnedBreakdown?.outcome === "no_recovery" && cost > 0;
+  const noRecovery = cost > 0 && earned <= 0;
   const narration = noRecovery
     ? noRecoveryNarration(card)
     : patchedLine?.narration || fallbackResultNarration(card, situation, matched);
   const dialogue = noRecovery
-    ? makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, matched)
+    ? makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, matched, earnedBreakdown)
     : patchedLine?.line
       ? formatDialogue(patchedLine.speaker || getResultSpeaker(situation), patchedLine.line)
-      : makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, matched);
+      : makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, matched, earnedBreakdown);
 
   const net = earned - cost;
   const scoreText = scoreGain > 0 ? `+${scoreGain}` : `${scoreGain}`;
   const tierMeta = earnedBreakdown?.tier || outcomeTierMeta.breakEven;
   const multiplierText = earnedBreakdown
-    ? `회수 보정 ×${earnedBreakdown.multiplier.toFixed(2)} · 결과 배수 ×${earnedBreakdown.tierMultiplier.toFixed(2)} · ${effectLabels[earnedBreakdown.mainKey] || "상태"} ${earnedBreakdown.mainStat.toFixed(1)}`
+    ? `회수 보정 ×${earnedBreakdown.multiplier.toFixed(2)} · 결과 배수 ×${earnedBreakdown.tierMultiplier.toFixed(2)} · ${roleLabels[earnedBreakdown.role] || "선택"} 카드 · ${effectLabels[earnedBreakdown.mainKey] || "상태"} ${earnedBreakdown.mainStat.toFixed(1)}`
     : "";
+  const reasonHtml = earnedBreakdown ? buildReasonHtml(card, situation, earnedBreakdown, matched, cost, earned, scoreGain) : "";
 
   const synergyHtml = synergies.length
     ? `<div class="result-synergy">${synergies.map((item) => `<span>${item}</span>`).join("")}</div>`
@@ -1132,6 +1215,7 @@ function buildResultText(card, situation, cost, earned, scoreGain, matched, syne
       <div><span>EXP</span><strong>${scoreText}</strong></div>
     </div>
     ${multiplierText ? `<div class="result-multiplier">${multiplierText}</div>` : ""}
+    ${reasonHtml}
     ${synergyHtml}
   `;
 }
@@ -1175,39 +1259,80 @@ function fallbackResultNarration(card, situation, matched) {
   return byCategory[card.category] || "현재 상황에 맞춰 다음 선택을 준비했습니다.";
 }
 
-function makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, matched) {
+function makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, matched, earnedBreakdown = null) {
   const speaker = getResultSpeaker(situation);
+  const tierId = earnedBreakdown?.tier?.id || "breakEven";
+  const role = card.role || outcomeProfileType(card);
   const net = earned - cost;
   let line = "좋아요. 다음 선택에서 이 흐름을 이어가봅시다.";
 
-  if (cost > 0 && earned <= 0) {
-    line = card.category === "퍼포먼스" || card.category === "콘텐츠"
-      ? "이번엔 돈이 바로 돌아오진 않았어요. 다음 선택에서 왜 안 먹혔는지 잡아야 합니다."
-      : "이번 선택은 바로 돈으로 돌아오진 않았지만, 다음 리스크를 줄이는 쪽으로 봐야 해요.";
-  } else if (!matched) {
-    line = "의미는 있는데, 지금 문제랑은 조금 빗나갔어요. 다음 선택에서 바로잡아봅시다.";
-  } else if (net >= 60000 || scoreGain >= 4) {
-    line = card.category === "퍼포먼스"
-      ? "숫자는 확실히 보이네요. 대신 효율은 계속 같이 봐야 합니다."
-      : "이번 선택은 결과가 꽤 보이네요. 이 흐름은 보고에 써도 되겠어요.";
-  } else if (net <= -25000) {
-    line = card.category === "퍼포먼스"
-      ? "성과를 노린 건 좋은데, 이 비용 구조는 조금 부담됩니다."
-      : "방향은 이해했는데, 쓴 비용에 비해 결과가 아직 약해요.";
-  } else if (scoreGain <= 0 && card.category !== "운영력" && card.category !== "사내정치") {
-    line = "지금 당장 보이는 숫자는 약해요. 대신 다음 액션이 분명해야 합니다.";
-  } else {
-    const byCategory = {
-      "예산관리": "돈을 지키는 판단은 괜찮아요. 다만 성과 근거도 같이 챙겨야 합니다.",
-      "퍼포먼스": "숫자를 만들려는 방향은 맞아요. 이제 효율을 같이 봅시다.",
-      "콘텐츠": "반응을 만들 단서는 생겼네요. 다음엔 이걸 숫자로 이어봅시다.",
-      "브랜드": "톤은 안정됐네요. 이제 숫자도 같이 확인해봅시다.",
-      "사내정치": "설명할 근거를 챙긴 건 좋아요. 보고 때 도움이 될 겁니다.",
-      "운영력": "일이 터지기 전에 정리한 건 좋아요. 이게 나중에 사고를 줄입니다.",
-    };
-    line = byCategory[card.category] || line;
-  }
+  const bigFailLines = {
+    revenue: "이 비용으로 아무것도 못 건진 건 아픕니다. 다음엔 먼저 작게 확인하고 갑시다.",
+    gamble: "크게 건 판단은 이해하지만, 근거 없이 태우면 이렇게 맞을 수 있어요.",
+    improve: "세게 간 건 알겠는데, 방향이 빗나가면 오히려 리스크가 커집니다.",
+    report: "말은 정리됐지만, 숫자가 없으면 방패도 얇습니다.",
+    prep: "준비 단계에서 크게 잃진 않았지만, 다음 액션이 분명해야 합니다.",
+    defense: "막으려던 건 맞지만 이번엔 남는 게 너무 적습니다.",
+  };
+  const successLines = {
+    revenue: "숫자는 움직였어요. 이제 효율도 같이 봅시다.",
+    gamble: "위험하긴 했지만 이번엔 제대로 붙었습니다. 이 흐름은 더 봐도 되겠어요.",
+    improve: "이전보다 나아졌습니다. 다음엔 이걸 성과로 연결해야 해요.",
+    report: "이 정도로 정리하면 다음 액션까지 이야기할 수 있겠네요.",
+    prep: "방향은 잡혔어요. 이제 실제 반응을 봐야 합니다.",
+    defense: "크게 터질 상황은 막았네요. 다만 숫자는 더 필요합니다.",
+  };
+  const bigSuccessLines = {
+    revenue: "이건 반응이 확실히 붙었네요. 이 방향은 다음 테스트에서도 가져가도 되겠습니다.",
+    gamble: "이번 건 좀 터졌습니다. 다만 이 방식은 근거가 있을 때만 다시 씁시다.",
+    improve: "소재가 제대로 먹혔네요. 다만 이 톤을 계속 가져갈지는 봐야 합니다.",
+    report: "정리도 좋고 다음 액션도 보입니다. 보고에 꽤 쓸 만하겠어요.",
+    prep: "초반 정리가 잘 됐습니다. 덕분에 다음 선택이 훨씬 쉬워졌어요.",
+    defense: "리스크를 잘 막았습니다. 이 정도면 다음 선택을 안정적으로 갈 수 있어요.",
+  };
+
+  if (tierId === "bigFail") line = bigFailLines[role] || bigFailLines.improve;
+  else if (tierId === "fail") {
+    if (role === "revenue" || role === "gamble") line = "돈을 쓴 만큼의 반응은 아니네요. 다음엔 근거를 더 보고 태웁시다.";
+    else if (role === "report") line = "정리는 됐지만 보여줄 숫자가 아직 약합니다.";
+    else line = "시도는 이해되는데, 지금 문제를 직접 해결하진 못했어요.";
+  } else if (tierId === "breakEven") {
+    if (role === "prep") line = "방향은 잡혔어요. 이제 실제 반응을 봐야 합니다.";
+    else if (role === "report") line = "정리는 됐는데, 보여줄 숫자가 아직 약합니다.";
+    else line = "망하진 않았는데, 이걸로 다음 액션을 정하기엔 조금 애매합니다.";
+  } else if (tierId === "success") line = successLines[role] || successLines.improve;
+  else if (tierId === "bigSuccess") line = bigSuccessLines[role] || bigSuccessLines.improve;
+
+  if (!matched && tierId !== "bigSuccess") line = "의미는 있는데, 지금 문제랑은 조금 빗나갔어요. 다음 선택에서 바로잡아봅시다.";
+  if (net <= -40000 && (role === "revenue" || role === "gamble")) line = "성과를 노린 건 좋은데, 이 비용 구조는 조금 부담됩니다.";
+
   return formatDialogue(speaker, line);
+}
+
+function buildReasonHtml(card, situation, breakdown, matched, cost, earned, scoreGain) {
+  const positives = [];
+  const negatives = [];
+  const role = breakdown.role || card.role || outcomeProfileType(card);
+
+  if (matched) positives.push("현재 상황과 카드가 잘 맞았습니다.");
+  else negatives.push("지금 문제와 카드의 방향이 조금 어긋났습니다.");
+
+  if (breakdown.routeCombo?.count) positives.push(`${breakdown.routeCombo.label} 선택이 이어지며 효과가 커졌습니다.`);
+  if (breakdown.mainStat >= 6) positives.push("관련 역량이 쌓여 결과가 좋아졌습니다.");
+  if (Math.floor((state.score || 0) / 5) > 0) positives.push("EXP가 쌓여 판단 성공률이 조금 올랐습니다.");
+  if (breakdown.riskValue <= 1 && breakdown.riskKey) positives.push("누적 리스크가 낮아 회수 효율이 유지됐습니다.");
+
+  if (breakdown.riskValue >= 4) negatives.push("누적된 리스크 때문에 효율이 깎였습니다.");
+  if (breakdown.mainStat < 3 && (role === "revenue" || role === "gamble" || role === "improve")) negatives.push("아직 이 선택을 크게 밀 만큼 준비가 부족했습니다.");
+  if (cost >= 50000 && (state.build.budgetControl || 0) < 4) negatives.push("큰 예산을 쓰기엔 예산 관리 근거가 부족했습니다.");
+  if (breakdown.moneyWeight === "low" && earned > 0) negatives.push("이 라운드는 수익보다 준비 성격이 강해 회수가 제한됐습니다.");
+  if ((state.risk.brandRisk || 0) >= 4) negatives.push("반응은 노렸지만 브랜드 부담이 생겼습니다.");
+
+  const pos = positives.slice(0, 2);
+  const neg = negatives.slice(0, 2);
+  const items = [...pos.map((text) => `<li class="good">+ ${text}</li>`), ...neg.map((text) => `<li class="bad">- ${text}</li>`)].slice(0, 3);
+  if (!items.length) return "";
+  return `<div class="result-reasons"><strong>왜 이런 결과가 나왔나요?</strong><ul>${items.join("")}</ul></div>`;
 }
 
 function getResultSpeaker(situation) {
