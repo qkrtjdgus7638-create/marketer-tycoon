@@ -1,0 +1,114 @@
+{
+  "title": "마케터로 살아남기",
+  "subtitle": "인턴 캠페인 15라운드",
+  "totalRounds": 15,
+  "starting": {
+    "budget": 120000,
+    "exp": 0,
+    "mental": 10,
+    "trust": 5
+  },
+  "meters": {
+    "budget": 220000,
+    "exp": 35,
+    "mental": 12,
+    "trust": 12
+  },
+  "fixedRounds": {
+    "1": {
+      "id": "fixed_first_campaign",
+      "type": "fixed",
+      "phase": "fixed",
+      "title": "첫 출근 / 캠페인 배정",
+      "speaker": "팀장님",
+      "description": "이번 캠페인, 큰 건 아니니까 한번 맡아볼래요? 예산은 많지 않은데… 그래도 성과는 좀 봐야 합니다.",
+      "tags": [
+        "onboarding",
+        "performance",
+        "budget",
+        "report"
+      ],
+      "riskTags": [],
+      "preferredCardTags": [
+        "performance",
+        "creative",
+        "report",
+        "budget"
+      ],
+      "weakCardTags": [],
+      "fixedCardIds": [
+        "card_small_test",
+        "card_minor_creative_edit",
+        "card_report_shield"
+      ]
+    },
+    "5": {
+      "id": "fixed_first_report",
+      "type": "branch",
+      "phase": "first_report",
+      "title": "첫 보고",
+      "speaker": "팀장님"
+    },
+    "10": {
+      "id": "fixed_mid_review",
+      "type": "branch",
+      "phase": "mid_review",
+      "title": "중간 평가",
+      "speaker": "팀장님"
+    },
+    "15": {
+      "id": "fixed_final_review",
+      "type": "final",
+      "phase": "final",
+      "title": "최종 평가",
+      "speaker": "팀장님"
+    }
+  },
+  "endings": [
+    {
+      "id": "failed",
+      "title": "승진 실패",
+      "summary": "성과나 신뢰가 기준에 닿지 못했습니다."
+    },
+    {
+      "id": "survived_barely",
+      "title": "간신히 생존",
+      "summary": "아슬아슬했지만 인턴 캠페인을 끝까지 버텼습니다."
+    },
+    {
+      "id": "regular",
+      "title": "무난한 정규직 전환",
+      "summary": "성과, 예산, 신뢰가 균형 있게 남았습니다."
+    },
+    {
+      "id": "ace",
+      "title": "에이스 인턴",
+      "summary": "숫자와 신뢰를 모두 챙긴 캠페인이었습니다."
+    },
+    {
+      "id": "budget_genius",
+      "title": "예산 태운 천재",
+      "summary": "돈은 많이 썼지만 성과도 강하게 만들었습니다."
+    },
+    {
+      "id": "report_survivor",
+      "title": "보고서형 생존자",
+      "summary": "숫자는 평범했지만 설명 능력으로 살아남았습니다."
+    },
+    {
+      "id": "burnout_performer",
+      "title": "멘탈 갈린 성과충",
+      "summary": "성과는 냈지만 멘탈을 크게 소모했습니다."
+    },
+    {
+      "id": "boss_pick",
+      "title": "대표님 픽",
+      "summary": "위험한 선택이 위쪽 취향에 제대로 꽂혔습니다."
+    },
+    {
+      "id": "chaos_marketer",
+      "title": "혼돈의 마케터",
+      "summary": "대박과 쪽박을 모두 지나온 예측 불가 마케터입니다."
+    }
+  ]
+}
