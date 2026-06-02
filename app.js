@@ -17,6 +17,8 @@ const els = {
   situationRisk: document.querySelector("#situationRisk"),
   situationName: document.querySelector("#situationName"),
   situationText: document.querySelector("#situationText"),
+  situationHint: document.querySelector("#situationHint"),
+  situationTags: document.querySelector("#situationTags"),
   advisorText: document.querySelector("#advisorText"),
   advisorName: document.querySelector("#advisorName"),
   stageHeading: document.querySelector("#stageHeading"),
@@ -534,10 +536,23 @@ function setMeter(key, value, max) {
 function renderEvent() {
   const event = state.currentEvent;
   if (!event) return;
+  const tags = event.riskTags.length ? event.riskTags : event.tags;
   els.situationCategory.textContent = `${state.round}R / ${eventLabel(event)}`;
-  els.situationRisk.textContent = compactTags(event.riskTags.length ? event.riskTags : event.tags, 2);
+  els.situationRisk.textContent = tags.length ? `위험: ${compactTags(tags, 2)}` : "위험 낮음";
   els.situationName.textContent = event.title;
   els.situationText.textContent = `${event.speaker}: “${event.description}”`;
+  els.situationHint.textContent = situationHint(event);
+  els.situationTags.innerHTML = tags.slice(0, 4).map((tag) => `<span>${tag}</span>`).join("");
+}
+
+function situationHint(event) {
+  if (event.phase === "first_report") return "인턴 지우: 첫 보고에서는 성과보다 설명 구조가 먼저 보입니다.";
+  if (event.phase === "mid_review") return "인턴 지우: 지금부터는 누적된 선택 성향이 평가에 영향을 줍니다.";
+  if (event.phase === "final") return "인턴 지우: 마지막 라운드입니다. 남은 자원을 보고 가장 설득력 있는 선택을 골라야 합니다.";
+  if (event.riskTags.includes("budget")) return "인턴 지우: 예산을 쓰기 전에 이번 선택이 다음 판단 근거를 남기는지 봐야 합니다.";
+  if (event.riskTags.includes("mental")) return "인턴 지우: 멘탈을 더 쓰면 버틸 수는 있지만, 다음 라운드가 흔들릴 수 있어요.";
+  if (event.riskTags.includes("trust")) return "인턴 지우: 신뢰가 걸린 상황입니다. 성과만큼 설명 가능한 선택이 중요해요.";
+  return "인턴 지우: 상황을 먼저 읽고, 이번 라운드에서 가장 덜 흔들릴 대응을 고르세요.";
 }
 
 function eventLabel(event) {
