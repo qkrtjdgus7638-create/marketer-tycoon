@@ -800,358 +800,46 @@ button {
   }
 }
 
-
-/* v11 EXP/outcome tier update */
-.result-tier {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  margin: 6px 0 4px;
-  padding: 4px 9px;
-  border-radius: 999px;
-  background: rgba(25, 29, 36, 0.06);
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 950;
-  letter-spacing: -0.01em;
-}
-.result-tier.tier-big-fail { color: #a33b45; background: rgba(239, 96, 116, 0.14); }
-.result-tier.tier-fail { color: #8b4c25; background: rgba(214, 166, 49, 0.14); }
-.result-tier.tier-break-even { color: #5c615d; background: rgba(111, 117, 111, 0.12); }
-.result-tier.tier-success { color: #167260; background: rgba(47, 159, 122, 0.12); }
-.result-tier.tier-big-success { color: #4c3c9d; background: rgba(118, 87, 200, 0.14); }
-
-/* Mobile layout guard: keep v11 result logic while preventing card text from being covered. */
-.card-main {
-  min-width: 0;
+/* Deckbuild/EXP result reason UI */
+.result-reasons {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(25, 29, 36, 0.12);
+  color: #343a36;
 }
 
-.card-tagline {
-  display: flex;
-  min-width: 0;
+.result-reasons > strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.result-reasons ul {
+  display: grid;
   gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.card-tagline span {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.result-reasons li {
+  font-size: 13px;
+  line-height: 1.42;
 }
 
-.card-tagline span:first-child {
-  flex: 0 0 auto;
+.result-reasons li.good {
+  color: #18745f;
 }
 
-.card-tagline span:last-child {
-  flex: 1 1 auto;
+.result-reasons li.bad {
+  color: #9a3545;
 }
 
-.effect-list {
-  align-self: stretch;
-  justify-content: center;
-}
-
-@media (max-width: 480px) {
-  .app {
-    gap: 8px;
-    padding: 10px 12px;
-  }
-
-  .topbar {
-    min-height: 42px;
-    gap: 8px;
-  }
-
-  .brand {
-    gap: 8px;
-  }
-
-  .brand-mark {
-    width: 36px;
-    height: 36px;
-    border-radius: 12px;
-  }
-
-  .brand h1 {
-    font-size: 19px;
-    letter-spacing: 0;
-  }
-
-  .brand p {
-    font-size: 11px;
-  }
-
-  .round-pill {
-    min-height: 32px;
-    padding: 6px 10px;
-    font-size: 12px;
-  }
-
-  .menu-button {
-    width: 36px;
-    height: 36px;
-    border-radius: 13px;
-    font-size: 19px;
-  }
-
-  .resource-grid {
-    height: 74px;
-    grid-template-columns: 1.25fr 1.25fr 0.82fr 0.82fr;
-    border-radius: 20px;
-  }
-
-  .meter-card {
-    padding: 10px 9px;
-  }
-
-  .meter-head span {
-    font-size: 10px;
-  }
-
-  .meter-head strong {
-    font-size: 19px;
-  }
-
-  .money-card strong {
-    font-size: 18px;
-  }
-
-  .meter {
-    height: 9px;
-    margin-top: 8px;
-  }
-
-  .hp-card .meter {
-    height: 12px;
-    margin-top: 9px;
-  }
-
-  .main-stage {
-    grid-template-rows: 170px auto minmax(0, 1fr);
-    gap: 8px;
-  }
-
-  .situation-card {
-    padding: 17px 18px 15px;
-    border-radius: 20px;
-  }
-
-  .situation-card::after {
-    right: 16px;
-    bottom: 12px;
-    width: 108px;
-    height: 66px;
-    opacity: 0.1;
-    background:
-      linear-gradient(var(--ink), var(--ink)) 0 56px / 108px 5px no-repeat,
-      linear-gradient(var(--blue), var(--blue)) 10px 36px / 16px 20px no-repeat,
-      linear-gradient(var(--green), var(--green)) 38px 18px / 16px 38px no-repeat,
-      linear-gradient(var(--gold), var(--gold)) 66px 42px / 16px 14px no-repeat,
-      linear-gradient(#df5b4f, #df5b4f) 94px 31px / 16px 25px no-repeat;
-  }
-
-  .situation-meta {
-    gap: 6px;
-    margin-bottom: 10px;
-  }
-
-  .situation-meta span {
-    min-height: 24px;
-    padding: 4px 9px;
-    font-size: 11px;
-  }
-
-  .situation-card h2 {
-    max-width: 100%;
-    font-size: 26px;
-  }
-
-  .situation-card p {
-    max-width: 100%;
-    margin-top: 10px;
-    font-size: 13.5px;
-    line-height: 1.42;
-    -webkit-line-clamp: 3;
-  }
-
-  .cards-head h2 {
-    font-size: 19px;
-  }
-
-  .icon-button {
-    width: 36px;
-    height: 36px;
-    border-radius: 13px;
-    font-size: 18px;
-  }
-
-  .card-grid {
-    gap: 8px;
-  }
-
-  .choice-card {
-    grid-template-columns: 54px minmax(0, 1fr) 58px;
-    gap: 9px;
-    padding: 11px;
-    border-radius: 17px;
-  }
-
-  .card-icon {
-    width: 46px;
-    height: 46px;
-    border-width: 3px;
-    border-radius: 12px;
-    font-size: 24px;
-  }
-
-  .card-tagline {
-    font-size: 9.5px;
-  }
-
-  .choice-card h3 {
-    margin-top: 3px;
-    font-size: 19px;
-    line-height: 1.08;
-  }
-
-  .choice-card p {
-    margin-top: 5px;
-    font-size: 12.5px;
-    line-height: 1.3;
-    -webkit-line-clamp: 2;
-  }
-
-  .effect-list {
-    gap: 3px;
-    padding-left: 8px;
-  }
-
-  .cost-label {
-    font-size: 10px;
-  }
-
-  .effect-list strong {
-    font-size: 20px;
-  }
-
-  .result-dialogue strong {
-    font-size: 15px;
-  }
-}
-
-@media (max-width: 380px), (max-height: 720px) {
-  .app {
-    gap: 7px;
-    padding: 8px 10px;
-  }
-
-  .brand h1 {
-    font-size: 17px;
-  }
-
-  .round-pill {
-    padding-inline: 8px;
-    font-size: 11px;
-  }
-
-  .resource-grid {
-    height: 68px;
-    border-radius: 18px;
-  }
-
-  .meter-card {
-    padding: 9px 8px;
-  }
-
-  .meter-head {
-    gap: 4px;
-  }
-
-  .meter-head strong,
-  .score-card strong,
-  .trust-card strong {
-    font-size: 17px;
-  }
-
-  .money-card strong {
-    font-size: 16px;
-  }
-
-  .main-stage {
-    grid-template-rows: 154px auto minmax(0, 1fr);
-    gap: 7px;
-  }
-
-  .situation-card {
-    padding: 14px;
-  }
-
-  .situation-meta {
-    margin-bottom: 8px;
-  }
-
-  .situation-card h2 {
-    font-size: 23px;
-  }
-
-  .situation-card p {
-    margin-top: 8px;
-    font-size: 12.5px;
-    line-height: 1.34;
-    -webkit-line-clamp: 2;
-  }
-
-  .cards-head h2 {
-    font-size: 17px;
-  }
-
-  .choice-card {
-    grid-template-columns: 48px minmax(0, 1fr) 50px;
-    gap: 7px;
-    padding: 9px;
-  }
-
-  .card-icon {
-    width: 42px;
-    height: 42px;
-    font-size: 22px;
-  }
-
-  .card-tagline {
-    font-size: 8.8px;
-  }
-
-  .choice-card h3 {
-    font-size: 17px;
-  }
-
-  .choice-card p {
-    font-size: 11.5px;
-    line-height: 1.25;
-  }
-
-  .cost-label {
-    font-size: 9.5px;
-  }
-
-  .effect-list strong {
-    font-size: 18px;
-  }
-}
-
-/* UI stability pass: one fixed mobile game board, visible CTA, no overlapping text. */
+/* Stable mobile board: preserve deckbuild logic while keeping the UI readable. */
 .app {
   grid-template-rows: auto auto minmax(0, 1fr);
-}
-
-.topbar,
-.resource-grid,
-.cards-head,
-.situation-card,
-.choice-card,
-.turn-result {
-  flex-shrink: 0;
 }
 
 .play-layout,
@@ -1164,14 +852,18 @@ button {
 }
 
 body.is-choice .main-stage {
-  grid-template-rows: clamp(150px, 23dvh, 188px) 36px minmax(0, 1fr);
+  grid-template-rows: clamp(142px, 22dvh, 180px) clamp(82px, 14dvh, 116px) 28px minmax(0, 1fr) clamp(48px, 7.5dvh, 56px);
+  gap: 8px;
 }
 
 body.is-result .main-stage {
   grid-template-rows: 34px minmax(0, 1fr);
+  gap: 8px;
 }
 
-body.is-result .situation-card {
+body.is-result .situation-card,
+body.is-result .advisor-panel,
+body.is-result .confirm-button {
   display: none;
 }
 
@@ -1185,10 +877,6 @@ body.is-result .situation-card {
   align-content: center;
 }
 
-.meter-head {
-  min-width: 0;
-}
-
 .meter-head strong {
   font-size: clamp(17px, 4.8vw, 22px);
   letter-spacing: 0;
@@ -1196,10 +884,6 @@ body.is-result .situation-card {
 
 .money-card strong {
   font-size: clamp(16px, 4.4vw, 20px);
-}
-
-.situation-card {
-  min-height: 0;
 }
 
 .situation-card h2 {
@@ -1211,317 +895,6 @@ body.is-result .situation-card {
 .situation-card p {
   max-width: min(100%, 460px);
   font-size: clamp(12.5px, 3.45vw, 15px);
-}
-
-.situation-card::after {
-  pointer-events: none;
-}
-
-.card-grid {
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-}
-
-.choice-card {
-  grid-template-columns: clamp(42px, 11.5vw, 58px) minmax(0, 1fr) clamp(48px, 13vw, 68px);
-  overflow: hidden;
-  gap: clamp(7px, 2vw, 11px);
-  padding: clamp(9px, 2.5vw, 13px);
-}
-
-.card-icon {
-  width: clamp(40px, 10.5vw, 52px);
-  height: clamp(40px, 10.5vw, 52px);
-  border-width: 2px;
-  font-size: clamp(21px, 6vw, 28px);
-}
-
-.card-tagline {
-  font-size: clamp(8.5px, 2.45vw, 10.5px);
-  line-height: 1.1;
-}
-
-.choice-card h3 {
-  margin-top: 3px;
-  font-size: clamp(17px, 4.9vw, 22px);
-  line-height: 1.08;
-  letter-spacing: 0;
-}
-
-.choice-card p {
-  margin-top: 4px;
-  font-size: clamp(11.5px, 3.25vw, 13.5px);
-  line-height: 1.28;
-  -webkit-line-clamp: 2;
-}
-
-.effect-list {
-  min-width: 0;
-  padding-left: clamp(6px, 1.8vw, 9px);
-}
-
-.cost-label {
-  font-size: clamp(9px, 2.5vw, 11px);
-}
-
-.effect-list strong {
-  overflow: hidden;
-  max-width: 100%;
-  font-size: clamp(18px, 5.6vw, 24px);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.turn-result {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  align-content: stretch;
-  gap: clamp(10px, 2.6dvh, 16px);
-  overflow: hidden;
-  padding: clamp(16px, 4vw, 22px);
-}
-
-.result-copy {
-  display: grid;
-  min-height: 0;
-  grid-template-rows: auto auto minmax(0, 1fr);
-  align-content: start;
-  overflow: hidden;
-}
-
-.turn-result h2 {
-  margin-top: 9px;
-  overflow: hidden;
-  font-size: clamp(23px, 6.2vw, 34px);
-  line-height: 1.08;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.turn-result-text {
-  display: grid;
-  min-height: 0;
-  grid-template-rows: auto auto auto auto;
-  gap: clamp(8px, 2dvh, 12px);
-  margin-top: clamp(10px, 2.4dvh, 16px);
-  overflow: hidden;
-}
-
-.result-tier {
-  justify-self: start;
-  margin: 0;
-  padding: 5px 10px;
-  font-size: 12px;
-}
-
-.result-narration {
-  display: -webkit-box;
-  margin: 0;
-  overflow: hidden;
-  color: #343b35;
-  font-size: clamp(13px, 3.45vw, 15px);
-  line-height: 1.42;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.result-dialogue {
-  min-height: 0;
-  margin: 0;
-  padding: 10px 12px;
-  border-left: 0;
-  border-radius: 14px;
-  background: rgba(47, 159, 122, 0.09);
-}
-
-.result-dialogue span {
-  margin-bottom: 4px;
-  font-size: 11px;
-}
-
-.result-dialogue strong {
-  display: -webkit-box;
-  overflow: hidden;
-  font-size: clamp(14px, 3.8vw, 17px);
-  line-height: 1.35;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.result-money-grid {
-  gap: 7px;
-  margin: 0;
-}
-
-.result-money-grid div {
-  padding: 9px 8px;
-}
-
-.result-money-grid span {
-  font-size: 10.5px;
-}
-
-.result-money-grid strong {
-  font-size: clamp(13px, 3.65vw, 16px);
-}
-
-.result-multiplier {
-  display: -webkit-box;
-  margin: 0;
-  overflow: hidden;
-  padding: 7px 9px;
-  font-size: 11px;
-  line-height: 1.25;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-}
-
-.result-synergy {
-  display: none;
-}
-
-.turn-delta {
-  display: none;
-}
-
-.primary-button {
-  min-height: clamp(42px, 7dvh, 50px);
-  font-size: clamp(15px, 4vw, 18px);
-}
-
-.turn-result > .primary-button {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  min-height: clamp(48px, 7.5dvh, 56px);
-}
-
-@media (max-width: 430px) {
-  .app {
-    gap: 7px;
-    padding: 9px 10px;
-  }
-
-  .topbar {
-    min-height: 40px;
-  }
-
-  .brand-mark {
-    width: 34px;
-    height: 34px;
-  }
-
-  .brand h1 {
-    font-size: 18px;
-  }
-
-  .round-pill {
-    min-height: 30px;
-    padding: 5px 9px;
-    font-size: 11px;
-  }
-
-  .menu-button {
-    width: 34px;
-    height: 34px;
-    font-size: 18px;
-  }
-
-  .resource-grid {
-    grid-template-columns: 1.35fr 1.25fr 0.76fr 0.76fr;
-    border-radius: 18px;
-  }
-
-  .meter-card {
-    padding: 8px 7px;
-  }
-
-  .meter {
-    height: 8px;
-    margin-top: 7px;
-  }
-
-  .hp-card .meter {
-    height: 11px;
-  }
-
-  .situation-meta {
-    gap: 5px;
-    margin-bottom: 8px;
-  }
-
-  .situation-meta span {
-    min-height: 22px;
-    padding: 3px 8px;
-    font-size: 10px;
-  }
-
-  .cards-head h2 {
-    font-size: 17px;
-  }
-
-  .icon-button {
-    width: 34px;
-    height: 34px;
-  }
-}
-
-@media (max-height: 720px) {
-  body.is-choice .main-stage {
-    grid-template-rows: 138px 32px minmax(0, 1fr);
-    gap: 6px;
-  }
-
-  body.is-result .main-stage {
-    grid-template-rows: 32px minmax(0, 1fr);
-    gap: 6px;
-  }
-
-  .resource-grid {
-    height: 64px;
-  }
-
-  .situation-card {
-    padding: 12px 14px;
-  }
-
-  .situation-card h2 {
-    font-size: 21px;
-  }
-
-  .situation-card p {
-    margin-top: 6px;
-    font-size: 12px;
-    line-height: 1.28;
-    -webkit-line-clamp: 2;
-  }
-
-  .choice-card p {
-    -webkit-line-clamp: 1;
-  }
-
-  .result-money-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .result-multiplier {
-    display: none;
-  }
-
-  .result-narration,
-  .result-dialogue strong {
-    -webkit-line-clamp: 2;
-  }
-}
-
-/* Choice confirmation layout: compact cards, advisor speech, explicit decision CTA. */
-body.is-choice .main-stage {
-  grid-template-rows: clamp(142px, 22dvh, 180px) clamp(82px, 14dvh, 116px) 28px minmax(0, 1fr) clamp(48px, 7.5dvh, 56px);
-  gap: 8px;
-}
-
-body.is-result .advisor-panel,
-body.is-result .confirm-button {
-  display: none;
 }
 
 .advisor-panel {
@@ -1631,6 +1004,7 @@ body.is-choice .cards-head h2 {
 
 body.is-choice .card-grid {
   gap: 8px;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
 }
 
 body.is-choice .choice-card {
@@ -1638,6 +1012,7 @@ body.is-choice .choice-card {
   grid-template-columns: clamp(48px, 12vw, 58px) minmax(0, 1fr) clamp(86px, 23vw, 116px);
   gap: 10px;
   min-height: 0;
+  overflow: hidden;
   padding: 10px 12px;
   border: 2px solid rgba(25, 29, 36, 0.06);
   border-radius: 16px;
@@ -1665,6 +1040,7 @@ body.is-choice .choice-card h3 {
   overflow: hidden;
   font-size: clamp(18px, 5vw, 23px);
   line-height: 1.12;
+  letter-spacing: 0;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
@@ -1676,8 +1052,8 @@ body.is-choice .card-tagline {
 
 body.is-choice .effect-list {
   justify-items: end;
-  gap: 4px;
   align-self: center;
+  gap: 4px;
   padding-left: 8px;
   border-left: 1px solid rgba(95, 83, 62, 0.12);
 }
@@ -1689,9 +1065,13 @@ body.is-choice .cost-label {
 }
 
 body.is-choice .effect-list strong {
+  overflow: hidden;
+  max-width: 100%;
   font-size: clamp(13px, 3.5vw, 16px);
   line-height: 1.1;
   text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .selected-check {
@@ -1718,6 +1098,7 @@ body.is-choice .effect-list strong {
 
 .confirm-button {
   width: 100%;
+  min-height: clamp(48px, 7.5dvh, 56px);
   border-radius: 16px;
   background: linear-gradient(180deg, #ff386f, #ea1f58);
   box-shadow: 0 5px 0 #a81743, 0 10px 20px rgba(234, 31, 88, 0.2);
@@ -1734,7 +1115,191 @@ body.is-choice .effect-list strong {
   filter: grayscale(0.2);
 }
 
+.turn-result {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-content: stretch;
+  gap: clamp(10px, 2.6dvh, 16px);
+  overflow: hidden;
+  padding: clamp(16px, 4vw, 22px);
+}
+
+.result-copy {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  align-content: start;
+  overflow: hidden;
+}
+
+.turn-result h2 {
+  margin-top: 9px;
+  overflow: hidden;
+  font-size: clamp(23px, 6.2vw, 34px);
+  line-height: 1.08;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.turn-result-text {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: auto auto auto auto minmax(0, auto);
+  gap: clamp(7px, 1.8dvh, 11px);
+  margin-top: clamp(9px, 2.2dvh, 14px);
+  overflow: hidden;
+}
+
+.result-tier {
+  justify-self: start;
+  margin: 0;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.result-narration {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: #343b35;
+  font-size: clamp(12px, 3.2vw, 14px);
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.result-dialogue {
+  min-height: 0;
+  margin: 0;
+  padding: 9px 11px;
+  border-left: 0;
+  border-radius: 14px;
+  background: rgba(47, 159, 122, 0.09);
+}
+
+.result-dialogue span {
+  margin-bottom: 3px;
+  font-size: 10.5px;
+}
+
+.result-dialogue strong {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: clamp(13px, 3.55vw, 16px);
+  line-height: 1.32;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.result-money-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+}
+
+.result-money-grid div {
+  padding: 8px 7px;
+}
+
+.result-money-grid span {
+  font-size: 10px;
+}
+
+.result-money-grid strong {
+  font-size: clamp(12px, 3.3vw, 14px);
+}
+
+.result-multiplier {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  padding: 6px 8px;
+  font-size: 10.5px;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.result-reasons {
+  display: grid;
+  gap: 4px;
+  min-height: 0;
+  margin-top: 0;
+  overflow: hidden;
+  padding-top: 7px;
+}
+
+.result-reasons > strong {
+  margin: 0;
+  font-size: 11px;
+}
+
+.result-reasons ul {
+  gap: 2px;
+  overflow: hidden;
+}
+
+.result-reasons li {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.result-synergy,
+.turn-delta {
+  display: none;
+}
+
+.turn-result > .primary-button {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: clamp(48px, 7.5dvh, 56px);
+}
+
 @media (max-width: 430px) {
+  .app {
+    gap: 7px;
+    padding: 9px 10px;
+  }
+
+  .topbar {
+    min-height: 40px;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+  }
+
+  .brand h1 {
+    font-size: 18px;
+  }
+
+  .round-pill {
+    min-height: 30px;
+    padding: 5px 9px;
+    font-size: 11px;
+  }
+
+  .menu-button {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+
+  .resource-grid {
+    grid-template-columns: 1.35fr 1.25fr 0.76fr 0.76fr;
+    border-radius: 18px;
+  }
+
+  .meter-card {
+    padding: 8px 7px;
+  }
+
   body.is-choice .main-stage {
     grid-template-rows: clamp(132px, 21dvh, 164px) clamp(76px, 13dvh, 104px) 26px minmax(0, 1fr) 50px;
     gap: 7px;
@@ -1787,19 +1352,36 @@ body.is-choice .effect-list strong {
   body.is-choice .effect-list strong {
     font-size: 12.5px;
   }
-
-  .selected-check {
-    right: -8px;
-    width: 30px;
-    height: 30px;
-    font-size: 19px;
-  }
 }
 
 @media (max-height: 720px) {
   body.is-choice .main-stage {
     grid-template-rows: 122px 70px 24px minmax(0, 1fr) 46px;
     gap: 6px;
+  }
+
+  body.is-result .main-stage {
+    grid-template-rows: 32px minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .resource-grid {
+    height: 64px;
+  }
+
+  .situation-card {
+    padding: 12px 14px;
+  }
+
+  .situation-card h2 {
+    font-size: 21px;
+  }
+
+  .situation-card p {
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.28;
+    -webkit-line-clamp: 2;
   }
 
   .advisor-bubble {
@@ -1818,5 +1400,14 @@ body.is-choice .effect-list strong {
 
   body.is-choice .choice-card {
     padding-block: 8px;
+  }
+
+  .result-narration,
+  .result-dialogue strong {
+    -webkit-line-clamp: 2;
+  }
+
+  .result-multiplier {
+    display: none;
   }
 }
