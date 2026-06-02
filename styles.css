@@ -312,10 +312,10 @@ button {
 
 body.is-choice .main-stage {
   grid-template-rows:
-    clamp(148px, 22dvh, 176px)
-    clamp(52px, 7.5dvh, 64px)
+    clamp(130px, 19dvh, 160px)
+    clamp(48px, 6.8dvh, 58px)
     24px
-    minmax(216px, 1fr)
+    minmax(246px, 1fr)
     clamp(46px, 6.2dvh, 52px);
   gap: 6px;
 }
@@ -538,7 +538,7 @@ body.is-result .confirm-button {
   display: grid;
   height: 100%;
   min-height: 0;
-  grid-template-columns: clamp(42px, 11.5vw, 50px) minmax(0, 1fr) clamp(68px, 19vw, 80px);
+  grid-template-columns: clamp(38px, 10.5vw, 46px) minmax(0, 1fr) clamp(96px, 28vw, 118px);
   align-items: center;
   gap: 8px;
   padding: 7px 9px;
@@ -612,10 +612,25 @@ body.is-result .confirm-button {
   --role-paper: #fff1dc;
 }
 
+.choice-card--basic {
+  --tier-accent: #587f9f;
+}
+
+.choice-card--strategy {
+  --tier-accent: #4f9b6b;
+}
+
+.choice-card--special {
+  --tier-accent: #9a6da8;
+  background:
+    linear-gradient(90deg, rgba(154, 109, 168, 0.16) 0 11%, transparent 11%),
+    linear-gradient(135deg, #fff8df, #f4e9f6 62%, #fff2d8);
+}
+
 .card-icon {
   display: grid;
-  width: clamp(40px, 11vw, 50px);
-  height: clamp(40px, 11vw, 50px);
+  width: clamp(36px, 10vw, 44px);
+  height: clamp(36px, 10vw, 44px);
   place-items: center;
   overflow: hidden;
   border: 1px solid var(--role-dark);
@@ -643,9 +658,9 @@ body.is-result .confirm-button {
 .role-badge {
   display: inline-flex;
   max-width: 100%;
-  min-height: 17px;
+  min-height: 16px;
   align-items: center;
-  padding: 2px 7px;
+  padding: 2px 6px;
   border: 1px solid rgba(42, 33, 27, 0.18);
   border-radius: 3px;
   background: var(--role);
@@ -658,14 +673,41 @@ body.is-result .confirm-button {
 }
 
 .choice-card h3 {
-  margin-top: 4px;
+  margin-top: 3px;
   overflow: hidden;
   color: var(--ink);
-  font-size: clamp(17px, 4.8vw, 21px);
+  font-size: clamp(15px, 4.2vw, 18px);
   font-weight: 1000;
   line-height: 1.08;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.card-desc,
+.card-tags {
+  display: block;
+  overflow: hidden;
+  color: #5f5145;
+  font-weight: 800;
+}
+
+.card-desc {
+  display: -webkit-box;
+  max-height: 2.45em;
+  margin: 3px 0 0;
+  font-size: clamp(10px, 2.65vw, 11.5px);
+  line-height: 1.22;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.card-tags {
+  margin-top: 3px;
+  font-size: clamp(8.5px, 2.25vw, 10px);
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--role-dark);
 }
 
 .effect-list {
@@ -673,26 +715,44 @@ body.is-result .confirm-button {
   min-width: 0;
   align-content: center;
   justify-items: end;
-  gap: 4px;
-  padding-left: 7px;
+  gap: 3px;
+  padding-left: 6px;
   border-left: 1px dashed rgba(42, 33, 27, 0.18);
 }
 
 .cost-label {
   color: var(--role-dark);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 1000;
   line-height: 1;
 }
 
 .effect-list strong {
-  max-width: none;
-  overflow: visible;
+  display: -webkit-box;
+  max-width: 100%;
+  max-height: 2.45em;
+  overflow: hidden;
   color: var(--ink);
-  font-size: clamp(15px, 4.2vw, 19px);
+  font-size: clamp(10.5px, 2.8vw, 12px);
   font-weight: 1000;
+  line-height: 1.2;
+  text-align: right;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.effect-list em {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  color: #7a6656;
+  font-size: clamp(8.5px, 2.2vw, 9.5px);
+  font-style: normal;
+  font-weight: 900;
   line-height: 1;
   text-align: right;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -922,6 +982,14 @@ body.is-result .confirm-button {
   color: #bd4248;
 }
 
+.result-money-grid .is-good {
+  color: #2f7a38;
+}
+
+.result-money-grid .is-bad {
+  color: #bd4248;
+}
+
 .result-reasons {
   min-height: 66px;
   max-height: 92px;
@@ -1127,7 +1195,7 @@ body.is-result .confirm-button {
   }
 
   body.is-choice .main-stage {
-    grid-template-rows: 124px 50px 22px minmax(196px, 1fr) 42px;
+    grid-template-rows: 108px 46px 21px minmax(216px, 1fr) 40px;
     gap: 6px;
   }
 
@@ -1164,19 +1232,19 @@ body.is-result .confirm-button {
 
   .choice-card {
     border-width: 2px;
-    grid-template-columns: 40px minmax(0, 1fr) 70px;
+    grid-template-columns: 36px minmax(0, 1fr) 92px;
     gap: 7px;
     padding: 6px 8px;
   }
 
   .card-icon {
-    width: 39px;
-    height: 39px;
+    width: 34px;
+    height: 34px;
     border-width: 2px;
   }
 
   .choice-card h3 {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .role-badge {
@@ -1186,7 +1254,7 @@ body.is-result .confirm-button {
   }
 
   .effect-list strong {
-    font-size: 14px;
+    font-size: 10px;
   }
 
   .primary-button {
@@ -1264,7 +1332,7 @@ body.is-result .confirm-button {
   }
 
   body.is-choice .main-stage {
-    grid-template-rows: 106px 46px 20px minmax(178px, 1fr) 40px;
+    grid-template-rows: 94px 42px 20px minmax(204px, 1fr) 38px;
     gap: 5px;
   }
 
@@ -1307,22 +1375,22 @@ body.is-result .confirm-button {
   }
 
   .choice-card {
-    grid-template-columns: 42px minmax(0, 1fr) 70px;
+    grid-template-columns: 34px minmax(0, 1fr) 88px;
     gap: 7px;
     padding: 6px 8px;
   }
 
   .card-icon {
-    width: 39px;
-    height: 39px;
+    width: 32px;
+    height: 32px;
   }
 
   .choice-card h3 {
-    font-size: 16px;
+    font-size: 13.5px;
   }
 
   .effect-list strong {
-    font-size: 14px;
+    font-size: 9.5px;
   }
 
   body.is-result .main-stage {
@@ -1396,7 +1464,7 @@ body.is-result .confirm-button {
   }
 
   .choice-card {
-    grid-template-columns: 46px minmax(0, 1fr) 72px;
+    grid-template-columns: 34px minmax(0, 1fr) 84px;
   }
 
   .card-icon {
@@ -1405,10 +1473,10 @@ body.is-result .confirm-button {
   }
 
   .choice-card h3 {
-    font-size: 17px;
+    font-size: 13.5px;
   }
 
   .effect-list strong {
-    font-size: 15px;
+    font-size: 9.5px;
   }
 }
