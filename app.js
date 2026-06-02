@@ -67,6 +67,9 @@ const tierLabels = {
   basic: "기본",
   strategy: "전략",
   special: "특수",
+  silver: "실버",
+  gold: "골드",
+  platinum: "플래티넘",
 };
 
 const typeLabels = {
@@ -84,6 +87,9 @@ const tierClass = {
   basic: "choice-card--basic",
   strategy: "choice-card--strategy",
   special: "choice-card--special",
+  silver: "choice-card--basic",
+  gold: "choice-card--strategy",
+  platinum: "choice-card--special",
 };
 
 const roleByType = {
@@ -110,6 +116,13 @@ let internData = null;
 let state = null;
 
 async function boot() {
+  if (window.MARKETER_TYCOON_CONTENT_V4) {
+    const rounds = await fetchJson(ROUNDS_URL);
+    internData = buildV4Data(rounds, window.MARKETER_TYCOON_CONTENT_V4);
+    startIntro();
+    return;
+  }
+
   const [events, cards, rounds, storyPatch] = await Promise.all([
     fetchJson(EVENTS_URL),
     fetchJson(CARDS_URL),
@@ -124,6 +137,153 @@ async function boot() {
   };
 
   startIntro();
+}
+
+function buildV4Data(rounds, content) {
+  const fixedRounds = {};
+  for (const [round, event] of Object.entries(content.fixedEventsByRound || {})) {
+    fixedRounds[String(round)] = normalizeV4Event(event, "fixed");
+  }
+
+  return {
+    events: [
+      ...(content.stage1RandomEvents || []),
+      ...(content.stage2RandomEvents || []),
+      ...(content.stage3RandomEvents || []),
+    ].map((event) => normalizeV4Event(event, "random")),
+    cards: flattenV4Cards(content.cardFamilies || {}),
+    config: {
+      ...rounds,
+      totalRounds: content.TOTAL_ROUNDS || 15,
+      fixedRounds,
+    },
+    v4: content,
+  };
+}
+
+function flattenV4Cards(cardFamilies) {
+  const tiers = ["silver", "gold", "platinum"];
+  return Object.values(cardFamilies).flatMap((family) => tiers.map((tier) => {
+    const source = family.cards?.[tier] || {};
+    return normalizeV4Card(family, source, tier);
+  })).filter((card) => card.name);
+}
+
+function normalizeV4Card(family, source, tier) {
+  const familyId = family.id;
+  const defaults = v4TierFallback(tier, familyId);
+  const effects = {
+    ...defaults.effects,
+    ...(source.effects || {}),
+  };
+  effects.mental = normalizeV4MentalEffect(tier, effects.mental);
+  const budgetRange = budgetRangeForV4(tier, familyId, effects.budget);
+  const cardType = v4CardType(familyId, tier);
+  return {
+    id: `${familyId}_${tier}`,
+    v4: true,
+    familyId,
+    familyName: family.name,
+    tier,
+    tierLabel: source.tierLabel || tierLabels[tier] || tier,
+    effectLabel: source.effectLabel || defaults.effectLabel,
+    name: source.title,
+    description: source.description || "",
+    dialogue: source.description || "",
+    resultText: source.resultText || v4TierResultText(tier),
+    effects,
+    hasExplicitBudgetEffect: Number.isFinite(source.effects?.budget) && source.effects.budget !== 0,
+    cost: Number.isFinite(source.cost) ? source.cost : defaults.cost,
+    cardType,
+    tags: [familyId, tier, cardType],
+    scoreDelta: defaults.scoreDelta,
+    riskDelta: defaults.riskDelta,
+    budgetDeltaRange: budgetRange,
+    expDeltaRange: [effects.exp || 0, effects.exp || 0],
+    mentalDelta: effects.mental || 0,
+    trustDelta: effects.trust || 0,
+  };
+}
+
+function normalizeV4Event(event, type) {
+  const riskTags = [event.risk].filter(Boolean);
+  return normalizeEvent({
+    ...event,
+    type,
+    phase: `stage_${event.stage || 1}`,
+    speaker: "",
+    riskLabel: event.risk || "",
+    tags: event.allowedCardFamilies || [],
+    riskTags,
+    preferredCardTags: event.allowedCardFamilies || [],
+    weakCardTags: [],
+    recommendedCardIds: [],
+    baseWeight: 10,
+    oncePerRun: type !== "fixed",
+  });
+}
+
+function v4TierFallback(tier, familyId) {
+  const isBudgetFamily = v4BudgetFamilyIds().includes(familyId);
+  if (tier === "platinum") {
+    return {
+      cost: isBudgetFamily ? -8000 : -6000,
+      effectLabel: "강한 효과",
+      effects: { exp: 20, trust: 2, mental: -2, budget: 0 },
+      scoreDelta: { performanceScore: 2, reportScore: 1 },
+      riskDelta: isBudgetFamily ? { budget_risk: 1 } : {},
+    };
+  }
+  if (tier === "gold") {
+    return {
+      cost: isBudgetFamily ? -3000 : -2000,
+      effectLabel: "괜찮은 효과",
+      effects: { exp: 12, trust: 1, mental: -1, budget: 0 },
+      scoreDelta: { performanceScore: 1, reportScore: 1 },
+      riskDelta: {},
+    };
+  }
+  return {
+    cost: 0,
+    effectLabel: "미미한 효과",
+    effects: { exp: 5, trust: 0, mental: 0, budget: 0 },
+    scoreDelta: { operationScore: 1 },
+    riskDelta: {},
+  };
+}
+
+function normalizeV4MentalEffect(tier, value = 0) {
+  const mental = Number.isFinite(value) ? value : 0;
+  if (tier === "platinum") return Math.max(-2, mental);
+  if (tier === "gold") return Math.max(-1, mental);
+  return Math.max(0, mental);
+}
+
+function budgetRangeForV4(tier, familyId, budgetEffect = 0) {
+  const isBudgetFamily = v4BudgetFamilyIds().includes(familyId);
+  if (Number.isFinite(budgetEffect) && budgetEffect !== 0) return [budgetEffect, budgetEffect];
+  if (!isBudgetFamily) return [0, 0];
+  if (tier === "platinum") return [-8000, 10000];
+  if (tier === "gold") return [-3000, 5000];
+  return [0, 2000];
+}
+
+function v4BudgetFamilyIds() {
+  return ["budget", "agency", "dataRead"];
+}
+
+function v4CardType(familyId, tier) {
+  if (tier === "platinum") return "attack";
+  if (["budget", "agency", "dataRead"].includes(familyId)) return "build";
+  if (["risk", "brandDefense"].includes(familyId)) return "defense";
+  if (["reportPackaging", "meetingNote", "failureSpin"].includes(familyId)) return "convert";
+  return "stable";
+}
+
+function v4TierResultText(tier) {
+  if (tier === "platinum") return "회사에서 이상하게 먹히는 방식으로 상황을 통과시켰다. 실질이 완벽하진 않았지만, 팀장은 꽤 만족한 듯했다.";
+  if (tier === "gold") return "상황을 실무적으로 정리했다. 팀장은 방향이 조금 더 명확해졌다고 느꼈다.";
+  return "무난하게 대응했다. 큰 변화는 없었지만 당장 문제는 커지지 않았다.";
 }
 
 function buildPatchedData(events, cards, rounds, patch) {
@@ -240,6 +400,7 @@ function createState(screen) {
     scores: Object.fromEntries(scoreKeys.map((key) => [key, 0])),
     risks: {},
     usedEventIds: [],
+    usedEventIdsByStage: { 1: [], 2: [], 3: [] },
     offeredHistory: [],
     selectedHistory: [],
     usedSpecialIds: [],
@@ -267,6 +428,8 @@ function prepareRound() {
 }
 
 function pickRoundEvent() {
+  if (internData.v4) return pickV4RoundEvent();
+
   const fixed = internData.config.fixedRounds[String(state.round)];
   if (fixed?.type === "fixed") return normalizeEvent(fixed);
   if (fixed?.phase === "first_report") return firstReportEvent();
@@ -282,6 +445,22 @@ function pickRoundEvent() {
 
   const event = weightedPick(pool.map((item) => ({ item, weight: eventWeight(item) }))) || pool[0];
   if (event?.oncePerRun) state.usedEventIds.push(event.id);
+  return normalizeEvent(event);
+}
+
+function pickV4RoundEvent() {
+  const fixed = internData.config.fixedRounds[String(state.round)];
+  if (fixed) return normalizeEvent(fixed);
+
+  const stage = state.round <= 4 ? 1 : state.round <= 9 ? 2 : 3;
+  const pool = internData.events.filter((event) => event.stage === stage);
+  const usedIds = state.usedEventIdsByStage[stage] || [];
+  const available = pool.filter((event) => !usedIds.includes(event.id));
+  const event = weightedPick((available.length ? available : pool).map((item) => ({ item, weight: item.baseWeight || 10 }))) || pool[0];
+  if (event?.oncePerRun) {
+    state.usedEventIdsByStage[stage] = [...usedIds, event.id];
+    state.usedEventIds.push(event.id);
+  }
   return normalizeEvent(event);
 }
 
@@ -374,6 +553,13 @@ function dominantScore() {
 }
 
 function pickCardsForEvent(event) {
+  if (internData.v4 && event.allowedCardFamilies?.length) {
+    const picks = pickV4CardsForEvent(event);
+    state.offeredHistory.push({ round: state.round, ids: picks.map((card) => card.id) });
+    state.offeredHistory = state.offeredHistory.slice(-2);
+    return picks;
+  }
+
   if (event.recommendedCardIds?.length) {
     const recommended = event.recommendedCardIds.map((id) => cardById(id)).filter(Boolean);
     const picks = pickRecommendedCards(recommended);
@@ -414,6 +600,23 @@ function pickCardsForEvent(event) {
 
   state.offeredHistory.push({ round: state.round, ids: picks.map((card) => card.id) });
   state.offeredHistory = state.offeredHistory.slice(-2);
+  return picks.slice(0, 3);
+}
+
+function pickV4CardsForEvent(event) {
+  const familyIds = [...new Set(event.allowedCardFamilies || [])].filter(Boolean);
+  const tiers = ["silver", "gold", "platinum"];
+  const shuffledFamilies = shuffle(familyIds).slice(0, 3);
+  const picks = shuffledFamilies.map((familyId, index) => cardById(`${familyId}_${tiers[index]}`)).filter(Boolean);
+
+  for (const familyId of familyIds) {
+    for (const tier of tiers) {
+      if (picks.length >= 3) return picks;
+      const card = cardById(`${familyId}_${tier}`);
+      if (card && !picks.some((item) => item.id === card.id)) picks.push(card);
+    }
+  }
+
   return picks.slice(0, 3);
 }
 
@@ -509,6 +712,8 @@ function confirmSelectedCard() {
 }
 
 function resolveCard(card, event) {
+  if (card.v4) return resolveV4Card(card, event);
+
   const match = cardMatchScore(card, event);
   const good = card.goodAgainst?.filter((tag) => event.riskTags.includes(tag)).length || 0;
   const bad = card.badAgainst?.filter((tag) => event.tags.includes(tag) || event.riskTags.includes(tag)).length || 0;
@@ -539,6 +744,52 @@ function resolveCard(card, event) {
     trustChange: card.trustDelta || 0,
     reasons: resultReasons(card, event, { match, good, bad, tier }),
   };
+}
+
+function resolveV4Card(card, event) {
+  const tier = v4OutcomeTier(card.tier);
+  const rangeBudget = rollRange(card.budgetDeltaRange || [0, 0]);
+  const effects = {
+    exp: card.effects?.exp ?? rollRange(card.expDeltaRange || [0, 0]),
+    trust: card.effects?.trust ?? card.trustDelta ?? 0,
+    mental: card.effects?.mental ?? card.mentalDelta ?? 0,
+    budget: card.hasExplicitBudgetEffect ? card.effects.budget : rangeBudget,
+  };
+  const budgetReturn = Number.isFinite(effects.budget) ? effects.budget : 0;
+  const budgetChange = (card.cost || 0) + budgetReturn;
+  const resultText = card.resultText || v4TierResultText(card.tier);
+
+  return {
+    tier,
+    chance: 1,
+    match: 1,
+    good: 0,
+    bad: 0,
+    cost: card.cost || 0,
+    budgetReturn,
+    budgetChange,
+    expChange: Math.max(0, Math.round(effects.exp || 0)),
+    mentalChange: effects.mental || 0,
+    trustChange: effects.trust || 0,
+    resultText: `${event.title}에서 ${card.tierLabel} 카드인 ‘${card.name}’을 선택했다. ${resultText}`,
+    dialogue: v4ResultDialogue(card.tier),
+    reasons: [
+      `${card.familyName} 계열로 이번 상황에 대응했습니다.`,
+      `${card.tierLabel} 카드 기본 효과가 적용됐습니다.`,
+    ],
+  };
+}
+
+function v4OutcomeTier(tier) {
+  if (tier === "platinum") return { id: "success", label: "성공", className: "tier-success", multiplier: 1, expBonus: 0 };
+  if (tier === "gold") return { id: "breakEven", label: "본전", className: "tier-break-even", multiplier: 1, expBonus: 0 };
+  return { id: "breakEven", label: "무난", className: "tier-break-even", multiplier: 1, expBonus: 0 };
+}
+
+function v4ResultDialogue(tier) {
+  if (tier === "platinum") return "조금 과감했지만 이번에는 통했습니다. 대신 다음 판단에서는 소모된 자원을 같이 봐야 합니다.";
+  if (tier === "gold") return "방향이 정리됐습니다. 완벽하진 않아도 보고할 수 있는 근거는 생겼습니다.";
+  return "크게 흔들리진 않았습니다. 당장 문제를 키우지 않은 것도 지금은 의미가 있습니다.";
 }
 
 function outcomeTier(roll, chance, tier) {
@@ -654,7 +905,7 @@ function renderEvent() {
   els.situationCategory.textContent = "";
   els.situationRisk.textContent = "";
   els.situationName.textContent = "";
-  els.situationText.textContent = `${event.speaker}: “${event.description}”`;
+  els.situationText.textContent = event.speaker ? `${event.speaker}: “${event.description}”` : event.description;
   els.situationHint.textContent = "";
   els.situationTags.innerHTML = "";
   restartTyping(els.situationText);
@@ -686,7 +937,7 @@ function renderChoiceCard(card) {
     <button class="choice-card ${tierClass[card.tier] || ""} role-${role} ${selected ? "is-selected choice-card--selected" : ""}" type="button" data-card-id="${card.id}" aria-pressed="${selected}">
       <div class="card-icon" aria-hidden="true">${cardIconMarkup(role)}</div>
       <div class="card-main">
-        <span class="role-badge">${tierLabels[card.tier] || card.tier}</span>
+        <span class="role-badge">${card.tierLabel || tierLabels[card.tier] || card.tier}</span>
         <h3>${card.name}</h3>
       </div>
       <div class="cost-chip">
@@ -791,6 +1042,7 @@ function restartTyping(element) {
 }
 
 function resultNarration(card, outcome) {
+  if (outcome.resultText) return outcome.resultText;
   if (outcome.tier.id === "bigSuccess") return `${card.name} 선택이 크게 먹혔습니다. 이번 판단은 확실한 근거가 됐습니다.`;
   if (outcome.tier.id === "success") return `${card.name} 선택이 현재 상황에 맞게 작동했습니다.`;
   if (outcome.tier.id === "breakEven") return `${card.name} 선택은 큰 손실 없이 다음 판단의 근거를 남겼습니다.`;
@@ -799,6 +1051,7 @@ function resultNarration(card, outcome) {
 }
 
 function resultDialogue(outcome) {
+  if (outcome.dialogue) return outcome.dialogue;
   if (outcome.tier.id === "bigSuccess") return "좋아요. 이 정도면 다음 보고에서 말할 숫자가 생겼습니다.";
   if (outcome.tier.id === "success") return "방향은 맞았습니다. 이제 이 흐름을 이어가면 됩니다.";
   if (outcome.tier.id === "breakEven") return "크게 망치진 않았지만, 아직 결정적인 숫자는 아닙니다.";
@@ -874,6 +1127,15 @@ function weightedPick(weightedItems) {
 
 function uniqueById(items) {
   return [...new Map(items.map((item) => [item.id, item])).values()];
+}
+
+function shuffle(items) {
+  const array = [...items];
+  for (let index = array.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [array[index], array[swapIndex]] = [array[swapIndex], array[index]];
+  }
+  return array;
 }
 
 function compactTags(tags = [], limit = 3) {
