@@ -1264,49 +1264,44 @@ function makeDynamicResultDialogue(card, situation, cost, earned, scoreGain, mat
   const tierId = earnedBreakdown?.tier?.id || "breakEven";
   const role = card.role || outcomeProfileType(card);
   const net = earned - cost;
-  let line = "좋아요. 다음 선택에서 이 흐름을 이어가봅시다.";
+  const action = cardActionPhrase(card);
+  const acceptance = dialogueAcceptanceLine(role, tierId, action);
+  const interpretation = dialogueInterpretationLine(role, tierId, matched, net, cost, earned, scoreGain, earnedBreakdown);
+  return formatDialogue(speaker, [acceptance, interpretation].filter(Boolean).join(" "));
+}
 
-  const bigFailLines = {
-    revenue: "이 비용으로 아무것도 못 건진 건 아픕니다. 다음엔 먼저 작게 확인하고 갑시다.",
-    gamble: "크게 건 판단은 이해하지만, 근거 없이 태우면 이렇게 맞을 수 있어요.",
-    improve: "세게 간 건 알겠는데, 방향이 빗나가면 오히려 리스크가 커집니다.",
-    report: "말은 정리됐지만, 숫자가 없으면 방패도 얇습니다.",
-    prep: "준비 단계에서 크게 잃진 않았지만, 다음 액션이 분명해야 합니다.",
-    defense: "막으려던 건 맞지만 이번엔 남는 게 너무 적습니다.",
+function cardActionPhrase(card) {
+  const byRole = {
+    prep: "기준을 먼저 잡은 판단",
+    improve: "문제를 직접 고친 판단",
+    revenue: "회수를 노린 판단",
+    defense: "리스크를 막은 판단",
+    report: "보고 근거를 정리한 판단",
+    gamble: "크게 걸어본 판단",
   };
-  const successLines = {
-    revenue: "숫자는 움직였어요. 이제 효율도 같이 봅시다.",
-    gamble: "위험하긴 했지만 이번엔 제대로 붙었습니다. 이 흐름은 더 봐도 되겠어요.",
-    improve: "이전보다 나아졌습니다. 다음엔 이걸 성과로 연결해야 해요.",
-    report: "이 정도로 정리하면 다음 액션까지 이야기할 수 있겠네요.",
-    prep: "방향은 잡혔어요. 이제 실제 반응을 봐야 합니다.",
-    defense: "크게 터질 상황은 막았네요. 다만 숫자는 더 필요합니다.",
-  };
-  const bigSuccessLines = {
-    revenue: "이건 반응이 확실히 붙었네요. 이 방향은 다음 테스트에서도 가져가도 되겠습니다.",
-    gamble: "이번 건 좀 터졌습니다. 다만 이 방식은 근거가 있을 때만 다시 씁시다.",
-    improve: "소재가 제대로 먹혔네요. 다만 이 톤을 계속 가져갈지는 봐야 합니다.",
-    report: "정리도 좋고 다음 액션도 보입니다. 보고에 꽤 쓸 만하겠어요.",
-    prep: "초반 정리가 잘 됐습니다. 덕분에 다음 선택이 훨씬 쉬워졌어요.",
-    defense: "리스크를 잘 막았습니다. 이 정도면 다음 선택을 안정적으로 갈 수 있어요.",
-  };
+  return byRole[card.role] || `${card.category || "업무"} 쪽 판단`;
+}
 
-  if (tierId === "bigFail") line = bigFailLines[role] || bigFailLines.improve;
-  else if (tierId === "fail") {
-    if (role === "revenue" || role === "gamble") line = "돈을 쓴 만큼의 반응은 아니네요. 다음엔 근거를 더 보고 태웁시다.";
-    else if (role === "report") line = "정리는 됐지만 보여줄 숫자가 아직 약합니다.";
-    else line = "시도는 이해되는데, 지금 문제를 직접 해결하진 못했어요.";
-  } else if (tierId === "breakEven") {
-    if (role === "prep") line = "방향은 잡혔어요. 이제 실제 반응을 봐야 합니다.";
-    else if (role === "report") line = "정리는 됐는데, 보여줄 숫자가 아직 약합니다.";
-    else line = "망하진 않았는데, 이걸로 다음 액션을 정하기엔 조금 애매합니다.";
-  } else if (tierId === "success") line = successLines[role] || successLines.improve;
-  else if (tierId === "bigSuccess") line = bigSuccessLines[role] || bigSuccessLines.improve;
+function dialogueAcceptanceLine(role, tierId, action) {
+  if (tierId === "bigSuccess") return `${action}은 확실히 먹혔습니다.`;
+  if (tierId === "success") return `${action}은 방향이 맞았습니다.`;
+  if (tierId === "breakEven") return `${action} 자체는 이해됩니다.`;
+  if (tierId === "fail") return `${action}은 의도는 알겠습니다.`;
+  if (tierId === "bigFail") return `${action}은 이번엔 무리였습니다.`;
+  return `${action}은 확인했습니다.`;
+}
 
-  if (!matched && tierId !== "bigSuccess") line = "의미는 있는데, 지금 문제랑은 조금 빗나갔어요. 다음 선택에서 바로잡아봅시다.";
-  if (net <= -40000 && (role === "revenue" || role === "gamble")) line = "성과를 노린 건 좋은데, 이 비용 구조는 조금 부담됩니다.";
-
-  return formatDialogue(speaker, line);
+function dialogueInterpretationLine(role, tierId, matched, net, cost, earned, scoreGain, earnedBreakdown) {
+  if (!matched && tierId !== "bigSuccess") return "다만 지금 문제와는 조금 빗나가서 결과가 약했습니다.";
+  if (net <= -40000 && (role === "revenue" || role === "gamble")) return "쓴 비용에 비해 돌아온 숫자가 부족했습니다.";
+  if (earned <= 0 && cost > 0) return "설명할 여지는 있지만 회수된 금액은 없었습니다.";
+  if (tierId === "bigSuccess") return scoreGain >= 3 ? "회수와 EXP가 같이 붙어서 꽤 좋은 결과입니다." : "회수 금액이 분명하게 붙은 좋은 결과입니다.";
+  if (tierId === "success") return net >= 0 ? "숫자가 움직였고 손익도 나쁘지 않습니다." : "반응은 있었지만 비용 부담은 남았습니다.";
+  if (tierId === "breakEven") return "크게 망하진 않았지만 확신을 주는 숫자는 아닙니다.";
+  if (tierId === "fail") return "일부 의미는 남았지만 기대한 성과에는 못 미쳤습니다.";
+  if (tierId === "bigFail") return "리스크가 결과를 크게 깎았습니다.";
+  if (earnedBreakdown?.routeCombo?.count) return "이어진 선택 흐름 덕분에 효과가 일부 살아났습니다.";
+  return "이번 결과만으로는 강한 근거가 부족합니다.";
 }
 
 function buildReasonHtml(card, situation, breakdown, matched, cost, earned, scoreGain) {
