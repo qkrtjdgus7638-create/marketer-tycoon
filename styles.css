@@ -2847,3 +2847,179 @@ body.is-result .turn-result > .primary-button {
     height: 62px;
   }
 }
+
+/* Role synergy readability pass: distinct card colors and generated role icons. */
+body:not(.is-intro) {
+  background:
+    linear-gradient(180deg, rgba(9, 8, 9, 0.66), rgba(9, 6, 5, 0.82)),
+    url("./assets/retro-office-bg.png") center / cover no-repeat,
+    #17100d;
+}
+
+body.is-choice .choice-card {
+  --role: #c94232;
+  --role-dark: #7d2b22;
+  --role-soft: #fff0dc;
+  --role-paper: #fff3d3;
+  border-color: var(--ui-ink);
+  background:
+    linear-gradient(90deg, var(--role-soft) 0 15%, transparent 15%),
+    linear-gradient(180deg, #fff8df, var(--role-paper));
+  box-shadow:
+    inset 9px 0 0 var(--role),
+    inset 0 0 0 2px #fff8df,
+    0 4px 0 var(--ui-shadow);
+}
+
+.choice-card.role-prep {
+  --role: #2f78b9;
+  --role-dark: #1d4169;
+  --role-soft: #e5f1ff;
+  --role-paper: #f3e8c7;
+}
+
+.choice-card.role-improve {
+  --role: #3f9b63;
+  --role-dark: #245b3c;
+  --role-soft: #e7f7df;
+  --role-paper: #f5e4bf;
+}
+
+.choice-card.role-revenue {
+  --role: #d89823;
+  --role-dark: #7a4d12;
+  --role-soft: #fff1c8;
+  --role-paper: #f8deb0;
+}
+
+.choice-card.role-defense {
+  --role: #718f3c;
+  --role-dark: #435722;
+  --role-soft: #eef3d4;
+  --role-paper: #f3e6bf;
+}
+
+.choice-card.role-report {
+  --role: #8061c7;
+  --role-dark: #473372;
+  --role-soft: #efe8ff;
+  --role-paper: #f3e4c2;
+}
+
+.choice-card.role-gamble {
+  --role: #d6405f;
+  --role-dark: #74233a;
+  --role-soft: #ffe3ea;
+  --role-paper: #f6ddb9;
+}
+
+body.is-choice .choice-card.is-selected {
+  border-color: #fff7df;
+  box-shadow:
+    0 0 0 4px var(--role),
+    inset 9px 0 0 var(--role),
+    inset 0 0 0 2px #fff8df,
+    0 5px 0 var(--ui-shadow);
+}
+
+body.is-choice .card-icon {
+  background: linear-gradient(180deg, #fff8df, #f5d7a9);
+  border-color: var(--role-dark);
+  color: var(--role);
+  overflow: hidden;
+}
+
+body.is-choice .card-icon img {
+  display: block;
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(1px 1px 0 rgba(34, 20, 15, 0.45));
+}
+
+.role-badge {
+  display: inline-flex;
+  max-width: 100%;
+  min-height: 18px;
+  align-items: center;
+  padding: 2px 7px;
+  border: 2px solid rgba(34, 20, 15, 0.22);
+  border-radius: 3px;
+  background: var(--role);
+  color: #fff8df;
+  font-size: clamp(9px, 2.6vw, 11px);
+  font-weight: 1000;
+  line-height: 1;
+  text-shadow: 1px 1px 0 rgba(34, 20, 15, 0.45);
+  white-space: nowrap;
+}
+
+body.is-choice .choice-card h3 {
+  margin-top: 5px;
+}
+
+body.is-choice .card-main::after {
+  display: none;
+}
+
+body.is-choice .cost-label {
+  color: var(--role-dark);
+}
+
+.choice-card .selected-check {
+  background: var(--role);
+}
+
+.situation-card,
+.resource-grid,
+.turn-result {
+  background-color: rgba(255, 239, 197, 0.96);
+}
+
+body.is-result .turn-result {
+  background:
+    linear-gradient(180deg, rgba(255, 244, 209, 0.98), rgba(245, 214, 160, 0.97));
+}
+
+body.is-choice .choice-card.role-prep {
+  --role: #2f78b9;
+  --role-dark: #1d4169;
+  --role-soft: #e5f1ff;
+  --role-paper: #f3e8c7;
+}
+
+body.is-choice .choice-card.role-improve {
+  --role: #3f9b63;
+  --role-dark: #245b3c;
+  --role-soft: #e7f7df;
+  --role-paper: #f5e4bf;
+}
+
+body.is-choice .choice-card.role-revenue {
+  --role: #d89823;
+  --role-dark: #7a4d12;
+  --role-soft: #fff1c8;
+  --role-paper: #f8deb0;
+}
+
+body.is-choice .choice-card.role-defense {
+  --role: #718f3c;
+  --role-dark: #435722;
+  --role-soft: #eef3d4;
+  --role-paper: #f3e6bf;
+}
+
+body.is-choice .choice-card.role-report {
+  --role: #8061c7;
+  --role-dark: #473372;
+  --role-soft: #efe8ff;
+  --role-paper: #f3e4c2;
+}
+
+body.is-choice .choice-card.role-gamble {
+  --role: #d6405f;
+  --role-dark: #74233a;
+  --role-soft: #ffe3ea;
+  --role-paper: #f6ddb9;
+}
