@@ -57,14 +57,14 @@ button {
   position: relative;
   z-index: 1;
   display: grid;
-  width: min(100vw, 430px);
-  max-width: 430px;
+  width: min(100vw, 460px);
+  max-width: 460px;
   height: 100svh;
   height: 100dvh;
-  grid-template-rows: clamp(58px, 8.5dvh, 70px) clamp(56px, 8.2dvh, 66px) minmax(0, 1fr);
-  gap: 8px;
+  grid-template-rows: clamp(56px, 8dvh, 66px) clamp(52px, 7.5dvh, 62px) minmax(0, 1fr);
+  gap: 7px;
   margin: 0 auto;
-  padding: max(8px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom));
+  padding: max(8px, env(safe-area-inset-top)) 9px max(9px, env(safe-area-inset-bottom));
   overflow: hidden;
 }
 
@@ -82,16 +82,16 @@ button {
 .topbar {
   display: grid;
   min-height: 0;
-  grid-template-columns: minmax(0, 1fr) auto 40px;
+  grid-template-columns: minmax(0, 1fr) auto 38px;
   align-items: center;
   gap: 8px;
-  padding: 7px 9px;
-  border: 4px solid var(--ink);
+  padding: 6px 8px;
+  border: 3px solid var(--ink);
   border-radius: 7px;
   background:
     linear-gradient(180deg, rgba(255, 199, 98, 0.2), transparent 48%),
     linear-gradient(180deg, #c64a32, #7a2a21);
-  box-shadow: inset 0 0 0 2px #f3a75d, 0 4px 0 var(--shadow);
+  box-shadow: inset 0 0 0 2px #f3a75d, 0 3px 0 var(--shadow);
   color: #fff5d8;
 }
 
@@ -104,9 +104,9 @@ button {
 
 .brand-mark {
   display: grid;
-  width: 34px;
-  height: 34px;
-  flex: 0 0 34px;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
   grid-template-columns: repeat(2, 8px);
   grid-template-rows: repeat(2, 8px);
   place-content: center;
@@ -147,7 +147,7 @@ button {
 .brand h1 {
   overflow: hidden;
   color: #fff7df;
-  font-size: clamp(18px, 5.2vw, 26px);
+  font-size: clamp(18px, 4.9vw, 24px);
   font-weight: 1000;
   line-height: 1;
   text-overflow: ellipsis;
@@ -161,8 +161,8 @@ button {
 
 .round-pill {
   display: grid;
-  min-width: 78px;
-  min-height: 34px;
+  min-width: 76px;
+  min-height: 32px;
   align-content: center;
   padding: 3px 7px;
   border: 3px solid var(--ink);
@@ -204,9 +204,9 @@ button {
 }
 
 .menu-button {
-  width: 38px;
-  height: 38px;
-  font-size: 22px;
+  width: 36px;
+  height: 36px;
+  font-size: 21px;
 }
 
 .resource-grid {
@@ -224,7 +224,7 @@ button {
   display: grid;
   min-width: 0;
   align-content: center;
-  padding: 7px 8px;
+  padding: 6px 8px;
   border-right: 2px dashed rgba(36, 20, 15, 0.24);
 }
 
@@ -248,7 +248,7 @@ button {
 .meter-head strong {
   overflow: hidden;
   color: var(--ink);
-  font-size: clamp(16px, 4.5vw, 20px);
+  font-size: clamp(15px, 4.15vw, 19px);
   font-weight: 1000;
   line-height: 1.05;
   text-overflow: ellipsis;
@@ -256,12 +256,12 @@ button {
 }
 
 .money-card strong {
-  font-size: clamp(15px, 4.2vw, 19px);
+  font-size: clamp(15px, 4vw, 18px);
 }
 
 .meter {
-  height: 8px;
-  margin-top: 6px;
+  height: 7px;
+  margin-top: 5px;
   overflow: hidden;
   border: 2px solid var(--ink);
   border-radius: 2px;
@@ -273,7 +273,7 @@ button {
 }
 
 .hp-card .meter {
-  height: 10px;
+  height: 9px;
 }
 
 .meter span {
@@ -301,22 +301,27 @@ button {
   overflow: hidden;
 }
 
+.play-layout {
+  display: grid;
+}
+
 .main-stage {
   display: grid;
+  height: 100%;
 }
 
 body.is-choice .main-stage {
   grid-template-rows:
-    clamp(118px, 18.2dvh, 150px)
-    clamp(66px, 10.5dvh, 82px)
-    28px
-    minmax(250px, 1fr)
-    clamp(50px, 7.4dvh, 58px);
-  gap: 7px;
+    clamp(126px, 19.2dvh, 158px)
+    clamp(58px, 8.6dvh, 72px)
+    26px
+    minmax(236px, 1fr)
+    clamp(48px, 6.8dvh, 54px);
+  gap: 6px;
 }
 
 body.is-result .main-stage {
-  grid-template-rows: 26px minmax(0, 1fr);
+  grid-template-rows: 24px minmax(0, 1fr);
   gap: 6px;
 }
 
@@ -330,26 +335,26 @@ body.is-result .confirm-button {
 .situation-card {
   position: relative;
   min-height: 0;
-  padding: clamp(10px, 2.5dvh, 14px) 14px;
+  padding: clamp(10px, 2.3dvh, 13px) 13px;
   overflow: hidden;
-  border: 4px solid var(--ink);
+  border: 3px solid var(--ink);
   border-radius: 8px;
   background:
     linear-gradient(90deg, rgba(255, 247, 223, 0.98), rgba(246, 215, 158, 0.94)),
     repeating-linear-gradient(0deg, rgba(108, 73, 39, 0.08) 0 1px, transparent 1px 26px);
-  box-shadow: inset 0 0 0 2px #fff8df, 0 4px 0 var(--shadow);
+  box-shadow: inset 0 0 0 2px #fff8df, 0 3px 0 var(--shadow);
 }
 
 .situation-card::after {
   content: "";
   position: absolute;
   z-index: 0;
-  right: 14px;
-  bottom: 13px;
-  width: 82px;
-  height: 42px;
+  right: 12px;
+  bottom: 12px;
+  width: 70px;
+  height: 36px;
   border-bottom: 5px solid var(--ink);
-  opacity: 0.42;
+  opacity: 0.32;
   background:
     linear-gradient(90deg, #2f6da8 0 18%, transparent 18% 25%, #3f9347 25% 45%, transparent 45% 52%, #e3ad36 52% 69%, transparent 69% 76%, #c94232 76% 100%);
   clip-path: polygon(0 100%, 0 56%, 18% 56%, 18% 100%, 25% 100%, 25% 22%, 45% 22%, 45% 100%, 52% 100%, 52% 70%, 69% 70%, 69% 100%, 76% 100%, 76% 42%, 100% 42%, 100% 100%);
@@ -386,10 +391,10 @@ body.is-result .confirm-button {
 }
 
 .situation-card h2 {
-  margin-top: 8px;
+  margin-top: 7px;
   overflow: hidden;
   color: var(--ink);
-  font-size: clamp(22px, 6.1vw, 30px);
+  font-size: clamp(22px, 5.8vw, 29px);
   font-weight: 1000;
   line-height: 1.05;
   text-overflow: ellipsis;
@@ -399,22 +404,22 @@ body.is-result .confirm-button {
 
 .situation-card p {
   display: -webkit-box;
-  max-width: calc(100% - 76px);
-  max-height: 2.7em;
-  margin: 8px 0 0;
+  max-width: calc(100% - 54px);
+  max-height: 4.05em;
+  margin: 7px 0 0;
   overflow: hidden;
   color: #352720;
-  font-size: clamp(12px, 3.35vw, 14px);
+  font-size: clamp(11.5px, 3.15vw, 13.5px);
   font-weight: 800;
   line-height: 1.35;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
 }
 
 .advisor-panel {
   display: grid;
   min-height: 0;
-  grid-template-columns: minmax(0, 1fr) 72px;
+  grid-template-columns: minmax(0, 1fr) 64px;
   align-items: end;
   gap: 6px;
   overflow: visible;
@@ -426,8 +431,8 @@ body.is-result .confirm-button {
   height: 100%;
   min-height: 0;
   align-items: center;
-  padding: 10px 12px;
-  border: 3px solid #c98f88;
+  padding: 8px 10px;
+  border: 2px solid #c98f88;
   border-radius: 6px;
   background: #ffe1dd;
   box-shadow: inset 0 0 0 2px #fff5ef, 0 3px 0 rgba(18, 10, 7, 0.38);
@@ -436,12 +441,12 @@ body.is-result .confirm-button {
 .advisor-bubble::after {
   content: "";
   position: absolute;
-  right: -9px;
+  right: -8px;
   bottom: 20px;
-  width: 15px;
-  height: 15px;
-  border-top: 3px solid #c98f88;
-  border-right: 3px solid #c98f88;
+  width: 13px;
+  height: 13px;
+  border-top: 2px solid #c98f88;
+  border-right: 2px solid #c98f88;
   background: #ffe1dd;
   transform: rotate(45deg);
 }
@@ -452,7 +457,7 @@ body.is-result .confirm-button {
   margin: 0;
   overflow: hidden;
   color: var(--ink);
-  font-size: clamp(12px, 3.35vw, 14px);
+  font-size: clamp(11.5px, 3.15vw, 13px);
   font-weight: 900;
   line-height: 1.4;
   -webkit-box-orient: vertical;
@@ -467,14 +472,14 @@ body.is-result .confirm-button {
 }
 
 .advisor-face {
-  width: 66px;
-  height: 66px;
+  width: 60px;
+  height: 60px;
   background: url("./assets/intern-jiwoo.png") center bottom / contain no-repeat;
   image-rendering: pixelated;
 }
 
 .advisor-character strong {
-  max-width: 72px;
+  max-width: 64px;
   padding: 4px 6px;
   overflow: hidden;
   border-radius: 4px;
@@ -489,7 +494,7 @@ body.is-result .confirm-button {
 
 .cards-head {
   display: flex;
-  max-height: 28px;
+  max-height: 26px;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
@@ -498,7 +503,7 @@ body.is-result .confirm-button {
 }
 
 .cards-head h2 {
-  font-size: clamp(19px, 5.2vw, 22px);
+  font-size: clamp(18px, 4.9vw, 21px);
   font-weight: 1000;
   line-height: 1;
 }
@@ -508,9 +513,9 @@ body.is-result .confirm-button {
 }
 
 .icon-button {
-  width: 36px;
-  height: 36px;
-  flex: 0 0 36px;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
   background: var(--red);
   color: #fff7df;
   font-size: 18px;
@@ -520,7 +525,7 @@ body.is-result .confirm-button {
   display: grid;
   min-height: 0;
   grid-template-rows: repeat(3, minmax(0, 1fr));
-  gap: 7px;
+  gap: 6px;
   overflow: hidden;
 }
 
@@ -533,12 +538,12 @@ body.is-result .confirm-button {
   display: grid;
   height: 100%;
   min-height: 0;
-  grid-template-columns: clamp(46px, 13vw, 58px) minmax(0, 1fr) clamp(76px, 22vw, 90px);
+  grid-template-columns: clamp(44px, 12vw, 54px) minmax(0, 1fr) clamp(70px, 20vw, 84px);
   align-items: center;
-  gap: 9px;
-  padding: 8px 10px;
+  gap: 8px;
+  padding: 7px 9px;
   overflow: visible;
-  border: 4px solid var(--ink);
+  border: 3px solid var(--ink);
   border-radius: 7px;
   background:
     linear-gradient(90deg, var(--role-soft) 0 15%, transparent 15%),
@@ -546,7 +551,7 @@ body.is-result .confirm-button {
   box-shadow:
     inset 9px 0 0 var(--role),
     inset 0 0 0 2px #fff8df,
-    0 4px 0 var(--shadow);
+    0 3px 0 var(--shadow);
   text-align: left;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
@@ -559,10 +564,10 @@ body.is-result .confirm-button {
 .choice-card.is-selected {
   border-color: #fff7df;
   box-shadow:
-    0 0 0 4px var(--role),
+    0 0 0 3px var(--role),
     inset 9px 0 0 var(--role),
     inset 0 0 0 2px #fff8df,
-    0 5px 0 var(--shadow);
+    0 4px 0 var(--shadow);
 }
 
 .choice-card.role-prep {
@@ -609,11 +614,11 @@ body.is-result .confirm-button {
 
 .card-icon {
   display: grid;
-  width: clamp(42px, 12vw, 52px);
-  height: clamp(42px, 12vw, 52px);
+  width: clamp(40px, 11vw, 50px);
+  height: clamp(40px, 11vw, 50px);
   place-items: center;
   overflow: hidden;
-  border: 3px solid var(--role-dark);
+  border: 2px solid var(--role-dark);
   border-radius: 5px;
   background: linear-gradient(180deg, #fff8df, #f5d7a9);
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35), 2px 2px 0 var(--shadow);
@@ -638,7 +643,7 @@ body.is-result .confirm-button {
 .role-badge {
   display: inline-flex;
   max-width: 100%;
-  min-height: 18px;
+  min-height: 17px;
   align-items: center;
   padding: 2px 7px;
   border: 2px solid rgba(36, 20, 15, 0.22);
@@ -653,10 +658,10 @@ body.is-result .confirm-button {
 }
 
 .choice-card h3 {
-  margin-top: 5px;
+  margin-top: 4px;
   overflow: hidden;
   color: var(--ink);
-  font-size: clamp(17px, 5.1vw, 22px);
+  font-size: clamp(17px, 4.8vw, 21px);
   font-weight: 1000;
   line-height: 1.08;
   text-overflow: ellipsis;
@@ -684,7 +689,7 @@ body.is-result .confirm-button {
   max-width: none;
   overflow: visible;
   color: var(--ink);
-  font-size: clamp(16px, 4.6vw, 21px);
+  font-size: clamp(15px, 4.2vw, 19px);
   font-weight: 1000;
   line-height: 1;
   text-align: right;
@@ -693,7 +698,7 @@ body.is-result .confirm-button {
 
 .selected-check {
   position: absolute;
-  top: 9px;
+  top: 7px;
   left: clamp(36px, 11vw, 46px);
   display: none;
   width: 26px;
@@ -714,13 +719,13 @@ body.is-result .confirm-button {
 }
 
 .primary-button {
-  min-height: 50px;
-  border: 4px solid var(--ink);
+  min-height: 48px;
+  border: 3px solid var(--ink);
   border-radius: 6px;
   background: linear-gradient(180deg, #ef5149, var(--red));
-  box-shadow: inset 0 0 0 2px #ff8d72, 0 5px 0 var(--shadow);
+  box-shadow: inset 0 0 0 2px #ff8d72, 0 4px 0 var(--shadow);
   color: #fff7df;
-  font-size: clamp(21px, 5.9vw, 28px);
+  font-size: clamp(20px, 5.4vw, 26px);
   font-weight: 1000;
   letter-spacing: 0;
   text-shadow: 2px 2px 0 #5b211b;
@@ -747,27 +752,28 @@ body.is-result .confirm-button {
   display: grid;
   height: 100%;
   min-height: 0;
-  grid-template-rows: minmax(0, 1fr) clamp(48px, 7dvh, 56px);
+  grid-template-rows: minmax(0, 1fr) clamp(46px, 6.7dvh, 54px);
   gap: 7px;
-  padding: 9px;
+  padding: 8px;
   overflow: hidden;
-  border: 4px solid var(--ink);
+  border: 3px solid var(--ink);
   border-radius: 8px;
   background: linear-gradient(180deg, rgba(255, 244, 209, 0.98), rgba(245, 214, 160, 0.97));
-  box-shadow: inset 0 0 0 2px #fff8df, 0 5px 0 var(--shadow);
+  box-shadow: inset 0 0 0 2px #fff8df, 0 4px 0 var(--shadow);
 }
 
 .result-copy {
   display: grid;
   min-height: 0;
   grid-template-rows: auto auto minmax(0, 1fr);
+  align-content: start;
   overflow: hidden;
 }
 
 .result-copy > span:first-child {
   justify-self: start;
-  min-height: 24px;
-  padding: 4px 9px;
+  min-height: 22px;
+  padding: 3px 8px;
   border: 2px solid rgba(36, 20, 15, 0.3);
   border-radius: 3px;
   background: #ece4f8;
@@ -778,10 +784,10 @@ body.is-result .confirm-button {
 }
 
 .turn-result h2 {
-  margin-top: 5px;
+  margin-top: 4px;
   overflow: hidden;
   color: var(--ink);
-  font-size: clamp(22px, 5.8vw, 29px);
+  font-size: clamp(21px, 5.5vw, 27px);
   font-weight: 1000;
   line-height: 1.05;
   text-overflow: ellipsis;
@@ -793,27 +799,28 @@ body.is-result .confirm-button {
   height: 100%;
   min-height: 0;
   grid-template-rows:
-    clamp(32px, 5dvh, 44px)
-    minmax(24px, auto)
-    minmax(68px, 0.9fr)
-    minmax(84px, 1fr)
-    minmax(56px, 0.8fr);
-  gap: 6px;
-  margin-top: 6px;
+    auto
+    auto
+    auto
+    auto
+    minmax(0, 1fr);
+  align-content: start;
+  gap: 5px;
+  margin-top: 5px;
   overflow: hidden;
 }
 
 .result-tier {
   align-self: center;
   justify-self: center;
-  min-width: 116px;
-  padding: 5px 13px;
-  border: 3px solid var(--ink);
+  min-width: 108px;
+  padding: 4px 12px;
+  border: 2px solid var(--ink);
   border-radius: 4px;
   background: linear-gradient(180deg, #d54a34, var(--red-dark));
   box-shadow: inset 0 0 0 2px #f59a59, 0 3px 0 var(--shadow);
   color: #ffe366;
-  font-size: clamp(18px, 5.2vw, 24px);
+  font-size: clamp(17px, 4.8vw, 22px);
   font-weight: 1000;
   line-height: 1;
   text-align: center;
@@ -822,7 +829,7 @@ body.is-result .confirm-button {
 
 .result-narration {
   display: -webkit-box;
-  max-height: 2.7em;
+  max-height: 2.55em;
   overflow: hidden;
   color: #3a2b22;
   font-size: clamp(10.5px, 3vw, 12.5px);
@@ -833,10 +840,11 @@ body.is-result .confirm-button {
 }
 
 .result-dialogue {
-  min-height: 0;
-  padding: 7px 9px;
+  min-height: 74px;
+  max-height: 92px;
+  padding: 7px 8px;
   overflow: hidden;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 5px;
   background: #fff4d8;
   box-shadow: 3px 3px 0 rgba(18, 10, 7, 0.22);
@@ -844,7 +852,7 @@ body.is-result .confirm-button {
 
 .result-dialogue span {
   display: inline-flex;
-  min-height: 22px;
+  min-height: 20px;
   align-items: center;
   padding: 3px 8px;
   border-radius: 3px;
@@ -858,7 +866,7 @@ body.is-result .confirm-button {
 .result-dialogue strong {
   display: -webkit-box;
   max-height: 2.65em;
-  margin-top: 7px;
+  margin-top: 6px;
   overflow: hidden;
   color: var(--ink);
   font-size: clamp(11.5px, 3.15vw, 13.5px);
@@ -870,10 +878,11 @@ body.is-result .confirm-button {
 
 .result-money-grid {
   display: grid;
-  min-height: 0;
+  min-height: 98px;
+  max-height: 112px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-template-rows: repeat(2, minmax(0, 1fr));
-  gap: 6px;
+  gap: 5px;
 }
 
 .result-money-grid div {
@@ -888,7 +897,7 @@ body.is-result .confirm-button {
 .result-money-grid span {
   display: block;
   color: #5a4335;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 1000;
   line-height: 1;
 }
@@ -914,10 +923,10 @@ body.is-result .confirm-button {
 }
 
 .result-reasons {
-  min-height: 0;
-  padding: 7px 8px;
+  min-height: 66px;
+  padding: 6px 8px;
   overflow: hidden;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 5px;
   background: rgba(255, 237, 196, 0.9);
 }
@@ -925,7 +934,7 @@ body.is-result .confirm-button {
 .result-reasons > strong {
   display: block;
   color: var(--ink);
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 1000;
   line-height: 1;
 }
@@ -973,7 +982,7 @@ body.is-result .confirm-button {
 .modal-body {
   width: min(390px, 100%);
   padding: 18px;
-  border: 4px solid var(--ink);
+  border: 3px solid var(--ink);
   border-radius: 8px;
   background: var(--paper);
   box-shadow: inset 0 0 0 2px #fff8df, 0 6px 0 var(--shadow);
@@ -1073,7 +1082,7 @@ body.is-result .confirm-button {
 
 @media (max-height: 720px) {
   .app {
-    grid-template-rows: 58px 56px minmax(0, 1fr);
+    grid-template-rows: 54px 52px minmax(0, 1fr);
     gap: 6px;
     padding-inline: 9px;
   }
@@ -1117,7 +1126,7 @@ body.is-result .confirm-button {
   }
 
   body.is-choice .main-stage {
-    grid-template-rows: 108px 58px 24px minmax(218px, 1fr) 46px;
+    grid-template-rows: 112px 54px 23px minmax(210px, 1fr) 44px;
     gap: 6px;
   }
 
@@ -1126,21 +1135,21 @@ body.is-result .confirm-button {
   }
 
   .situation-card h2 {
-    font-size: 23px;
+    font-size: 21px;
   }
 
   .situation-card p,
   .advisor-bubble p {
-    font-size: 11.5px;
+    font-size: 10.8px;
   }
 
   .advisor-panel {
-    grid-template-columns: minmax(0, 1fr) 68px;
+    grid-template-columns: minmax(0, 1fr) 58px;
   }
 
   .advisor-face {
-    width: 62px;
-    height: 62px;
+    width: 54px;
+    height: 54px;
   }
 
   .advisor-bubble {
@@ -1154,19 +1163,19 @@ body.is-result .confirm-button {
 
   .choice-card {
     border-width: 3px;
-    grid-template-columns: 50px minmax(0, 1fr) 78px;
-    gap: 8px;
-    padding: 7px 9px;
+    grid-template-columns: 42px minmax(0, 1fr) 72px;
+    gap: 7px;
+    padding: 6px 8px;
   }
 
   .card-icon {
-    width: 45px;
-    height: 45px;
+    width: 39px;
+    height: 39px;
     border-width: 2px;
   }
 
   .choice-card h3 {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .role-badge {
@@ -1176,7 +1185,7 @@ body.is-result .confirm-button {
   }
 
   .effect-list strong {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .primary-button {
@@ -1184,7 +1193,7 @@ body.is-result .confirm-button {
   }
 
   .turn-result-text {
-    grid-template-rows: 30px minmax(20px, auto) minmax(58px, 0.8fr) minmax(78px, 1fr) minmax(46px, 0.7fr);
+    grid-template-rows: auto auto auto auto auto;
     gap: 5px;
   }
 
@@ -1193,7 +1202,7 @@ body.is-result .confirm-button {
   }
 
   .turn-result h2 {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .result-copy > span:first-child {
@@ -1212,6 +1221,20 @@ body.is-result .confirm-button {
   .result-reasons ul {
     gap: 2px;
     margin-top: 4px;
+  }
+
+  .result-dialogue {
+    min-height: 62px;
+    max-height: 76px;
+  }
+
+  .result-money-grid {
+    min-height: 82px;
+    max-height: 94px;
+  }
+
+  .result-reasons {
+    min-height: 54px;
   }
 }
 
@@ -1239,7 +1262,7 @@ body.is-result .confirm-button {
   }
 
   body.is-choice .main-stage {
-    grid-template-rows: 96px 52px 22px minmax(196px, 1fr) 44px;
+    grid-template-rows: 94px 48px 21px minmax(188px, 1fr) 42px;
     gap: 5px;
   }
 
@@ -1316,7 +1339,7 @@ body.is-result .confirm-button {
   }
 
   .turn-result-text {
-    grid-template-rows: 28px minmax(18px, auto) minmax(50px, 0.7fr) minmax(70px, 1fr) minmax(42px, 0.6fr);
+    grid-template-rows: auto auto auto auto auto;
     gap: 4px;
     margin-top: 4px;
   }
