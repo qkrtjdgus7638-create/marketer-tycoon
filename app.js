@@ -651,25 +651,13 @@ function setMeter(key, value, max) {
 function renderEvent() {
   const event = state.currentEvent;
   if (!event) return;
-  const tags = event.riskTags.length ? event.riskTags : event.tags;
-  els.situationCategory.textContent = `${state.round}R / ${eventLabel(event)}`;
-  els.situationRisk.textContent = event.riskLabel ? `위험: ${event.riskLabel}` : tags.length ? `위험: ${compactTags(tags, 2)}` : "위험 낮음";
-  els.situationName.textContent = event.title;
+  els.situationCategory.textContent = "";
+  els.situationRisk.textContent = "";
+  els.situationName.textContent = "";
   els.situationText.textContent = `${event.speaker}: “${event.description}”`;
-  els.situationHint.textContent = situationHint(event);
-  const displayTags = event.riskLabel ? riskLabelTags(event.riskLabel) : tags;
-  els.situationTags.innerHTML = displayTags.slice(0, 4).map((tag) => `<span>${tag}</span>`).join("");
-}
-
-function situationHint(event) {
-  if (event.defaultDialogue) return event.defaultDialogue;
-  if (event.phase === "first_report") return "인턴 지우: 첫 보고에서는 성과보다 설명 구조가 먼저 보입니다.";
-  if (event.phase === "mid_review") return "인턴 지우: 지금부터는 누적된 선택 성향이 평가에 영향을 줍니다.";
-  if (event.phase === "final") return "인턴 지우: 마지막 라운드입니다. 남은 자원을 보고 가장 설득력 있는 선택을 골라야 합니다.";
-  if (event.riskTags.includes("budget")) return "인턴 지우: 예산을 쓰기 전에 이번 선택이 다음 판단 근거를 남기는지 봐야 합니다.";
-  if (event.riskTags.includes("mental")) return "인턴 지우: 멘탈을 더 쓰면 버틸 수는 있지만, 다음 라운드가 흔들릴 수 있어요.";
-  if (event.riskTags.includes("trust")) return "인턴 지우: 신뢰가 걸린 상황입니다. 성과만큼 설명 가능한 선택이 중요해요.";
-  return `인턴 마케터: 지금은 '${event.title}' 상황입니다. 이 상황에 맞는 대응을 골라야겠어요.`;
+  els.situationHint.textContent = "";
+  els.situationTags.innerHTML = "";
+  restartTyping(els.situationText);
 }
 
 function eventLabel(event) {
@@ -780,8 +768,8 @@ function renderTurnResult() {
   els.turnResultTitle.textContent = card.name;
   els.turnResultText.innerHTML = `
     <div class="result-tier ${outcome.tier.className}">${outcome.tier.label}</div>
-    <span class="result-narration">${resultNarration(card, outcome)}</span>
-    <div class="result-dialogue"><span>${event.speaker}</span><strong>${resultDialogue(outcome)}</strong></div>
+    <span class="result-narration typing-text">${resultNarration(card, outcome)}</span>
+    <div class="result-dialogue"><span>${event.speaker}</span><strong class="typing-text">${resultDialogue(outcome)}</strong></div>
     <div class="result-money-grid">
       <div><span>예산 변화</span><strong class="${outcome.budgetChange >= 0 ? "is-good" : "is-bad"}">${formatSignedMoney(outcome.budgetChange)}</strong></div>
       <div><span>EXP</span><strong>${signed(outcome.expChange)}</strong></div>
@@ -792,6 +780,14 @@ function renderTurnResult() {
   `;
   els.turnResultDelta.innerHTML = "";
   els.continueButton.textContent = state.round >= internData.config.totalRounds || shouldStopRun() ? "최종 평가 보기" : "다음 라운드";
+  for (const element of els.turnResultText.querySelectorAll(".typing-text")) restartTyping(element);
+}
+
+function restartTyping(element) {
+  if (!element) return;
+  element.classList.remove("typing-text");
+  void element.offsetWidth;
+  element.classList.add("typing-text");
 }
 
 function resultNarration(card, outcome) {
