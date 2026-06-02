@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>마케터로 살아남기 MVP</title>
-    <link rel="stylesheet" href="styles.css?v=20260602-structure-v1" />
+    <link rel="stylesheet" href="styles.css?v=20260602-card-dialogue-v1" />
   </head>
   <body>
     <section id="startScreen" class="start-screen" aria-label="게임 시작">
@@ -73,19 +73,6 @@
             <p id="situationText">인턴 마케터의 첫 캠페인이 시작됩니다.</p>
           </div>
 
-          <section class="advisor-panel" aria-label="선택 카드 설명">
-            <div class="advisor-bubble">
-              <p id="advisorText">카드를 하나 골라보면 제가 실행 방향을 정리해볼게요.</p>
-            </div>
-            <div class="advisor-character" aria-hidden="true">
-              <div class="advisor-face">
-                <span></span>
-                <span></span>
-              </div>
-              <strong id="advisorName">인턴 지우</strong>
-            </div>
-          </section>
-
           <div class="cards-head">
             <div>
               <h2 id="stageHeading">선택 카드</h2>
@@ -94,6 +81,20 @@
             <button id="restartButton" class="icon-button" type="button" title="새 게임">↻</button>
           </div>
           <div id="cardChoices" class="card-grid"></div>
+
+          <section class="advisor-panel" aria-label="선택 카드 설명">
+            <div class="advisor-bubble">
+              <p id="advisorText">이번 상황에서는 어떤 방식으로 대응할까요?</p>
+            </div>
+            <div class="advisor-character" aria-hidden="true">
+              <div class="advisor-face">
+                <span></span>
+                <span></span>
+              </div>
+              <strong id="advisorName">인턴 마케터</strong>
+            </div>
+          </section>
+
           <button id="confirmChoiceButton" class="primary-button confirm-button" type="button">결정</button>
 
           <div id="turnResult" class="turn-result hidden">
@@ -120,6 +121,6 @@
       </div>
     </div>
 
-    <script src="app.js?v=20260602-structure-v1"></script>
+    <script src="app.js?v=20260602-card-dialogue-v1"></script>
   </body>
 </html>
