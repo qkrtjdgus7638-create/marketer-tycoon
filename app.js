@@ -1092,8 +1092,9 @@ function renderChoices() {
 
 function renderChoiceCard(card) {
   const selected = card.id === state.selectedCardId;
+  const roleClass = card.role ? `role-${card.role}` : "role-default";
   return `
-    <button class="choice-card ${categoryClass(card.category)} ${selected ? "is-selected" : ""}" type="button" data-card-id="${card.id}" ${state.finished ? "disabled" : ""} aria-pressed="${selected}">
+    <button class="choice-card ${categoryClass(card.category)} ${roleClass} ${selected ? "is-selected" : ""}" type="button" data-card-id="${card.id}" ${state.finished ? "disabled" : ""} aria-pressed="${selected}">
       <div class="card-icon" aria-hidden="true">${cardIcon(card)}</div>
       <div class="card-main">
         <h3>${card.name}</h3>
@@ -1139,6 +1140,18 @@ function getCardDescription(card) {
 }
 
 function cardIcon(card) {
+  const roleIcons = {
+    prep: "⌕",
+    improve: "↗",
+    revenue: "₩",
+    defense: "✓",
+    report: "▤",
+    gamble: "!",
+    operation: "▦",
+    politics: "◆",
+  };
+  if (card.role && roleIcons[card.role]) return roleIcons[card.role];
+
   const icons = {
     "예산관리": "₩",
     "퍼포먼스": "↗",
