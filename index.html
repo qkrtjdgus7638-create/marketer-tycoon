@@ -73,6 +73,19 @@
             <p id="situationText">인턴 마케터의 첫 캠페인이 시작됩니다.</p>
           </div>
 
+          <section class="advisor-panel" aria-label="선택 카드 설명">
+            <div class="advisor-bubble">
+              <p id="advisorText">카드를 하나 골라보면 제가 실행 방향을 정리해볼게요.</p>
+            </div>
+            <div class="advisor-character" aria-hidden="true">
+              <div class="advisor-face">
+                <span></span>
+                <span></span>
+              </div>
+              <strong id="advisorName">인턴 지우</strong>
+            </div>
+          </section>
+
           <div class="cards-head">
             <div>
               <h2 id="stageHeading">선택 카드</h2>
@@ -81,6 +94,7 @@
             <button id="restartButton" class="icon-button" type="button" title="새 게임">↻</button>
           </div>
           <div id="cardChoices" class="card-grid"></div>
+          <button id="confirmChoiceButton" class="primary-button confirm-button" type="button">결정</button>
 
           <div id="turnResult" class="turn-result hidden">
             <div class="result-copy">
