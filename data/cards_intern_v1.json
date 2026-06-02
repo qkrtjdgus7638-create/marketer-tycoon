@@ -1,0 +1,2264 @@
+{
+  "cards": [
+    {
+      "id": "card_small_test",
+      "name": "소액 테스트",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "작게 집행해서 반응을 확인합니다.",
+      "tags": [
+        "performance",
+        "budget",
+        "data"
+      ],
+      "goodAgainst": [
+        "budget_risk",
+        "performance_risk"
+      ],
+      "badAgainst": [
+        "urgent"
+      ],
+      "cost": -10000,
+      "budgetDeltaRange": [
+        0,
+        25000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "performanceScore": 1,
+        "budgetScore": 1
+      },
+      "riskDelta": {
+        "budget_risk": -1
+      },
+      "specialEffect": "안정적인 기본 테스트 카드"
+    },
+    {
+      "id": "card_budget_guard",
+      "name": "예산 방어",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "무리한 집행을 줄이고 손실을 막습니다.",
+      "tags": [
+        "budget",
+        "defense",
+        "report"
+      ],
+      "goodAgainst": [
+        "budget_risk",
+        "crisis_risk"
+      ],
+      "badAgainst": [
+        "growth_pressure"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        5000,
+        20000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "budgetScore": 2,
+        "reportScore": 1
+      },
+      "riskDelta": {
+        "budget_risk": -2
+      },
+      "specialEffect": "예산 위험을 낮춘다"
+    },
+    {
+      "id": "card_check_data",
+      "name": "데이터 확인",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "감이 아니라 숫자를 먼저 확인합니다.",
+      "tags": [
+        "data",
+        "performance",
+        "report"
+      ],
+      "goodAgainst": [
+        "performance_risk",
+        "trust_risk"
+      ],
+      "badAgainst": [
+        "urgent"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        10000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "performanceScore": 1,
+        "reportScore": 1
+      },
+      "riskDelta": {
+        "trust_risk": -1
+      },
+      "specialEffect": "다음 성과형 카드 성공률 소폭 증가"
+    },
+    {
+      "id": "card_report_shield",
+      "name": "보고서 방패",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "성과가 애매해도 설명 가능한 구조로 정리합니다.",
+      "tags": [
+        "report",
+        "trust",
+        "data"
+      ],
+      "goodAgainst": [
+        "trust_risk",
+        "budget_risk"
+      ],
+      "badAgainst": [
+        "creative",
+        "viral"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        5000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 2,
+      "scoreDelta": {
+        "reportScore": 2
+      },
+      "riskDelta": {
+        "trust_risk": -2
+      },
+      "specialEffect": "보고/평가 이벤트에서 유리"
+    },
+    {
+      "id": "card_file_cleanup",
+      "name": "파일 정리",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "최종 파일을 정리하고 실수를 줄입니다.",
+      "tags": [
+        "operation",
+        "creative",
+        "urgent"
+      ],
+      "goodAgainst": [
+        "operation_risk"
+      ],
+      "badAgainst": [
+        "performance_risk"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        5000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 1,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "operationScore": 2
+      },
+      "riskDelta": {
+        "operation_risk": -2
+      },
+      "specialEffect": "운영 리스크 감소"
+    },
+    {
+      "id": "card_reprioritize",
+      "name": "우선순위 재조정",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "지금 꼭 해야 하는 일만 남깁니다.",
+      "tags": [
+        "operation",
+        "urgent",
+        "burnout"
+      ],
+      "goodAgainst": [
+        "burnout_risk",
+        "operation_risk"
+      ],
+      "badAgainst": [
+        "viral"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        10000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 1,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "operationScore": 1,
+        "budgetScore": 1
+      },
+      "riskDelta": {
+        "burnout_risk": -2
+      },
+      "specialEffect": "멘탈 방어"
+    },
+    {
+      "id": "card_reschedule",
+      "name": "일정 재조정",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "무리한 일정을 현실적으로 다시 잡습니다.",
+      "tags": [
+        "operation",
+        "approval",
+        "urgent"
+      ],
+      "goodAgainst": [
+        "approval_risk",
+        "operation_risk"
+      ],
+      "badAgainst": [
+        "boss"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        5000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 1,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "operationScore": 2
+      },
+      "riskDelta": {
+        "operation_risk": -1,
+        "approval_risk": -1
+      },
+      "specialEffect": "컨펌 지연 이벤트에 유리"
+    },
+    {
+      "id": "card_agency_followup",
+      "name": "대행사 재요청",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "애매한 요청을 구체적으로 다시 전달합니다.",
+      "tags": [
+        "agency",
+        "operation",
+        "report"
+      ],
+      "goodAgainst": [
+        "operation_risk",
+        "agency"
+      ],
+      "badAgainst": [
+        "urgent"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        10000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "operationScore": 1,
+        "reportScore": 1
+      },
+      "riskDelta": {
+        "operation_risk": -1
+      },
+      "specialEffect": "대행사 이벤트에서 안정적"
+    },
+    {
+      "id": "card_tone整理",
+      "name": "톤앤매너 정리",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "브랜드 톤을 정리해 컨펌 가능성을 높입니다.",
+      "tags": [
+        "brand",
+        "creative",
+        "approval"
+      ],
+      "goodAgainst": [
+        "brand_risk",
+        "approval_risk"
+      ],
+      "badAgainst": [
+        "viral"
+      ],
+      "cost": -5000,
+      "budgetDeltaRange": [
+        0,
+        15000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "brandScore": 1,
+        "creativeScore": 1
+      },
+      "riskDelta": {
+        "brand_risk": -1,
+        "approval_risk": -1
+      },
+      "specialEffect": "브랜드 이벤트에 유리"
+    },
+    {
+      "id": "card_core_message",
+      "name": "핵심 메시지 압축",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "많은 장점을 하나의 메시지로 정리합니다.",
+      "tags": [
+        "brand",
+        "creative",
+        "report"
+      ],
+      "goodAgainst": [
+        "brand_risk",
+        "approval_risk"
+      ],
+      "badAgainst": [
+        "performance_risk"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        15000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "brandScore": 1,
+        "creativeScore": 1
+      },
+      "riskDelta": {
+        "brand_risk": -1
+      },
+      "specialEffect": "메시지 과부하 이벤트에 유리"
+    },
+    {
+      "id": "card_brand_guide",
+      "name": "브랜드 가이드 확인",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "브랜드 기준을 다시 확인해 리스크를 줄입니다.",
+      "tags": [
+        "brand",
+        "approval",
+        "defense"
+      ],
+      "goodAgainst": [
+        "brand_risk",
+        "approval_risk"
+      ],
+      "badAgainst": [
+        "urgent",
+        "viral"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        5000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "brandScore": 2
+      },
+      "riskDelta": {
+        "brand_risk": -2
+      },
+      "specialEffect": "브랜드 리스크 감소"
+    },
+    {
+      "id": "card_minor_creative_edit",
+      "name": "소재 일부 수정",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "전체를 갈아엎지 않고 문제 지점만 수정합니다.",
+      "tags": [
+        "creative",
+        "approval",
+        "performance"
+      ],
+      "goodAgainst": [
+        "approval_risk"
+      ],
+      "badAgainst": [
+        "viral"
+      ],
+      "cost": -10000,
+      "budgetDeltaRange": [
+        0,
+        25000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "creativeScore": 1
+      },
+      "riskDelta": {
+        "approval_risk": -1
+      },
+      "specialEffect": "무난한 소재 개선"
+    },
+    {
+      "id": "card_hook_copy",
+      "name": "후킹 카피 수정",
+      "tier": "basic",
+      "cardType": "attack",
+      "description": "클릭하고 싶게 첫 문장을 바꿉니다.",
+      "tags": [
+        "creative",
+        "performance",
+        "copy"
+      ],
+      "goodAgainst": [
+        "performance_risk"
+      ],
+      "badAgainst": [
+        "brand_risk"
+      ],
+      "cost": -10000,
+      "budgetDeltaRange": [
+        5000,
+        35000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "creativeScore": 1,
+        "performanceScore": 1
+      },
+      "riskDelta": {
+        "brand_risk": 1
+      },
+      "specialEffect": "성과 기대 상승, 브랜드 리스크 소폭 증가"
+    },
+    {
+      "id": "card_target_reset",
+      "name": "타겟 재설정",
+      "tier": "basic",
+      "cardType": "attack",
+      "description": "반응이 나올 만한 타겟으로 다시 좁힙니다.",
+      "tags": [
+        "performance",
+        "data",
+        "budget"
+      ],
+      "goodAgainst": [
+        "performance_risk",
+        "budget_risk"
+      ],
+      "badAgainst": [
+        "brand"
+      ],
+      "cost": -5000,
+      "budgetDeltaRange": [
+        5000,
+        30000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "performanceScore": 2
+      },
+      "riskDelta": {
+        "budget_risk": -1
+      },
+      "specialEffect": "퍼포먼스 이벤트에서 안정적"
+    },
+    {
+      "id": "card_landing_check",
+      "name": "상세페이지 점검",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "클릭 이후 구매까지의 흐름을 확인합니다.",
+      "tags": [
+        "performance",
+        "data",
+        "conversion"
+      ],
+      "goodAgainst": [
+        "performance_risk",
+        "conversion"
+      ],
+      "badAgainst": [
+        "urgent"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        20000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "performanceScore": 1,
+        "reportScore": 1
+      },
+      "riskDelta": {
+        "performance_risk": -1
+      },
+      "specialEffect": "CTR은 높은데 구매가 없는 이벤트에 유리"
+    },
+    {
+      "id": "card_cut_loss",
+      "name": "손실 컷",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "성과가 안 나는 집행을 빠르게 멈춥니다.",
+      "tags": [
+        "budget",
+        "performance",
+        "defense"
+      ],
+      "goodAgainst": [
+        "budget_risk",
+        "performance_risk"
+      ],
+      "badAgainst": [
+        "viral"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        10000,
+        30000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "budgetScore": 2
+      },
+      "riskDelta": {
+        "budget_risk": -2
+      },
+      "specialEffect": "예산 회복형 방어 카드"
+    },
+    {
+      "id": "card_keep_efficient_channel",
+      "name": "효율 채널만 유지",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "남은 예산을 가장 효율적인 곳에만 남깁니다.",
+      "tags": [
+        "budget",
+        "performance",
+        "data"
+      ],
+      "goodAgainst": [
+        "budget_risk",
+        "crisis_risk"
+      ],
+      "badAgainst": [
+        "creative"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        5000,
+        25000
+      ],
+      "expDeltaRange": [
+        0,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "budgetScore": 1,
+        "performanceScore": 1
+      },
+      "riskDelta": {
+        "budget_risk": -1
+      },
+      "specialEffect": "예산 감소 이벤트에 유리"
+    },
+    {
+      "id": "card_report_risk_first",
+      "name": "리스크 먼저 공유",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "문제가 커지기 전에 먼저 공유합니다.",
+      "tags": [
+        "report",
+        "trust",
+        "operation"
+      ],
+      "goodAgainst": [
+        "trust_risk",
+        "operation_risk"
+      ],
+      "badAgainst": [
+        "boss"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        5000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 2,
+      "scoreDelta": {
+        "reportScore": 2
+      },
+      "riskDelta": {
+        "trust_risk": -2
+      },
+      "specialEffect": "신뢰 하락 방어"
+    },
+    {
+      "id": "card_quick_draft",
+      "name": "빠른 임시안 제작",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "완벽하진 않지만 당장 볼 수 있는 안을 만듭니다.",
+      "tags": [
+        "urgent",
+        "creative",
+        "operation"
+      ],
+      "goodAgainst": [
+        "urgent",
+        "operation_risk"
+      ],
+      "badAgainst": [
+        "brand_risk"
+      ],
+      "cost": -5000,
+      "budgetDeltaRange": [
+        0,
+        15000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": -1,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "operationScore": 1,
+        "creativeScore": 1
+      },
+      "riskDelta": {
+        "brand_risk": 1
+      },
+      "specialEffect": "긴급 이벤트 대응"
+    },
+    {
+      "id": "card_explain_with_numbers",
+      "name": "숫자로 설명",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "선택의 이유를 수치로 설명합니다.",
+      "tags": [
+        "report",
+        "data",
+        "trust"
+      ],
+      "goodAgainst": [
+        "trust_risk"
+      ],
+      "badAgainst": [
+        "creative"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        10000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 2,
+      "scoreDelta": {
+        "reportScore": 1,
+        "performanceScore": 1
+      },
+      "riskDelta": {
+        "trust_risk": -2
+      },
+      "specialEffect": "팀장님 숫자 질문 이벤트에 유리"
+    },
+    {
+      "id": "card_learning_summary",
+      "name": "배운 점 정리",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "성과가 부족해도 다음 액션으로 연결합니다.",
+      "tags": [
+        "report",
+        "data",
+        "growth"
+      ],
+      "goodAgainst": [
+        "low_performance",
+        "growth_pressure"
+      ],
+      "badAgainst": [
+        "viral"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        5000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "reportScore": 1
+      },
+      "riskDelta": {
+        "trust_risk": -1
+      },
+      "specialEffect": "성과 부족 상황에서 방어"
+    },
+    {
+      "id": "card_keep_brand_tone",
+      "name": "브랜드 톤 유지",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "성과보다 브랜드 일관성을 우선합니다.",
+      "tags": [
+        "brand",
+        "defense",
+        "approval"
+      ],
+      "goodAgainst": [
+        "brand_risk"
+      ],
+      "badAgainst": [
+        "performance_risk"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        10000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "brandScore": 2
+      },
+      "riskDelta": {
+        "brand_risk": -2
+      },
+      "specialEffect": "브랜드 리스크 감소"
+    },
+    {
+      "id": "card_reframe_claims",
+      "name": "제품 장점 재정리",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "장점을 타겟이 이해하기 쉬운 언어로 바꿉니다.",
+      "tags": [
+        "brand",
+        "creative",
+        "content"
+      ],
+      "goodAgainst": [
+        "brand_risk",
+        "approval_risk"
+      ],
+      "badAgainst": [
+        "urgent"
+      ],
+      "cost": -5000,
+      "budgetDeltaRange": [
+        0,
+        20000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "brandScore": 1,
+        "creativeScore": 1
+      },
+      "riskDelta": {
+        "brand_risk": -1
+      },
+      "specialEffect": "제품 장점 과다 이벤트에 유리"
+    },
+    {
+      "id": "card_confirm_owner",
+      "name": "담당자에게 확인",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "애매한 부분을 담당자에게 다시 확인합니다.",
+      "tags": [
+        "operation",
+        "approval",
+        "trust"
+      ],
+      "goodAgainst": [
+        "approval_risk",
+        "operation_risk"
+      ],
+      "badAgainst": [
+        "urgent"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        5000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "operationScore": 1,
+        "reportScore": 1
+      },
+      "riskDelta": {
+        "approval_risk": -1
+      },
+      "specialEffect": "컨펌/파일 이벤트에 안정적"
+    },
+    {
+      "id": "card_scope_cut",
+      "name": "업무 범위 자르기",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "오늘 안에 가능한 범위로 일을 줄입니다.",
+      "tags": [
+        "urgent",
+        "operation",
+        "burnout"
+      ],
+      "goodAgainst": [
+        "burnout_risk",
+        "operation_risk"
+      ],
+      "badAgainst": [
+        "boss"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        10000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 1,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "operationScore": 2
+      },
+      "riskDelta": {
+        "burnout_risk": -2
+      },
+      "specialEffect": "번아웃 방어"
+    },
+    {
+      "id": "card_result_summary",
+      "name": "결과 정리",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "지금까지의 결과를 읽기 쉽게 정리합니다.",
+      "tags": [
+        "report",
+        "data",
+        "final"
+      ],
+      "goodAgainst": [
+        "trust_risk"
+      ],
+      "badAgainst": [
+        "viral"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        10000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "reportScore": 2
+      },
+      "riskDelta": {
+        "trust_risk": -1
+      },
+      "specialEffect": "후반/최종 보고에 유리"
+    },
+    {
+      "id": "card_compromise_plan",
+      "name": "타협안 제시",
+      "tier": "basic",
+      "cardType": "stable",
+      "description": "성과와 브랜드 사이의 중간안을 제시합니다.",
+      "tags": [
+        "brand",
+        "report",
+        "approval"
+      ],
+      "goodAgainst": [
+        "brand_risk",
+        "boss_risk"
+      ],
+      "badAgainst": [
+        "viral"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        15000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "brandScore": 1,
+        "reportScore": 1
+      },
+      "riskDelta": {
+        "brand_risk": -1
+      },
+      "specialEffect": "대표님/브랜드 이벤트에서 무난"
+    },
+    {
+      "id": "card_wait_and_watch",
+      "name": "흐름 지켜보기",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "성급하게 바꾸지 않고 반응을 더 봅니다.",
+      "tags": [
+        "data",
+        "budget",
+        "safe"
+      ],
+      "goodAgainst": [
+        "gamble_risk"
+      ],
+      "badAgainst": [
+        "urgent",
+        "crisis"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        10000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "budgetScore": 1
+      },
+      "riskDelta": {
+        "gamble_risk": -1
+      },
+      "specialEffect": "과잉 대응 방지"
+    },
+    {
+      "id": "card_internal_report_first",
+      "name": "내부 보고 먼저",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "수습 전에 내부에 먼저 상황을 공유합니다.",
+      "tags": [
+        "report",
+        "trust",
+        "crisis"
+      ],
+      "goodAgainst": [
+        "trust_risk",
+        "crisis_risk"
+      ],
+      "badAgainst": [
+        "performance"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        5000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 2,
+      "scoreDelta": {
+        "reportScore": 2
+      },
+      "riskDelta": {
+        "trust_risk": -2
+      },
+      "specialEffect": "대행사 실수/위기 이벤트에 유리"
+    },
+    {
+      "id": "card_tone_down",
+      "name": "톤 다운",
+      "tier": "basic",
+      "cardType": "defense",
+      "description": "과한 표현을 줄여 브랜드 리스크를 낮춥니다.",
+      "tags": [
+        "brand",
+        "creative",
+        "risk"
+      ],
+      "goodAgainst": [
+        "brand_risk",
+        "viral_risk"
+      ],
+      "badAgainst": [
+        "performance_risk"
+      ],
+      "cost": -5000,
+      "budgetDeltaRange": [
+        0,
+        15000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "brandScore": 2
+      },
+      "riskDelta": {
+        "brand_risk": -2,
+        "viral_risk": -1
+      },
+      "specialEffect": "댓글 반응 리스크에 유리"
+    },
+    {
+      "id": "card_find_buyer",
+      "name": "구매자 포착",
+      "tier": "strategy",
+      "cardType": "attack",
+      "description": "구매 가능성이 높은 신호를 찾아 집중합니다.",
+      "tags": [
+        "performance",
+        "data",
+        "conversion"
+      ],
+      "goodAgainst": [
+        "conversion",
+        "performance_risk"
+      ],
+      "badAgainst": [
+        "brand_risk"
+      ],
+      "cost": -15000,
+      "budgetDeltaRange": [
+        10000,
+        50000
+      ],
+      "expDeltaRange": [
+        1,
+        3
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "performanceScore": 2
+      },
+      "riskDelta": {
+        "budget_risk": 1
+      },
+      "specialEffect": "데이터 확인 이후 선택 시 보상 증가"
+    },
+    {
+      "id": "card_full_creative_rework",
+      "name": "소재 전면 수정",
+      "tier": "strategy",
+      "cardType": "attack",
+      "description": "기존 소재를 버리고 새 방향으로 갑니다.",
+      "tags": [
+        "creative",
+        "performance",
+        "approval"
+      ],
+      "goodAgainst": [
+        "performance_risk",
+        "creative"
+      ],
+      "badAgainst": [
+        "approval_risk",
+        "brand_risk"
+      ],
+      "cost": -25000,
+      "budgetDeltaRange": [
+        0,
+        70000
+      ],
+      "expDeltaRange": [
+        2,
+        4
+      ],
+      "mentalDelta": -1,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "creativeScore": 2,
+        "performanceScore": 1
+      },
+      "riskDelta": {
+        "approval_risk": 2,
+        "brand_risk": 1
+      },
+      "specialEffect": "성공 편차가 큰 콘텐츠 전환 카드"
+    },
+    {
+      "id": "card_scale_winning_creative",
+      "name": "성과 소재 증액",
+      "tier": "strategy",
+      "cardType": "attack",
+      "description": "반응 좋은 소재에 예산을 더 실어줍니다.",
+      "tags": [
+        "performance",
+        "budget",
+        "viral"
+      ],
+      "goodAgainst": [
+        "viral",
+        "performance"
+      ],
+      "badAgainst": [
+        "budget_risk"
+      ],
+      "cost": -30000,
+      "budgetDeltaRange": [
+        0,
+        90000
+      ],
+      "expDeltaRange": [
+        2,
+        4
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "performanceScore": 2,
+        "gambleScore": 1
+      },
+      "riskDelta": {
+        "budget_risk": 2
+      },
+      "specialEffect": "예상 밖 반응/좋은 리뷰 이벤트에서 강함"
+    },
+    {
+      "id": "card_conversion_audit",
+      "name": "전환 경로 점검",
+      "tier": "strategy",
+      "cardType": "build",
+      "description": "광고 클릭 이후 이탈 지점을 찾습니다.",
+      "tags": [
+        "performance",
+        "data",
+        "conversion"
+      ],
+      "goodAgainst": [
+        "conversion",
+        "performance_risk"
+      ],
+      "badAgainst": [
+        "urgent"
+      ],
+      "cost": -10000,
+      "budgetDeltaRange": [
+        5000,
+        40000
+      ],
+      "expDeltaRange": [
+        2,
+        3
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "performanceScore": 2,
+        "reportScore": 1
+      },
+      "riskDelta": {
+        "performance_risk": -1
+      },
+      "specialEffect": "이후 performance 카드 성공률 증가"
+    },
+    {
+      "id": "card_lowcost_abtest",
+      "name": "저비용 A/B 테스트",
+      "tier": "strategy",
+      "cardType": "build",
+      "description": "작은 비용으로 두 방향을 비교합니다.",
+      "tags": [
+        "performance",
+        "budget",
+        "data",
+        "creative"
+      ],
+      "goodAgainst": [
+        "budget_risk",
+        "approval_risk"
+      ],
+      "badAgainst": [
+        "urgent"
+      ],
+      "cost": -15000,
+      "budgetDeltaRange": [
+        0,
+        45000
+      ],
+      "expDeltaRange": [
+        2,
+        3
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "performanceScore": 1,
+        "budgetScore": 1
+      },
+      "riskDelta": {
+        "budget_risk": -1
+      },
+      "specialEffect": "다음 카드 선택지 품질 향상"
+    },
+    {
+      "id": "card_change_thumbnail",
+      "name": "썸네일 교체",
+      "tier": "strategy",
+      "cardType": "attack",
+      "description": "첫 인상을 바꿔 클릭률을 노립니다.",
+      "tags": [
+        "creative",
+        "performance",
+        "copy"
+      ],
+      "goodAgainst": [
+        "performance_risk"
+      ],
+      "badAgainst": [
+        "brand_risk"
+      ],
+      "cost": -15000,
+      "budgetDeltaRange": [
+        5000,
+        50000
+      ],
+      "expDeltaRange": [
+        1,
+        3
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "creativeScore": 2
+      },
+      "riskDelta": {
+        "brand_risk": 1
+      },
+      "specialEffect": "썸네일 이벤트에서 강함"
+    },
+    {
+      "id": "card_copy_pivot",
+      "name": "카피 방향 전환",
+      "tier": "strategy",
+      "cardType": "attack",
+      "description": "메시지의 관점을 바꿔 반응을 새로 봅니다.",
+      "tags": [
+        "creative",
+        "brand",
+        "performance"
+      ],
+      "goodAgainst": [
+        "creative",
+        "market"
+      ],
+      "badAgainst": [
+        "approval_risk"
+      ],
+      "cost": -10000,
+      "budgetDeltaRange": [
+        0,
+        50000
+      ],
+      "expDeltaRange": [
+        1,
+        3
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "creativeScore": 2,
+        "brandScore": 1
+      },
+      "riskDelta": {
+        "approval_risk": 1
+      },
+      "specialEffect": "경쟁사 유사 메시지 이벤트에 유리"
+    },
+    {
+      "id": "card_message_differentiation",
+      "name": "메시지 차별화",
+      "tier": "strategy",
+      "cardType": "build",
+      "description": "경쟁사와 다른 관점으로 포지셔닝합니다.",
+      "tags": [
+        "market",
+        "creative",
+        "brand",
+        "strategy"
+      ],
+      "goodAgainst": [
+        "strategy_risk",
+        "brand_risk"
+      ],
+      "badAgainst": [
+        "urgent"
+      ],
+      "cost": -10000,
+      "budgetDeltaRange": [
+        0,
+        40000
+      ],
+      "expDeltaRange": [
+        2,
+        3
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "brandScore": 1,
+        "creativeScore": 1
+      },
+      "riskDelta": {
+        "strategy_risk": -1
+      },
+      "specialEffect": "경쟁사 이벤트에서 강함"
+    },
+    {
+      "id": "card_pre_persuade_manager",
+      "name": "팀장님 미리 설득",
+      "tier": "strategy",
+      "cardType": "defense",
+      "description": "일이 커지기 전에 방향성을 미리 맞춥니다.",
+      "tags": [
+        "report",
+        "trust",
+        "approval"
+      ],
+      "goodAgainst": [
+        "trust_risk",
+        "approval_risk",
+        "boss_risk"
+      ],
+      "badAgainst": [
+        "viral"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        10000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 2,
+      "scoreDelta": {
+        "reportScore": 2
+      },
+      "riskDelta": {
+        "trust_risk": -2,
+        "approval_risk": -1
+      },
+      "specialEffect": "대표님/컨펌 이벤트 리스크 완화"
+    },
+    {
+      "id": "card_hypothesis_persuade",
+      "name": "가설로 설득",
+      "tier": "strategy",
+      "cardType": "build",
+      "description": "완전한 정답 대신 검증 가능한 가설로 설명합니다.",
+      "tags": [
+        "report",
+        "data",
+        "performance"
+      ],
+      "goodAgainst": [
+        "trust_risk",
+        "growth_pressure"
+      ],
+      "badAgainst": [
+        "boss"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        20000
+      ],
+      "expDeltaRange": [
+        1,
+        3
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "reportScore": 1,
+        "performanceScore": 1
+      },
+      "riskDelta": {
+        "trust_risk": -1
+      },
+      "specialEffect": "성과 부족 상황에서 신뢰 방어"
+    },
+    {
+      "id": "card_prepare_plan_b",
+      "name": "대체안 준비",
+      "tier": "strategy",
+      "cardType": "defense",
+      "description": "컨펌이 늦어져도 진행 가능한 플랜B를 만듭니다.",
+      "tags": [
+        "operation",
+        "approval",
+        "creative"
+      ],
+      "goodAgainst": [
+        "approval_risk",
+        "operation_risk"
+      ],
+      "badAgainst": [
+        "budget_risk"
+      ],
+      "cost": -10000,
+      "budgetDeltaRange": [
+        0,
+        30000
+      ],
+      "expDeltaRange": [
+        1,
+        3
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "operationScore": 2,
+        "creativeScore": 1
+      },
+      "riskDelta": {
+        "approval_risk": -2
+      },
+      "specialEffect": "컨펌 지연 이벤트에서 강함"
+    },
+    {
+      "id": "card_make_draft_myself",
+      "name": "직접 임시안 만든다",
+      "tier": "strategy",
+      "cardType": "convert",
+      "description": "기다리지 않고 직접 임시안을 만들어 진행합니다.",
+      "tags": [
+        "operation",
+        "urgent",
+        "creative",
+        "agency"
+      ],
+      "goodAgainst": [
+        "agency",
+        "urgent"
+      ],
+      "badAgainst": [
+        "burnout_risk",
+        "approval_risk"
+      ],
+      "cost": -5000,
+      "budgetDeltaRange": [
+        0,
+        30000
+      ],
+      "expDeltaRange": [
+        1,
+        3
+      ],
+      "mentalDelta": -1,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "operationScore": 1,
+        "creativeScore": 1
+      },
+      "riskDelta": {
+        "burnout_risk": 1,
+        "approval_risk": 1
+      },
+      "specialEffect": "대행사 지연 이벤트에서 유리하지만 멘탈 소모"
+    },
+    {
+      "id": "card_reallocate_budget",
+      "name": "남은 예산 재분배",
+      "tier": "strategy",
+      "cardType": "stable",
+      "description": "남은 예산을 성과 가능성이 높은 곳에 다시 배치합니다.",
+      "tags": [
+        "budget",
+        "performance",
+        "data"
+      ],
+      "goodAgainst": [
+        "budget_risk",
+        "crisis_risk"
+      ],
+      "badAgainst": [
+        "brand"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        5000,
+        50000
+      ],
+      "expDeltaRange": [
+        1,
+        3
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "budgetScore": 1,
+        "performanceScore": 1
+      },
+      "riskDelta": {
+        "budget_risk": -1
+      },
+      "specialEffect": "예산 감소/성과 하락 이벤트에서 유리"
+    },
+    {
+      "id": "card_use_review_content",
+      "name": "리뷰를 소재화",
+      "tier": "strategy",
+      "cardType": "attack",
+      "description": "좋은 리뷰를 광고 소재와 메시지에 반영합니다.",
+      "tags": [
+        "viral",
+        "creative",
+        "performance",
+        "trust"
+      ],
+      "goodAgainst": [
+        "viral",
+        "content"
+      ],
+      "badAgainst": [
+        "approval_risk"
+      ],
+      "cost": -10000,
+      "budgetDeltaRange": [
+        10000,
+        60000
+      ],
+      "expDeltaRange": [
+        2,
+        4
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "creativeScore": 1,
+        "performanceScore": 1
+      },
+      "riskDelta": {
+        "approval_risk": 1
+      },
+      "specialEffect": "좋은 리뷰 이벤트에서 강함"
+    },
+    {
+      "id": "card_reflect_on_landing",
+      "name": "랜딩에 반영",
+      "tier": "strategy",
+      "cardType": "build",
+      "description": "반응 좋은 메시지를 상세페이지 흐름에 반영합니다.",
+      "tags": [
+        "performance",
+        "conversion",
+        "content",
+        "data"
+      ],
+      "goodAgainst": [
+        "conversion",
+        "performance_risk"
+      ],
+      "badAgainst": [
+        "urgent"
+      ],
+      "cost": -15000,
+      "budgetDeltaRange": [
+        5000,
+        60000
+      ],
+      "expDeltaRange": [
+        2,
+        4
+      ],
+      "mentalDelta": -1,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "performanceScore": 2
+      },
+      "riskDelta": {
+        "performance_risk": -1
+      },
+      "specialEffect": "후반 전환 개선에 강함"
+    },
+    {
+      "id": "card_report_performance_focus",
+      "name": "성과 중심 정리",
+      "tier": "strategy",
+      "cardType": "stable",
+      "description": "좋았던 지표를 중심으로 캠페인을 정리합니다.",
+      "tags": [
+        "report",
+        "performance",
+        "final"
+      ],
+      "goodAgainst": [
+        "trust_risk",
+        "final"
+      ],
+      "badAgainst": [
+        "budget_risk"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        20000
+      ],
+      "expDeltaRange": [
+        1,
+        3
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 2,
+      "scoreDelta": {
+        "reportScore": 2,
+        "performanceScore": 1
+      },
+      "riskDelta": {
+        "trust_risk": -2
+      },
+      "specialEffect": "최종 보고 이벤트에 유리"
+    },
+    {
+      "id": "card_wrap_weakness",
+      "name": "아쉬운 점을 포장",
+      "tier": "strategy",
+      "cardType": "defense",
+      "description": "부족했던 결과를 다음 액션으로 자연스럽게 연결합니다.",
+      "tags": [
+        "report",
+        "trust",
+        "final"
+      ],
+      "goodAgainst": [
+        "low_performance",
+        "trust_risk"
+      ],
+      "badAgainst": [
+        "boss"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        10000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 2,
+      "scoreDelta": {
+        "reportScore": 2
+      },
+      "riskDelta": {
+        "trust_risk": -2
+      },
+      "specialEffect": "성과 부족 엔딩 방어"
+    },
+    {
+      "id": "card_request_immediate_fix",
+      "name": "즉시 수정 요청",
+      "tier": "strategy",
+      "cardType": "defense",
+      "description": "대행사 실수를 바로 수정 요청합니다.",
+      "tags": [
+        "agency",
+        "operation",
+        "crisis"
+      ],
+      "goodAgainst": [
+        "agency",
+        "operation_risk",
+        "crisis_risk"
+      ],
+      "badAgainst": [
+        "trust_risk"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        25000
+      ],
+      "expDeltaRange": [
+        1,
+        2
+      ],
+      "mentalDelta": -1,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "operationScore": 2
+      },
+      "riskDelta": {
+        "operation_risk": -2
+      },
+      "specialEffect": "대행사 실수 이벤트에서 강함"
+    },
+    {
+      "id": "card_root_cause_analysis",
+      "name": "원인 분석",
+      "tier": "strategy",
+      "cardType": "build",
+      "description": "성과가 꺾인 이유를 데이터로 분석합니다.",
+      "tags": [
+        "data",
+        "performance",
+        "report"
+      ],
+      "goodAgainst": [
+        "performance_risk",
+        "crisis_risk"
+      ],
+      "badAgainst": [
+        "urgent"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        30000
+      ],
+      "expDeltaRange": [
+        2,
+        3
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "performanceScore": 1,
+        "reportScore": 1
+      },
+      "riskDelta": {
+        "performance_risk": -1
+      },
+      "specialEffect": "성과 하락 이벤트에서 안정적"
+    },
+    {
+      "id": "card_middle_compromise",
+      "name": "중간 타협안 제시",
+      "tier": "strategy",
+      "cardType": "defense",
+      "description": "대표님 의견과 기존 전략 사이의 중간안을 냅니다.",
+      "tags": [
+        "boss",
+        "brand",
+        "report"
+      ],
+      "goodAgainst": [
+        "boss_risk",
+        "brand_risk"
+      ],
+      "badAgainst": [
+        "gamble"
+      ],
+      "cost": -5000,
+      "budgetDeltaRange": [
+        0,
+        35000
+      ],
+      "expDeltaRange": [
+        1,
+        3
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 2,
+      "scoreDelta": {
+        "reportScore": 1,
+        "brandScore": 1
+      },
+      "riskDelta": {
+        "boss_risk": -1,
+        "brand_risk": -1
+      },
+      "specialEffect": "대표님 이벤트에서 안정적 선택"
+    },
+    {
+      "id": "card_push_by_gut",
+      "name": "감으로 밀어붙이기",
+      "tier": "special",
+      "cardType": "gamble",
+      "description": "근거는 약하지만 왠지 될 것 같습니다.",
+      "tags": [
+        "gamble",
+        "creative",
+        "performance"
+      ],
+      "goodAgainst": [
+        "viral"
+      ],
+      "badAgainst": [
+        "report",
+        "trust_risk"
+      ],
+      "cost": -20000,
+      "budgetDeltaRange": [
+        -30000,
+        90000
+      ],
+      "expDeltaRange": [
+        0,
+        5
+      ],
+      "mentalDelta": -1,
+      "trustDelta": -1,
+      "scoreDelta": {
+        "gambleScore": 3
+      },
+      "riskDelta": {
+        "budget_risk": 2,
+        "trust_risk": 1
+      },
+      "specialEffect": "대박 또는 쪽박 확률이 큼"
+    },
+    {
+      "id": "card_all_in_budget",
+      "name": "남은 예산 몰빵",
+      "tier": "special",
+      "cardType": "gamble",
+      "description": "남은 예산을 한 번에 태웁니다.",
+      "tags": [
+        "gamble",
+        "budget",
+        "performance",
+        "big_spend"
+      ],
+      "goodAgainst": [
+        "viral",
+        "performance"
+      ],
+      "badAgainst": [
+        "budget_risk",
+        "crisis_risk"
+      ],
+      "cost": -50000,
+      "budgetDeltaRange": [
+        -50000,
+        150000
+      ],
+      "expDeltaRange": [
+        0,
+        6
+      ],
+      "mentalDelta": -1,
+      "trustDelta": -1,
+      "scoreDelta": {
+        "gambleScore": 3,
+        "performanceScore": 1
+      },
+      "riskDelta": {
+        "budget_risk": 3
+      },
+      "specialEffect": "후반 위기에서 판을 뒤집을 수 있음"
+    },
+    {
+      "id": "card_follow_boss_taste",
+      "name": "대표님 취향 반영",
+      "tier": "special",
+      "cardType": "gamble",
+      "description": "대표님이 좋아할 만한 방향으로 과감히 바꿉니다.",
+      "tags": [
+        "boss",
+        "brand",
+        "gamble"
+      ],
+      "goodAgainst": [
+        "boss"
+      ],
+      "badAgainst": [
+        "brand_risk",
+        "approval_risk"
+      ],
+      "cost": -15000,
+      "budgetDeltaRange": [
+        -10000,
+        80000
+      ],
+      "expDeltaRange": [
+        0,
+        4
+      ],
+      "mentalDelta": -1,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "gambleScore": 2,
+        "brandScore": 1
+      },
+      "riskDelta": {
+        "brand_risk": 2,
+        "approval_risk": 1
+      },
+      "specialEffect": "boss 이벤트에서 성공 시 대표님 픽 플래그 획득"
+    },
+    {
+      "id": "card_algorithm_blessing",
+      "name": "알고리즘의 축복",
+      "tier": "special",
+      "cardType": "chaos",
+      "description": "이유는 모르겠지만 광고가 갑자기 잘 탑니다.",
+      "tags": [
+        "viral",
+        "performance",
+        "special"
+      ],
+      "goodAgainst": [
+        "performance",
+        "viral"
+      ],
+      "badAgainst": [],
+      "cost": 0,
+      "budgetDeltaRange": [
+        40000,
+        120000
+      ],
+      "expDeltaRange": [
+        3,
+        6
+      ],
+      "mentalDelta": 1,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "performanceScore": 2
+      },
+      "riskDelta": {},
+      "specialEffect": "낮은 확률로 등장하는 대박 카드"
+    },
+    {
+      "id": "card_accounting_rage",
+      "name": "회계팀의 분노",
+      "tier": "special",
+      "cardType": "chaos",
+      "description": "성과보다 지출 증빙이 먼저 문제가 됩니다.",
+      "tags": [
+        "budget",
+        "crisis",
+        "special"
+      ],
+      "goodAgainst": [],
+      "badAgainst": [
+        "budget_risk"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        -60000,
+        10000
+      ],
+      "expDeltaRange": [
+        0,
+        1
+      ],
+      "mentalDelta": -1,
+      "trustDelta": -2,
+      "scoreDelta": {
+        "budgetScore": 1
+      },
+      "riskDelta": {
+        "budget_risk": 3,
+        "trust_risk": 2
+      },
+      "specialEffect": "쪽박 카드. 예산 리스크가 높을수록 등장 확률 증가"
+    },
+    {
+      "id": "card_final_final_real",
+      "name": "최종_진짜최종_최최종",
+      "tier": "special",
+      "cardType": "chaos",
+      "description": "파일명은 망했지만 어쩐지 모두가 알아봅니다.",
+      "tags": [
+        "operation",
+        "creative",
+        "chaos"
+      ],
+      "goodAgainst": [
+        "urgent"
+      ],
+      "badAgainst": [
+        "operation_risk"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        -10000,
+        50000
+      ],
+      "expDeltaRange": [
+        0,
+        3
+      ],
+      "mentalDelta": -1,
+      "trustDelta": -1,
+      "scoreDelta": {
+        "gambleScore": 1,
+        "operationScore": 1
+      },
+      "riskDelta": {
+        "operation_risk": 2
+      },
+      "specialEffect": "파일 이벤트에서만 낮은 확률로 등장"
+    },
+    {
+      "id": "card_report_english",
+      "name": "보고서에 영어 많이 쓰기",
+      "tier": "special",
+      "cardType": "chaos",
+      "description": "근거는 약하지만 있어 보이는 단어가 많습니다.",
+      "tags": [
+        "report",
+        "gamble",
+        "trust"
+      ],
+      "goodAgainst": [
+        "boss"
+      ],
+      "badAgainst": [
+        "data",
+        "trust_risk"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        -5000,
+        30000
+      ],
+      "expDeltaRange": [
+        0,
+        2
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 0,
+      "scoreDelta": {
+        "gambleScore": 1,
+        "reportScore": 1
+      },
+      "riskDelta": {
+        "trust_risk": 1
+      },
+      "specialEffect": "성공 시 신뢰 상승, 실패 시 신뢰 하락"
+    },
+    {
+      "id": "card_overtime",
+      "name": "일단 야근",
+      "tier": "special",
+      "cardType": "convert",
+      "description": "멘탈을 갈아서 일을 해결합니다.",
+      "tags": [
+        "urgent",
+        "burnout",
+        "operation"
+      ],
+      "goodAgainst": [
+        "urgent",
+        "operation_risk"
+      ],
+      "badAgainst": [
+        "burnout_risk"
+      ],
+      "cost": 0,
+      "budgetDeltaRange": [
+        0,
+        30000
+      ],
+      "expDeltaRange": [
+        2,
+        4
+      ],
+      "mentalDelta": -3,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "operationScore": 1,
+        "gambleScore": 1
+      },
+      "riskDelta": {
+        "burnout_risk": 3
+      },
+      "specialEffect": "멘탈을 크게 소모해 즉시 성과 확보"
+    },
+    {
+      "id": "card_controversy_attention",
+      "name": "논란도 관심이다",
+      "tier": "special",
+      "cardType": "gamble",
+      "description": "위험한 반응을 오히려 노출 기회로 사용합니다.",
+      "tags": [
+        "viral",
+        "gamble",
+        "brand",
+        "risk"
+      ],
+      "goodAgainst": [
+        "viral"
+      ],
+      "badAgainst": [
+        "brand_risk",
+        "trust_risk"
+      ],
+      "cost": -10000,
+      "budgetDeltaRange": [
+        -30000,
+        100000
+      ],
+      "expDeltaRange": [
+        0,
+        5
+      ],
+      "mentalDelta": -1,
+      "trustDelta": -1,
+      "scoreDelta": {
+        "gambleScore": 3
+      },
+      "riskDelta": {
+        "brand_risk": 3,
+        "trust_risk": 1
+      },
+      "specialEffect": "댓글 리스크/바이럴 이벤트에서 대박 또는 대참사"
+    },
+    {
+      "id": "card_competitor_soldout",
+      "name": "경쟁사 품절",
+      "tier": "special",
+      "cardType": "chaos",
+      "description": "경쟁사가 갑자기 품절되어 기회가 생깁니다.",
+      "tags": [
+        "market",
+        "performance",
+        "special"
+      ],
+      "goodAgainst": [
+        "market",
+        "performance"
+      ],
+      "badAgainst": [],
+      "cost": 0,
+      "budgetDeltaRange": [
+        30000,
+        100000
+      ],
+      "expDeltaRange": [
+        2,
+        5
+      ],
+      "mentalDelta": 0,
+      "trustDelta": 1,
+      "scoreDelta": {
+        "performanceScore": 2
+      },
+      "riskDelta": {},
+      "specialEffect": "경쟁사 이벤트 이후 낮은 확률로 등장"
+    }
+  ]
+}
