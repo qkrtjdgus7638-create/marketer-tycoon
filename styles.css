@@ -1,21 +1,21 @@
 :root {
   color-scheme: light;
-  --ink: #24140f;
-  --ink-2: #513224;
-  --paper: #ffe9b9;
-  --paper-2: #fff7df;
-  --paper-3: #f7d89e;
-  --red: #d84a3b;
-  --red-dark: #71251f;
-  --gold: #f0bd48;
-  --green: #36a86f;
-  --blue: #3e85c9;
-  --shadow: #120a07;
-  --line: rgba(36, 20, 15, 0.34);
-  --role: #c94232;
-  --role-dark: #7d2b22;
-  --role-soft: #fff0dc;
-  --role-paper: #fff3d3;
+  --ink: #2a211b;
+  --ink-2: #675244;
+  --paper: #f3dfb8;
+  --paper-2: #fff4d8;
+  --paper-3: #ead0a3;
+  --red: #b94c3c;
+  --red-dark: #6f2f28;
+  --gold: #d7a949;
+  --green: #4f9b6b;
+  --blue: #517fb7;
+  --shadow: rgba(26, 17, 12, 0.72);
+  --line: rgba(42, 33, 27, 0.24);
+  --role: #8f6a4a;
+  --role-dark: #5f4535;
+  --role-soft: #f4ead8;
+  --role-paper: #fff7e6;
 }
 
 * {
@@ -35,7 +35,7 @@ body {
   min-height: 100dvh;
   color: var(--ink);
   background:
-    linear-gradient(180deg, rgba(9, 8, 9, 0.66), rgba(9, 6, 5, 0.82)),
+    linear-gradient(180deg, rgba(18, 14, 12, 0.58), rgba(18, 14, 12, 0.72)),
     url("./assets/retro-office-bg.png") center / cover no-repeat,
     #17100d;
   font-family:
@@ -61,8 +61,8 @@ button {
   max-width: 460px;
   height: 100svh;
   height: 100dvh;
-  grid-template-rows: clamp(56px, 8dvh, 66px) clamp(52px, 7.5dvh, 62px) minmax(0, 1fr);
-  gap: 7px;
+  grid-template-rows: clamp(54px, 7.6dvh, 64px) clamp(50px, 7.1dvh, 58px) minmax(0, 1fr);
+  gap: 8px;
   margin: 0 auto;
   padding: max(8px, env(safe-area-inset-top)) 9px max(9px, env(safe-area-inset-bottom));
   overflow: hidden;
@@ -86,12 +86,12 @@ button {
   align-items: center;
   gap: 8px;
   padding: 6px 8px;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 7px;
   background:
-    linear-gradient(180deg, rgba(255, 199, 98, 0.2), transparent 48%),
-    linear-gradient(180deg, #c64a32, #7a2a21);
-  box-shadow: inset 0 0 0 2px #f3a75d, 0 3px 0 var(--shadow);
+    linear-gradient(180deg, rgba(255, 229, 173, 0.1), transparent 48%),
+    linear-gradient(180deg, #8f4b38, #573025);
+  box-shadow: inset 0 0 0 1px #c9875b, 0 2px 0 var(--shadow);
   color: #fff5d8;
 }
 
@@ -111,10 +111,10 @@ button {
   grid-template-rows: repeat(2, 8px);
   place-content: center;
   gap: 4px;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 4px;
   background: #fff5d8;
-  box-shadow: 2px 2px 0 var(--shadow);
+  box-shadow: 1px 1px 0 var(--shadow);
 }
 
 .brand-mark span:nth-child(1) {
@@ -151,7 +151,7 @@ button {
   font-weight: 1000;
   line-height: 1;
   text-overflow: ellipsis;
-  text-shadow: 2px 2px 0 #32110d;
+  text-shadow: 1px 1px 0 #32110d;
   white-space: nowrap;
 }
 
@@ -165,11 +165,11 @@ button {
   min-height: 32px;
   align-content: center;
   padding: 3px 7px;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 4px;
-  background: #321713;
-  box-shadow: inset 0 0 0 1px #df8942;
-  color: #ffd957;
+  background: #3e2b22;
+  box-shadow: inset 0 0 0 1px #9d765d;
+  color: #f0d18b;
   text-align: center;
 }
 
@@ -195,10 +195,10 @@ button {
 .icon-button {
   display: grid;
   place-items: center;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 5px;
   background: var(--paper-2);
-  box-shadow: 2px 2px 0 var(--shadow);
+  box-shadow: 1px 1px 0 var(--shadow);
   color: var(--ink);
   font-weight: 1000;
 }
@@ -214,10 +214,10 @@ button {
   min-height: 0;
   grid-template-columns: 1.35fr 1.35fr 1fr 1fr;
   overflow: hidden;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 7px;
-  background: linear-gradient(180deg, rgba(255, 247, 223, 0.98), rgba(246, 215, 158, 0.98));
-  box-shadow: inset 0 0 0 2px #fff8df, 0 4px 0 var(--shadow);
+  background: linear-gradient(180deg, rgba(255, 248, 229, 0.98), rgba(239, 219, 181, 0.98));
+  box-shadow: inset 0 0 0 1px #fff8df, 0 2px 0 var(--shadow);
 }
 
 .meter-card {
@@ -225,7 +225,7 @@ button {
   min-width: 0;
   align-content: center;
   padding: 6px 8px;
-  border-right: 2px dashed rgba(36, 20, 15, 0.24);
+  border-right: 1px solid rgba(42, 33, 27, 0.18);
 }
 
 .meter-card:last-child {
@@ -263,9 +263,9 @@ button {
   height: 7px;
   margin-top: 5px;
   overflow: hidden;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--ink);
   border-radius: 2px;
-  background: #6a4f3c;
+  background: #806b57;
 }
 
 .money-card .meter {
@@ -312,11 +312,11 @@ button {
 
 body.is-choice .main-stage {
   grid-template-rows:
-    clamp(126px, 19.2dvh, 158px)
-    clamp(58px, 8.6dvh, 72px)
-    26px
-    minmax(236px, 1fr)
-    clamp(48px, 6.8dvh, 54px);
+    clamp(148px, 22dvh, 176px)
+    clamp(52px, 7.5dvh, 64px)
+    24px
+    minmax(216px, 1fr)
+    clamp(46px, 6.2dvh, 52px);
   gap: 6px;
 }
 
@@ -337,12 +337,12 @@ body.is-result .confirm-button {
   min-height: 0;
   padding: clamp(10px, 2.3dvh, 13px) 13px;
   overflow: hidden;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 8px;
   background:
-    linear-gradient(90deg, rgba(255, 247, 223, 0.98), rgba(246, 215, 158, 0.94)),
-    repeating-linear-gradient(0deg, rgba(108, 73, 39, 0.08) 0 1px, transparent 1px 26px);
-  box-shadow: inset 0 0 0 2px #fff8df, 0 3px 0 var(--shadow);
+    linear-gradient(90deg, rgba(255, 248, 229, 0.98), rgba(239, 219, 181, 0.94)),
+    repeating-linear-gradient(0deg, rgba(108, 73, 39, 0.04) 0 1px, transparent 1px 26px);
+  box-shadow: inset 0 0 0 1px #fff8df, 0 2px 0 var(--shadow);
 }
 
 .situation-card::after {
@@ -353,8 +353,8 @@ body.is-result .confirm-button {
   bottom: 12px;
   width: 70px;
   height: 36px;
-  border-bottom: 5px solid var(--ink);
-  opacity: 0.32;
+  border-bottom: 4px solid rgba(42, 33, 27, 0.46);
+  opacity: 0.22;
   background:
     linear-gradient(90deg, #2f6da8 0 18%, transparent 18% 25%, #3f9347 25% 45%, transparent 45% 52%, #e3ad36 52% 69%, transparent 69% 76%, #c94232 76% 100%);
   clip-path: polygon(0 100%, 0 56%, 18% 56%, 18% 100%, 25% 100%, 25% 22%, 45% 22%, 45% 100%, 52% 100%, 52% 70%, 69% 70%, 69% 100%, 76% 100%, 76% 42%, 100% 42%, 100% 100%);
@@ -374,9 +374,9 @@ body.is-result .confirm-button {
   min-height: 22px;
   align-items: center;
   padding: 3px 8px;
-  border: 2px solid rgba(36, 20, 15, 0.26);
+  border: 1px solid rgba(42, 33, 27, 0.2);
   border-radius: 3px;
-  background: #ece4f8;
+  background: #eee4d7;
   color: var(--ink-2);
   font-size: 10px;
   font-weight: 1000;
@@ -394,11 +394,11 @@ body.is-result .confirm-button {
   margin-top: 7px;
   overflow: hidden;
   color: var(--ink);
-  font-size: clamp(22px, 5.8vw, 29px);
+  font-size: clamp(22px, 5.4vw, 27px);
   font-weight: 1000;
   line-height: 1.05;
   text-overflow: ellipsis;
-  text-shadow: 1px 1px 0 #fff5d8;
+  text-shadow: none;
   white-space: nowrap;
 }
 
@@ -432,10 +432,10 @@ body.is-result .confirm-button {
   min-height: 0;
   align-items: center;
   padding: 8px 10px;
-  border: 2px solid #c98f88;
+  border: 1px solid #c9aaa2;
   border-radius: 6px;
-  background: #ffe1dd;
-  box-shadow: inset 0 0 0 2px #fff5ef, 0 3px 0 rgba(18, 10, 7, 0.38);
+  background: #f5e2dc;
+  box-shadow: inset 0 0 0 1px #fff5ef, 0 2px 0 rgba(18, 10, 7, 0.28);
 }
 
 .advisor-bubble::after {
@@ -445,9 +445,9 @@ body.is-result .confirm-button {
   bottom: 20px;
   width: 13px;
   height: 13px;
-  border-top: 2px solid #c98f88;
-  border-right: 2px solid #c98f88;
-  background: #ffe1dd;
+  border-top: 1px solid #c9aaa2;
+  border-right: 1px solid #c9aaa2;
+  background: #f5e2dc;
   transform: rotate(45deg);
 }
 
@@ -483,8 +483,8 @@ body.is-result .confirm-button {
   padding: 4px 6px;
   overflow: hidden;
   border-radius: 4px;
-  background: #3a1915;
-  color: #fff1d1;
+  background: #4e332b;
+  color: #f7e4c6;
   font-size: 9px;
   font-weight: 1000;
   line-height: 1;
@@ -498,8 +498,8 @@ body.is-result .confirm-button {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  color: #fff2cf;
-  text-shadow: 2px 2px 0 var(--shadow);
+  color: #f7e4c6;
+  text-shadow: 1px 1px 0 var(--shadow);
 }
 
 .cards-head h2 {
@@ -516,8 +516,8 @@ body.is-result .confirm-button {
   width: 34px;
   height: 34px;
   flex: 0 0 34px;
-  background: var(--red);
-  color: #fff7df;
+  background: #7a5f4b;
+  color: #fff2d8;
   font-size: 18px;
 }
 
@@ -525,7 +525,7 @@ body.is-result .confirm-button {
   display: grid;
   min-height: 0;
   grid-template-rows: repeat(3, minmax(0, 1fr));
-  gap: 6px;
+  gap: 7px;
   overflow: hidden;
 }
 
@@ -538,20 +538,20 @@ body.is-result .confirm-button {
   display: grid;
   height: 100%;
   min-height: 0;
-  grid-template-columns: clamp(44px, 12vw, 54px) minmax(0, 1fr) clamp(70px, 20vw, 84px);
+  grid-template-columns: clamp(42px, 11.5vw, 50px) minmax(0, 1fr) clamp(68px, 19vw, 80px);
   align-items: center;
   gap: 8px;
   padding: 7px 9px;
   overflow: visible;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 7px;
   background:
-    linear-gradient(90deg, var(--role-soft) 0 15%, transparent 15%),
+    linear-gradient(90deg, var(--role-soft) 0 11%, transparent 11%),
     linear-gradient(180deg, #fff8df, var(--role-paper));
   box-shadow:
-    inset 9px 0 0 var(--role),
-    inset 0 0 0 2px #fff8df,
-    0 3px 0 var(--shadow);
+    inset 5px 0 0 var(--role),
+    inset 0 0 0 1px #fff8df,
+    0 2px 0 var(--shadow);
   text-align: left;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
@@ -562,54 +562,54 @@ body.is-result .confirm-button {
 }
 
 .choice-card.is-selected {
-  border-color: #fff7df;
+  border-color: var(--role-dark);
   box-shadow:
-    0 0 0 3px var(--role),
-    inset 9px 0 0 var(--role),
-    inset 0 0 0 2px #fff8df,
-    0 4px 0 var(--shadow);
+    0 0 0 2px rgba(255, 247, 223, 0.8),
+    inset 5px 0 0 var(--role),
+    inset 0 0 0 1px #fff8df,
+    0 3px 0 var(--shadow);
 }
 
 .choice-card.role-prep {
-  --role: #2f78b9;
-  --role-dark: #1d4169;
-  --role-soft: #e5f1ff;
-  --role-paper: #f3e8c7;
+  --role: #587f9f;
+  --role-dark: #344d64;
+  --role-soft: #edf3f6;
+  --role-paper: #fff6df;
 }
 
 .choice-card.role-improve {
-  --role: #3f9b63;
-  --role-dark: #245b3c;
-  --role-soft: #e7f7df;
-  --role-paper: #f5e4bf;
+  --role: #6c9770;
+  --role-dark: #456247;
+  --role-soft: #edf4df;
+  --role-paper: #fff5df;
 }
 
 .choice-card.role-revenue {
-  --role: #d89823;
-  --role-dark: #7a4d12;
+  --role: #b98a3b;
+  --role-dark: #76572c;
   --role-soft: #fff1c8;
-  --role-paper: #f8deb0;
+  --role-paper: #fff2d8;
 }
 
 .choice-card.role-defense {
-  --role: #718f3c;
-  --role-dark: #435722;
-  --role-soft: #eef3d4;
-  --role-paper: #f3e6bf;
+  --role: #7d8f58;
+  --role-dark: #505d3d;
+  --role-soft: #f0f2db;
+  --role-paper: #fff3dc;
 }
 
 .choice-card.role-report {
-  --role: #8061c7;
-  --role-dark: #473372;
-  --role-soft: #efe8ff;
-  --role-paper: #f3e4c2;
+  --role: #7b6da2;
+  --role-dark: #4e4568;
+  --role-soft: #eeeaf5;
+  --role-paper: #fff3dc;
 }
 
 .choice-card.role-gamble {
-  --role: #d6405f;
-  --role-dark: #74233a;
-  --role-soft: #ffe3ea;
-  --role-paper: #f6ddb9;
+  --role: #b75b6b;
+  --role-dark: #70404b;
+  --role-soft: #f7e5e8;
+  --role-paper: #fff1dc;
 }
 
 .card-icon {
@@ -618,10 +618,10 @@ body.is-result .confirm-button {
   height: clamp(40px, 11vw, 50px);
   place-items: center;
   overflow: hidden;
-  border: 2px solid var(--role-dark);
+  border: 1px solid var(--role-dark);
   border-radius: 5px;
-  background: linear-gradient(180deg, #fff8df, #f5d7a9);
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35), 2px 2px 0 var(--shadow);
+  background: linear-gradient(180deg, #fff8df, #efd8ad);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.42), 1px 1px 0 var(--shadow);
   color: var(--role);
   font-size: clamp(21px, 6vw, 26px);
   font-weight: 1000;
@@ -646,14 +646,14 @@ body.is-result .confirm-button {
   min-height: 17px;
   align-items: center;
   padding: 2px 7px;
-  border: 2px solid rgba(36, 20, 15, 0.22);
+  border: 1px solid rgba(42, 33, 27, 0.18);
   border-radius: 3px;
   background: var(--role);
   color: #fff8df;
   font-size: clamp(9px, 2.6vw, 11px);
   font-weight: 1000;
   line-height: 1;
-  text-shadow: 1px 1px 0 rgba(36, 20, 15, 0.45);
+  text-shadow: none;
   white-space: nowrap;
 }
 
@@ -675,7 +675,7 @@ body.is-result .confirm-button {
   justify-items: end;
   gap: 4px;
   padding-left: 7px;
-  border-left: 2px dashed rgba(36, 20, 15, 0.24);
+  border-left: 1px dashed rgba(42, 33, 27, 0.18);
 }
 
 .cost-label {
@@ -704,11 +704,11 @@ body.is-result .confirm-button {
   width: 26px;
   height: 26px;
   place-items: center;
-  border: 3px solid #ffe8d8;
+  border: 2px solid #ffe8d8;
   border-radius: 50%;
   background: var(--role);
   color: #fff7df;
-  box-shadow: 2px 2px 0 var(--shadow);
+  box-shadow: 1px 1px 0 var(--shadow);
   font-size: 15px;
   font-weight: 1000;
   line-height: 1;
@@ -720,15 +720,15 @@ body.is-result .confirm-button {
 
 .primary-button {
   min-height: 48px;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 6px;
-  background: linear-gradient(180deg, #ef5149, var(--red));
-  box-shadow: inset 0 0 0 2px #ff8d72, 0 4px 0 var(--shadow);
-  color: #fff7df;
-  font-size: clamp(20px, 5.4vw, 26px);
+  background: linear-gradient(180deg, #4b9a85, #287364);
+  box-shadow: inset 0 0 0 1px #89cbbb, 0 3px 0 var(--shadow);
+  color: #fff8e7;
+  font-size: clamp(19px, 5vw, 24px);
   font-weight: 1000;
   letter-spacing: 0;
-  text-shadow: 2px 2px 0 #5b211b;
+  text-shadow: 1px 1px 0 #1e4a42;
 }
 
 .confirm-button,
@@ -756,10 +756,10 @@ body.is-result .confirm-button {
   gap: 7px;
   padding: 8px;
   overflow: hidden;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 8px;
-  background: linear-gradient(180deg, rgba(255, 244, 209, 0.98), rgba(245, 214, 160, 0.97));
-  box-shadow: inset 0 0 0 2px #fff8df, 0 4px 0 var(--shadow);
+  background: linear-gradient(180deg, rgba(255, 248, 229, 0.98), rgba(237, 216, 181, 0.97));
+  box-shadow: inset 0 0 0 1px #fff8df, 0 3px 0 var(--shadow);
 }
 
 .result-copy {
@@ -774,9 +774,9 @@ body.is-result .confirm-button {
   justify-self: start;
   min-height: 22px;
   padding: 3px 8px;
-  border: 2px solid rgba(36, 20, 15, 0.3);
+  border: 1px solid rgba(42, 33, 27, 0.24);
   border-radius: 3px;
-  background: #ece4f8;
+  background: #eee4d7;
   color: var(--ink-2);
   font-size: 11px;
   font-weight: 1000;
@@ -815,16 +815,16 @@ body.is-result .confirm-button {
   justify-self: center;
   min-width: 108px;
   padding: 4px 12px;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--ink);
   border-radius: 4px;
-  background: linear-gradient(180deg, #d54a34, var(--red-dark));
-  box-shadow: inset 0 0 0 2px #f59a59, 0 3px 0 var(--shadow);
-  color: #ffe366;
+  background: linear-gradient(180deg, #9c6d4c, #6f4533);
+  box-shadow: inset 0 0 0 1px #d5a36c, 0 2px 0 var(--shadow);
+  color: #ffe6a7;
   font-size: clamp(17px, 4.8vw, 22px);
   font-weight: 1000;
   line-height: 1;
   text-align: center;
-  text-shadow: 2px 2px 0 #431612;
+  text-shadow: 1px 1px 0 #3b251b;
 }
 
 .result-narration {
@@ -844,10 +844,10 @@ body.is-result .confirm-button {
   max-height: 92px;
   padding: 7px 8px;
   overflow: hidden;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--ink);
   border-radius: 5px;
-  background: #fff4d8;
-  box-shadow: 3px 3px 0 rgba(18, 10, 7, 0.22);
+  background: #fff5dc;
+  box-shadow: 2px 2px 0 rgba(18, 10, 7, 0.16);
 }
 
 .result-dialogue span {
@@ -856,8 +856,8 @@ body.is-result .confirm-button {
   align-items: center;
   padding: 3px 8px;
   border-radius: 3px;
-  background: #3a1915;
-  color: #fff1d1;
+  background: #5a4034;
+  color: #f8e6c6;
   font-size: 10px;
   font-weight: 1000;
   line-height: 1;
@@ -889,9 +889,9 @@ body.is-result .confirm-button {
   min-height: 0;
   padding: 6px 7px;
   overflow: hidden;
-  border: 2px solid #b98b58;
+  border: 1px solid #b98b58;
   border-radius: 5px;
-  background: rgba(255, 244, 216, 0.86);
+  background: rgba(255, 247, 226, 0.88);
 }
 
 .result-money-grid span {
@@ -924,11 +924,12 @@ body.is-result .confirm-button {
 
 .result-reasons {
   min-height: 66px;
+  max-height: 92px;
   padding: 6px 8px;
   overflow: hidden;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--ink);
   border-radius: 5px;
-  background: rgba(255, 237, 196, 0.9);
+  background: rgba(255, 240, 206, 0.9);
 }
 
 .result-reasons > strong {
@@ -976,16 +977,16 @@ body.is-result .confirm-button {
   display: grid;
   place-items: center;
   padding: 18px;
-  background: rgba(12, 8, 6, 0.66);
+  background: rgba(12, 8, 6, 0.58);
 }
 
 .modal-body {
   width: min(390px, 100%);
   padding: 18px;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 8px;
   background: var(--paper);
-  box-shadow: inset 0 0 0 2px #fff8df, 0 6px 0 var(--shadow);
+  box-shadow: inset 0 0 0 1px #fff8df, 0 4px 0 var(--shadow);
 }
 
 .modal-body h2 {
@@ -1035,7 +1036,7 @@ body.is-result .confirm-button {
   place-items: center;
   padding: 20px;
   background:
-    linear-gradient(180deg, rgba(9, 8, 9, 0.68), rgba(9, 6, 5, 0.82)),
+    linear-gradient(180deg, rgba(18, 14, 12, 0.56), rgba(18, 14, 12, 0.72)),
     url("./assets/retro-office-bg.png") center / cover no-repeat,
     #17100d;
 }
@@ -1043,10 +1044,10 @@ body.is-result .confirm-button {
 .start-copy {
   width: min(390px, 100%);
   padding: 22px;
-  border: 4px solid var(--ink);
+  border: 2px solid var(--ink);
   border-radius: 8px;
   background: linear-gradient(180deg, var(--paper-2), var(--paper));
-  box-shadow: inset 0 0 0 2px #fff8df, 0 6px 0 var(--shadow);
+  box-shadow: inset 0 0 0 1px #fff8df, 0 4px 0 var(--shadow);
   text-align: center;
 }
 
@@ -1082,7 +1083,7 @@ body.is-result .confirm-button {
 
 @media (max-height: 720px) {
   .app {
-    grid-template-rows: 54px 52px minmax(0, 1fr);
+    grid-template-rows: 52px 50px minmax(0, 1fr);
     gap: 6px;
     padding-inline: 9px;
   }
@@ -1126,12 +1127,12 @@ body.is-result .confirm-button {
   }
 
   body.is-choice .main-stage {
-    grid-template-rows: 112px 54px 23px minmax(210px, 1fr) 44px;
+    grid-template-rows: 124px 50px 22px minmax(196px, 1fr) 42px;
     gap: 6px;
   }
 
   .situation-card {
-    border-width: 3px;
+    border-width: 2px;
   }
 
   .situation-card h2 {
@@ -1144,12 +1145,12 @@ body.is-result .confirm-button {
   }
 
   .advisor-panel {
-    grid-template-columns: minmax(0, 1fr) 58px;
+    grid-template-columns: minmax(0, 1fr) 54px;
   }
 
   .advisor-face {
-    width: 54px;
-    height: 54px;
+    width: 50px;
+    height: 50px;
   }
 
   .advisor-bubble {
@@ -1162,8 +1163,8 @@ body.is-result .confirm-button {
   }
 
   .choice-card {
-    border-width: 3px;
-    grid-template-columns: 42px minmax(0, 1fr) 72px;
+    border-width: 2px;
+    grid-template-columns: 40px minmax(0, 1fr) 70px;
     gap: 7px;
     padding: 6px 8px;
   }
@@ -1189,7 +1190,7 @@ body.is-result .confirm-button {
   }
 
   .primary-button {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .turn-result-text {
@@ -1235,6 +1236,7 @@ body.is-result .confirm-button {
 
   .result-reasons {
     min-height: 54px;
+    max-height: 72px;
   }
 }
 
@@ -1262,7 +1264,7 @@ body.is-result .confirm-button {
   }
 
   body.is-choice .main-stage {
-    grid-template-rows: 94px 48px 21px minmax(188px, 1fr) 42px;
+    grid-template-rows: 106px 46px 20px minmax(178px, 1fr) 40px;
     gap: 5px;
   }
 
@@ -1291,8 +1293,8 @@ body.is-result .confirm-button {
   }
 
   .advisor-face {
-    width: 54px;
-    height: 54px;
+    width: 48px;
+    height: 48px;
   }
 
   .advisor-character strong {
@@ -1330,7 +1332,7 @@ body.is-result .confirm-button {
   .turn-result {
     grid-template-rows: minmax(0, 1fr) 44px;
     gap: 6px;
-    border-width: 3px;
+    border-width: 2px;
   }
 
   .turn-result h2 {
@@ -1363,7 +1365,7 @@ body.is-result .confirm-button {
   .result-money-grid div,
   .result-reasons,
   .result-dialogue {
-    border-width: 2px;
+    border-width: 1px;
   }
 }
 
