@@ -1247,7 +1247,7 @@ function buildResultText(card, situation, cost, earned, scoreGain, matched, syne
     <span class="result-narration">${narration}</span>
     <div class="result-dialogue"><span>${dialogueSpeaker(dialogue)}</span><strong>${dialogueLine(dialogue)}</strong></div>
     <div class="result-money-grid">
-      <div><span>쓴 예산</span><strong>-${cost.toLocaleString("ko-KR")}원</strong></div>
+      <div><span>쓴 예산</span><strong>${formatSpentMoney(cost)}</strong></div>
       <div class="${earned > 0 ? "" : "is-zero-recovery"}"><span>회수 금액</span><strong>${formatRecoveryMoney(earned)}</strong></div>
       <div class="${net >= 0 ? "is-positive" : "is-negative"}"><span>순손익</span><strong>${formatMoneyDelta(net)}</strong></div>
       <div><span>EXP</span><strong>${scoreText}</strong></div>
@@ -1499,7 +1499,13 @@ function formatRecoveryMoney(value) {
   return `+${value.toLocaleString("ko-KR")}원`;
 }
 
+function formatSpentMoney(value) {
+  if (value <= 0) return "0원";
+  return `-${value.toLocaleString("ko-KR")}원`;
+}
+
 function formatMoneyDelta(value) {
+  if (value === 0) return "0원";
   const sign = value > 0 ? "+" : "-";
   return `${sign}${Math.abs(value).toLocaleString("ko-KR")}원`;
 }
