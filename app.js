@@ -172,7 +172,7 @@ function prepareRound() {
 
   state.currentEvent = pickRoundEvent();
   state.offeredCards = pickCardsForEvent(state.currentEvent);
-  state.selectedCardId = state.offeredCards[0]?.id || null;
+  state.selectedCardId = null;
   state.screen = "choice";
   state.turnResult = null;
 }
@@ -561,22 +561,18 @@ function renderChoices() {
 function renderChoiceCard(card) {
   const selected = card.id === state.selectedCardId;
   const role = roleByType[card.cardType] || "prep";
-  const tags = compactTags(card.tags, 3);
   return `
     <button class="choice-card ${tierClass[card.tier] || ""} role-${role} ${selected ? "is-selected choice-card--selected" : ""}" type="button" data-card-id="${card.id}" aria-pressed="${selected}">
       <div class="card-icon" aria-hidden="true">${cardIconMarkup(role)}</div>
       <div class="card-main">
-        <span class="role-badge">${tierLabels[card.tier] || card.tier} · ${typeLabels[card.cardType] || card.cardType}</span>
+        <span class="role-badge">${tierLabels[card.tier] || card.tier}</span>
         <h3>${card.name}</h3>
-        <p class="card-desc">${card.description}</p>
-        <span class="card-tags">${tags}</span>
       </div>
-      <div class="effect-list">
-        <span class="cost-label">예상</span>
-        <strong>${effectPreview(card)}</strong>
-        <em>${riskPreview(card)}</em>
+      <div class="cost-chip">
+        <span>Cost</span>
+        <strong>${formatSignedMoney(card.cost)}</strong>
       </div>
-      <span class="selected-check" aria-hidden="true">✓</span>
+      ${selected ? `<span class="selected-check" aria-hidden="true">✓</span>` : ""}
     </button>
   `;
 }
@@ -610,14 +606,37 @@ function riskPreview(card) {
 
 function renderAdvisor() {
   const card = state.offeredCards.find((item) => item.id === state.selectedCardId);
-  els.advisorName.textContent = "인턴 지우";
+  els.advisorName.textContent = "인턴 마케터";
   if (!card) {
-    els.advisorText.textContent = "카드를 하나 고르면 실행 방향을 정리해볼게요.";
+    els.advisorText.textContent = "이번 상황에서는 어떤 방식으로 대응할까요?";
     els.confirmChoiceButton.disabled = true;
     return;
   }
-  els.advisorText.textContent = `${card.name}: ${card.specialEffect || card.description}`;
+  els.advisorText.textContent = cardAdvice(card);
   els.confirmChoiceButton.disabled = false;
+}
+
+function cardAdvice(card) {
+  const name = card.name;
+  if (name.includes("소액 테스트")) {
+    return "일단 크게 태우기보다는 작게 반응을 보는 게 안전할 것 같아요. 성과가 크진 않아도 다음 판단 근거는 만들 수 있습니다.";
+  }
+  if (name.includes("몰빵") || card.cardType === "gamble" || card.cardType === "chaos") {
+    return "위험하긴 한데 지금 흐름이면 한 번쯤 크게 걸어볼 만합니다. 실패하면 예산이나 신뢰가 꽤 아플 수 있어요.";
+  }
+  if (name.includes("보고서 방패") || card.cardType === "defense") {
+    return "성과가 애매할수록 정리가 중요합니다. 이번 선택은 당장 대박은 아니어도 팀장님 설득에는 도움이 될 거예요.";
+  }
+  if (card.cardType === "convert" || card.cardType === "combo") {
+    return `${card.description} 지금까지 쌓인 흐름을 다음 판단으로 연결하는 선택입니다.`;
+  }
+  if (card.cardType === "attack") {
+    return `${card.description} 반응을 빠르게 만들 수 있지만, 그만큼 비용 관리도 같이 봐야 합니다.`;
+  }
+  if (card.cardType === "build") {
+    return `${card.description} 바로 터지는 선택은 아니지만 뒤쪽 라운드에서 힘이 붙을 수 있어요.`;
+  }
+  return `${card.description} 이번 상황에서 무리하지 않고 기준을 잡는 선택입니다.`;
 }
 
 function renderTurnResult() {
