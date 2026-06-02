@@ -1,6 +1,7 @@
 const EVENTS_URL = "./data/events_intern_v1.json";
 const CARDS_URL = "./data/cards_intern_v1.json";
 const ROUNDS_URL = "./data/rounds_intern_v1.json";
+const STORY_PATCH_URL = "./data/story_card_patch_v1.json";
 
 const els = {
   roundLabel: document.querySelector("#roundLabel"),
@@ -109,19 +110,105 @@ let internData = null;
 let state = null;
 
 async function boot() {
-  const [events, cards, rounds] = await Promise.all([
+  const [events, cards, rounds, storyPatch] = await Promise.all([
     fetchJson(EVENTS_URL),
     fetchJson(CARDS_URL),
     fetchJson(ROUNDS_URL),
+    fetchJson(STORY_PATCH_URL).catch(() => null),
   ]);
 
-  internData = {
+  internData = storyPatch ? buildPatchedData(events, cards, rounds, storyPatch) : {
     events: events.events,
     cards: cards.cards,
     config: rounds,
   };
 
   startIntro();
+}
+
+function buildPatchedData(events, cards, rounds, patch) {
+  const previousCards = new Map(cards.cards.map((card) => [card.id, card]));
+  const patchedCards = patch.cards.map((card) => normalizePatchCard(card, previousCards.get(card.id)));
+  const fixedRounds = { ...rounds.fixedRounds };
+  for (const event of patch.fixedEvents || []) {
+    fixedRounds[String(event.round)] = normalizePatchEvent({ ...event, type: "fixed" });
+  }
+  return {
+    events: (patch.randomEvents || []).map(normalizePatchEvent),
+    cards: patchedCards,
+    config: {
+      ...rounds,
+      fixedRounds,
+    },
+    patch,
+  };
+}
+
+function normalizePatchEvent(event) {
+  const riskTags = event.riskTags || riskLabelTags(event.riskLabel);
+  return {
+    ...event,
+    tags: event.tags || [],
+    riskTags,
+    preferredCardTags: event.preferredCardTags || event.tags || riskTags,
+    weakCardTags: event.weakCardTags || [],
+    recommendedCardIds: event.recommendedCardIds || [],
+    baseWeight: event.baseWeight || 10,
+    oncePerRun: event.oncePerRun !== false,
+  };
+}
+
+function normalizePatchCard(card, previous) {
+  const tier = card.tier || previous?.tier || "basic";
+  const fallback = defaultCardEffect(tier);
+  return {
+    ...fallback,
+    ...(previous || {}),
+    ...card,
+    tier,
+    cost: Number.isFinite(card.cost) ? card.cost : previous?.cost || 0,
+    tags: previous?.tags || [],
+    cardType: previous?.cardType || fallback.cardType,
+    scoreDelta: previous?.scoreDelta || fallback.scoreDelta,
+    riskDelta: previous?.riskDelta || fallback.riskDelta,
+    budgetDeltaRange: previous?.budgetDeltaRange || fallback.budgetDeltaRange,
+    expDeltaRange: previous?.expDeltaRange || fallback.expDeltaRange,
+  };
+}
+
+function defaultCardEffect(tier) {
+  if (tier === "special") {
+    return {
+      cardType: "gamble",
+      budgetDeltaRange: [-12000, 42000],
+      expDeltaRange: [0, 3],
+      scoreDelta: { gambleScore: 1, performanceScore: 1 },
+      riskDelta: { budget_risk: 1 },
+    };
+  }
+  if (tier === "strategy") {
+    return {
+      cardType: "build",
+      budgetDeltaRange: [6000, 26000],
+      expDeltaRange: [1, 2],
+      scoreDelta: { performanceScore: 1, reportScore: 1 },
+      riskDelta: {},
+    };
+  }
+  return {
+    cardType: "stable",
+    budgetDeltaRange: [3000, 16000],
+    expDeltaRange: [0, 1],
+    scoreDelta: { operationScore: 1 },
+    riskDelta: {},
+  };
+}
+
+function riskLabelTags(label = "") {
+  return label
+    .split("/")
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
 async function fetchJson(url) {
@@ -206,6 +293,7 @@ function normalizeEvent(event) {
     riskTags: event.riskTags || [],
     preferredCardTags: event.preferredCardTags || event.tags || [],
     weakCardTags: event.weakCardTags || [],
+    recommendedCardIds: event.recommendedCardIds || [],
   };
 }
 
@@ -286,6 +374,14 @@ function dominantScore() {
 }
 
 function pickCardsForEvent(event) {
+  if (event.recommendedCardIds?.length) {
+    const recommended = event.recommendedCardIds.map((id) => cardById(id)).filter(Boolean);
+    const picks = pickRecommendedCards(recommended);
+    state.offeredHistory.push({ round: state.round, ids: picks.map((card) => card.id) });
+    state.offeredHistory = state.offeredHistory.slice(-2);
+    return picks;
+  }
+
   const fixedIds = event.fixedCardIds || [];
   if (fixedIds.length) return fixedIds.map((id) => cardById(id)).filter(Boolean);
 
@@ -321,6 +417,23 @@ function pickCardsForEvent(event) {
   return picks.slice(0, 3);
 }
 
+function pickRecommendedCards(cards) {
+  const recent = new Set(recentOfferedIds());
+  const available = cards.filter((card) => !recent.has(card.id));
+  const pool = available.length >= 3 ? available : cards;
+  const slot1 = weightedPick(pool.filter((card) => card.tier === "basic").map((card) => ({ item: card, weight: 3 })));
+  const slot2 = weightedPick(pool.filter((card) => card.id !== slot1?.id && card.tier === "strategy").map((card) => ({ item: card, weight: 3 })));
+  const used = new Set([slot1?.id, slot2?.id].filter(Boolean));
+  const slot3Pool = pool.filter((card) => !used.has(card.id) && (card.tier === "special" || card.tier !== slot1?.tier || card.tier !== slot2?.tier));
+  const slot3 = weightedPick(slot3Pool.map((card) => ({ item: card, weight: card.tier === "special" ? 2 : 1 })));
+  const picks = uniqueById([slot1, slot2, slot3].filter(Boolean));
+  for (const card of pool) {
+    if (picks.length >= 3) break;
+    if (!picks.some((item) => item.id === card.id)) picks.push(card);
+  }
+  return picks.slice(0, 3);
+}
+
 function cardById(id) {
   return internData.cards.find((card) => card.id === id);
 }
@@ -349,11 +462,12 @@ function cardWeight(card, event) {
   let weight = 1 + cardMatchScore(card, event);
   if (card.goodAgainst?.some((tag) => event.riskTags.includes(tag))) weight += 2.5;
   if (card.badAgainst?.some((tag) => event.tags.includes(tag) || event.riskTags.includes(tag))) weight *= 0.35;
-  if (state.biasTags.some((tag) => card.tags.includes(tag))) weight += 1.4;
-  if (state.budget < 45000 && (card.tags.includes("budget") || card.cardType === "defense")) weight += 2;
-  if (state.mental <= 4 && (card.tags.includes("burnout") || card.goodAgainst?.includes("burnout_risk"))) weight += 2;
-  if (state.trust <= 3 && (card.tags.includes("report") || card.tags.includes("trust"))) weight += 2;
-  if (state.exp < state.round && (card.tags.includes("performance") || card.tags.includes("growth"))) weight += 1.5;
+  const tags = card.tags || [];
+  if (state.biasTags.some((tag) => tags.includes(tag))) weight += 1.4;
+  if (state.budget < 45000 && (tags.includes("budget") || card.cardType === "defense")) weight += 2;
+  if (state.mental <= 4 && (tags.includes("burnout") || card.goodAgainst?.includes("burnout_risk"))) weight += 2;
+  if (state.trust <= 3 && (tags.includes("report") || tags.includes("trust"))) weight += 2;
+  if (state.exp < state.round && (tags.includes("performance") || tags.includes("growth"))) weight += 1.5;
   if (card.tier === "special") weight *= 0.45;
   const repeats = state.selectedHistory.filter((id) => id === card.id).length;
   return Math.max(0.1, weight / (1 + repeats));
@@ -361,8 +475,9 @@ function cardWeight(card, event) {
 
 function cardMatchScore(card, event) {
   const preferred = event.preferredCardTags || [];
-  const tagOverlap = card.tags.filter((tag) => event.tags.includes(tag)).length;
-  const preferredOverlap = card.tags.filter((tag) => preferred.includes(tag)).length;
+  const tags = card.tags || [];
+  const tagOverlap = tags.filter((tag) => event.tags.includes(tag)).length;
+  const preferredOverlap = tags.filter((tag) => preferred.includes(tag)).length;
   return tagOverlap + preferredOverlap * 1.4;
 }
 
@@ -538,27 +653,30 @@ function renderEvent() {
   if (!event) return;
   const tags = event.riskTags.length ? event.riskTags : event.tags;
   els.situationCategory.textContent = `${state.round}R / ${eventLabel(event)}`;
-  els.situationRisk.textContent = tags.length ? `위험: ${compactTags(tags, 2)}` : "위험 낮음";
+  els.situationRisk.textContent = event.riskLabel ? `위험: ${event.riskLabel}` : tags.length ? `위험: ${compactTags(tags, 2)}` : "위험 낮음";
   els.situationName.textContent = event.title;
   els.situationText.textContent = `${event.speaker}: “${event.description}”`;
   els.situationHint.textContent = situationHint(event);
-  els.situationTags.innerHTML = tags.slice(0, 4).map((tag) => `<span>${tag}</span>`).join("");
+  const displayTags = event.riskLabel ? riskLabelTags(event.riskLabel) : tags;
+  els.situationTags.innerHTML = displayTags.slice(0, 4).map((tag) => `<span>${tag}</span>`).join("");
 }
 
 function situationHint(event) {
+  if (event.defaultDialogue) return event.defaultDialogue;
   if (event.phase === "first_report") return "인턴 지우: 첫 보고에서는 성과보다 설명 구조가 먼저 보입니다.";
   if (event.phase === "mid_review") return "인턴 지우: 지금부터는 누적된 선택 성향이 평가에 영향을 줍니다.";
   if (event.phase === "final") return "인턴 지우: 마지막 라운드입니다. 남은 자원을 보고 가장 설득력 있는 선택을 골라야 합니다.";
   if (event.riskTags.includes("budget")) return "인턴 지우: 예산을 쓰기 전에 이번 선택이 다음 판단 근거를 남기는지 봐야 합니다.";
   if (event.riskTags.includes("mental")) return "인턴 지우: 멘탈을 더 쓰면 버틸 수는 있지만, 다음 라운드가 흔들릴 수 있어요.";
   if (event.riskTags.includes("trust")) return "인턴 지우: 신뢰가 걸린 상황입니다. 성과만큼 설명 가능한 선택이 중요해요.";
-  return "인턴 지우: 상황을 먼저 읽고, 이번 라운드에서 가장 덜 흔들릴 대응을 고르세요.";
+  return `인턴 마케터: 지금은 '${event.title}' 상황입니다. 이 상황에 맞는 대응을 골라야겠어요.`;
 }
 
 function eventLabel(event) {
   if (event.phase === "early") return "초반 이벤트";
   if (event.phase === "mid") return "중반 이벤트";
   if (event.phase === "late") return "후반 이벤트";
+  if (event.phase === "fixed" || event.phase === "fixed_branch" || event.phase === "fixed_ending") return event.title.split(":")[0];
   if (event.phase === "first_report") return "첫 보고";
   if (event.phase === "mid_review") return "중간 평가";
   if (event.phase === "final") return "최종 평가";
@@ -632,6 +750,7 @@ function renderAdvisor() {
 }
 
 function cardAdvice(card) {
+  if (card.dialogue) return card.dialogue.replace(/^인턴\s*(마케터|지우):\s*/, "");
   const name = card.name;
   if (name.includes("소액 테스트")) {
     return "일단 크게 태우기보다는 작게 반응을 보는 게 안전할 것 같아요. 성과가 크진 않아도 다음 판단 근거는 만들 수 있습니다.";
