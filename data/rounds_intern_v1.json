@@ -16,52 +16,156 @@
   },
   "fixedRounds": {
     "1": {
-      "id": "fixed_first_campaign",
-      "type": "fixed",
+      "id": "fixed_01_intro",
+      "round": 1,
       "phase": "fixed",
-      "title": "첫 출근 / 캠페인 배정",
+      "title": "첫 출근: 작은 캠페인을 맡게 됐다",
       "speaker": "팀장님",
       "description": "이번 캠페인, 큰 건 아니니까 한번 맡아볼래요? 예산은 많지 않은데… 그래도 성과는 좀 봐야 합니다.",
+      "riskLabel": "예산 / 성과 / 보고",
       "tags": [
-        "onboarding",
-        "performance",
+        "tutorial",
         "budget",
+        "performance",
         "report"
       ],
-      "riskTags": [],
+      "recommendedCardIds": [
+        "card_small_test",
+        "card_tone整理",
+        "card_report_frame",
+        "card_check_data",
+        "card_budget_guard",
+        "card_core_message",
+        "card_pre_persuade_manager"
+      ],
+      "type": "fixed",
+      "riskTags": [
+        "예산",
+        "성과",
+        "보고"
+      ],
       "preferredCardTags": [
+        "tutorial",
+        "budget",
         "performance",
-        "creative",
-        "report",
-        "budget"
+        "report"
       ],
       "weakCardTags": [],
-      "fixedCardIds": [
-        "card_small_test",
-        "card_minor_creative_edit",
-        "card_report_shield"
-      ]
+      "baseWeight": 10,
+      "oncePerRun": true
     },
     "5": {
-      "id": "fixed_first_report",
-      "type": "branch",
-      "phase": "first_report",
-      "title": "첫 보고",
-      "speaker": "팀장님"
+      "id": "fixed_05_first_report",
+      "round": 5,
+      "phase": "fixed_branch",
+      "title": "첫 보고: 그래서 지금까지 뭐가 나왔죠?",
+      "speaker": "팀장님",
+      "description": "좋아요. 지금까지 한 걸 한번 정리해볼까요? 성과, 예산, 배운 점 중 뭐라도 분명해야 합니다.",
+      "riskLabel": "신뢰 / 보고 / 성과",
+      "tags": [
+        "report",
+        "trust",
+        "performance"
+      ],
+      "recommendedCardIds": [
+        "card_report_shield",
+        "card_explain_with_numbers",
+        "card_learning_summary",
+        "card_report_risk_first",
+        "card_hypothesis_persuade",
+        "card_report_english",
+        "card_result_summary"
+      ],
+      "type": "fixed",
+      "riskTags": [
+        "신뢰",
+        "보고",
+        "성과"
+      ],
+      "preferredCardTags": [
+        "report",
+        "trust",
+        "performance"
+      ],
+      "weakCardTags": [],
+      "baseWeight": 10,
+      "oncePerRun": true
     },
     "10": {
-      "id": "fixed_mid_review",
-      "type": "branch",
-      "phase": "mid_review",
-      "title": "중간 평가",
-      "speaker": "팀장님"
+      "id": "fixed_10_mid_review",
+      "round": 10,
+      "phase": "fixed_branch",
+      "title": "중간 평가: 이 방향으로 계속 가도 될까요?",
+      "speaker": "팀장님",
+      "description": "지금 방향이 나쁘진 않은데, 이걸 끝까지 밀고 갈 만한 이유가 필요해요.",
+      "riskLabel": "방향성 / 재현성 / 압박",
+      "tags": [
+        "review",
+        "strategy",
+        "trust"
+      ],
+      "recommendedCardIds": [
+        "card_conversion_audit",
+        "card_message_differentiation",
+        "card_prepare_plan_b",
+        "card_pre_persuade_manager",
+        "card_reallocate_budget",
+        "card_push_by_gut",
+        "card_middle_compromise"
+      ],
+      "type": "fixed",
+      "riskTags": [
+        "방향성",
+        "재현성",
+        "압박"
+      ],
+      "preferredCardTags": [
+        "review",
+        "strategy",
+        "trust"
+      ],
+      "weakCardTags": [],
+      "baseWeight": 10,
+      "oncePerRun": true
     },
     "15": {
-      "id": "fixed_final_review",
-      "type": "final",
-      "phase": "final",
-      "title": "최종 평가",
-      "speaker": "팀장님"
+      "id": "fixed_15_final_review",
+      "round": 15,
+      "phase": "fixed_ending",
+      "title": "최종 평가: 이번 캠페인, 어떻게 평가해야 할까요?",
+      "speaker": "팀장님",
+      "description": "마지막으로 결과를 정리해봅시다. 성과가 있었는지, 예산은 지켰는지, 다음에도 맡길 수 있을지 볼게요.",
+      "riskLabel": "최종 평가 / 승진 / 생존",
+      "tags": [
+        "final",
+        "report",
+        "trust",
+        "performance"
+      ],
+      "recommendedCardIds": [
+        "card_result_summary",
+        "card_report_performance_focus",
+        "card_wrap_weakness",
+        "card_explain_with_numbers",
+        "card_learning_summary",
+        "card_algorithm_blessing",
+        "card_competitor_soldout"
+      ],
+      "type": "fixed",
+      "riskTags": [
+        "최종 평가",
+        "승진",
+        "생존"
+      ],
+      "preferredCardTags": [
+        "final",
+        "report",
+        "trust",
+        "performance"
+      ],
+      "weakCardTags": [],
+      "baseWeight": 10,
+      "oncePerRun": true
     }
   },
   "endings": [
