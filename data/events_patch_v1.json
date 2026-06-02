@@ -120,8 +120,7 @@
         "card_agency_followup",
         "card_final_final_real",
         "card_scope_cut"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '파일명이 전부 최종' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_reference_hell",
@@ -147,8 +146,7 @@
         "card_copy_pivot",
         "card_brand_guide",
         "card_push_by_gut"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '레퍼런스 지옥' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_first_ad_setup",
@@ -174,8 +172,7 @@
         "card_find_buyer",
         "card_budget_guard",
         "card_push_by_gut"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '첫 광고 세팅' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_thumbnail_too_calm",
@@ -201,8 +198,7 @@
         "card_tone整理",
         "card_copy_pivot",
         "card_controversy_attention"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '썸네일이 너무 얌전하다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_first_report",
@@ -228,8 +224,7 @@
         "card_report_risk_first",
         "card_pre_persuade_manager",
         "card_report_english"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '첫 보고서 요청' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_too_many_claims",
@@ -255,8 +250,7 @@
         "card_message_differentiation",
         "card_compromise_plan",
         "card_push_by_gut"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '제품 장점이 너무 많다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_small_budget",
@@ -282,8 +276,7 @@
         "card_cut_loss",
         "card_reallocate_budget",
         "card_all_in_budget"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '예산이 생각보다 작다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_agency_slow_reply",
@@ -309,8 +302,7 @@
         "card_prepare_plan_b",
         "card_internal_report_first",
         "card_overtime"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '대행사 답장이 느리다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_budget_burning",
@@ -337,8 +329,7 @@
         "card_target_reset",
         "card_report_shield",
         "card_all_in_budget"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '광고비가 녹는 중' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_ctr_no_purchase",
@@ -364,8 +355,7 @@
         "card_reflect_on_landing",
         "card_explain_with_numbers",
         "card_push_by_gut"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 'CTR은 높은데 구매가 없다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_approval_delay",
@@ -392,8 +382,7 @@
         "card_brand_guide",
         "card_make_draft_myself",
         "card_overtime"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '컨펌이 밀린다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_manager_asks_numbers",
@@ -420,8 +409,7 @@
         "card_conversion_audit",
         "card_report_shield",
         "card_report_english"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '팀장님이 숫자를 물어본다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_due_today",
@@ -447,8 +435,7 @@
         "card_make_draft_myself",
         "card_overtime",
         "card_final_final_real"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '갑자기 오늘 안에 가능하죠?' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_unexpected_reaction",
@@ -474,8 +461,7 @@
         "card_algorithm_blessing",
         "card_controversy_attention",
         "card_all_in_budget"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '예상 밖 반응이 터진다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_brand_tone_risk",
@@ -502,8 +488,7 @@
         "card_tone整理",
         "card_middle_compromise",
         "card_follow_boss_taste"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '브랜드 톤이 흔들린다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_competitor_similar",
@@ -530,8 +515,7 @@
         "card_reframe_claims",
         "card_competitor_soldout",
         "card_all_in_budget"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '경쟁사가 비슷한 걸 냈다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_boss_comment",
@@ -558,8 +542,7 @@
         "card_report_english",
         "card_controversy_attention",
         "card_push_by_gut"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '대표님이 지나가다 한마디' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_budget_cut",
@@ -586,8 +569,7 @@
         "card_report_risk_first",
         "card_all_in_budget",
         "card_accounting_rage"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '갑자기 예산이 줄었다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_agency_mistake",
@@ -614,8 +596,7 @@
         "card_prepare_plan_b",
         "card_make_draft_myself",
         "card_final_final_real"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '막판에 대행사 실수' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_performance_drop",
@@ -642,8 +623,7 @@
         "card_conversion_audit",
         "card_scale_winning_creative",
         "card_all_in_budget"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '성과가 갑자기 꺾인다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_comment_risk",
@@ -670,8 +650,7 @@
         "card_brand_guide",
         "card_controversy_attention",
         "card_follow_boss_taste"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '댓글 반응이 이상하다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_good_review",
@@ -698,8 +677,7 @@
         "card_core_message",
         "card_algorithm_blessing",
         "card_competitor_soldout"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '갑자기 좋은 리뷰가 올라왔다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_manager_vacation",
@@ -726,8 +704,7 @@
         "card_push_by_gut",
         "card_follow_boss_taste",
         "card_overtime"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '팀장님이 휴가 갔다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     },
     {
       "id": "event_final_report_needed",
@@ -754,8 +731,7 @@
         "card_learning_summary",
         "card_report_shield",
         "card_report_english"
-      ],
-      "defaultDialogue": "인턴 마케터: 지금은 '마지막 보고서가 필요하다' 상황이다. 이 상황에 맞는 대응을 골라야겠다."
+      ]
     }
   ]
 }
