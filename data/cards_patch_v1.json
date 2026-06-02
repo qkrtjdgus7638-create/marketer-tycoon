@@ -1,0 +1,1285 @@
+{
+  "cards": [
+    {
+      "id": "card_small_test",
+      "name": "소액 테스트",
+      "tier": "basic",
+      "cost": -10000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 크게 태우기보다 작게 반응을 봅니다. 성과는 작아도 다음 판단 근거를 만들 수 있어요."
+    },
+    {
+      "id": "card_tone整理",
+      "name": "톤앤매너 정리",
+      "tier": "basic",
+      "cost": -5000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 브랜드 톤을 정리해 컨펌 가능성을 높입니다."
+    },
+    {
+      "id": "card_report_frame",
+      "name": "보고서 틀부터 만든다",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 초반부터 보고 구조를 잡습니다. 당장 성과는 약해도 나중에 설명하기 쉬워져요."
+    },
+    {
+      "id": "card_check_data",
+      "name": "데이터 확인",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 감이 아니라 숫자를 먼저 봅니다."
+    },
+    {
+      "id": "card_budget_guard",
+      "name": "예산 방어",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 지금은 무리하게 쓰기보다 손실을 막는 선택입니다."
+    },
+    {
+      "id": "card_core_message",
+      "name": "핵심 메시지 압축",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 말하고 싶은 걸 하나로 줄입니다."
+    },
+    {
+      "id": "card_pre_persuade_manager",
+      "name": "팀장님 미리 설득",
+      "tier": "strategy",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 일이 커지기 전에 방향을 먼저 맞춥니다."
+    },
+    {
+      "id": "card_file_cleanup",
+      "name": "파일 정리",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 최종 파일을 정리해 실수를 줄입니다."
+    },
+    {
+      "id": "card_confirm_owner",
+      "name": "담당자에게 확인",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 애매한 부분을 다시 확인합니다."
+    },
+    {
+      "id": "card_quick_draft",
+      "name": "빠른 임시안 제작",
+      "tier": "basic",
+      "cost": -5000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 완벽하진 않지만 당장 볼 수 있는 안을 만듭니다."
+    },
+    {
+      "id": "card_make_draft_myself",
+      "name": "직접 임시안 만든다",
+      "tier": "strategy",
+      "cost": -5000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 기다리지 않고 직접 움직입니다."
+    },
+    {
+      "id": "card_agency_followup",
+      "name": "대행사 재요청",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 애매한 요청을 구체적으로 다시 전달합니다."
+    },
+    {
+      "id": "card_final_final_real",
+      "name": "최종_진짜최종_최최종",
+      "tier": "special",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 이름부터 불안하지만 급할 땐 어쩔 수 없습니다."
+    },
+    {
+      "id": "card_scope_cut",
+      "name": "업무 범위 자르기",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 오늘 안에 가능한 범위로 줄입니다."
+    },
+    {
+      "id": "card_minor_creative_edit",
+      "name": "소재 일부 수정",
+      "tier": "basic",
+      "cost": -10000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 전체를 갈아엎지 않고 문제 지점만 수정합니다."
+    },
+    {
+      "id": "card_full_creative_rework",
+      "name": "소재 전면 수정",
+      "tier": "strategy",
+      "cost": -25000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 기존 방향을 버리고 새로 갑니다."
+    },
+    {
+      "id": "card_copy_pivot",
+      "name": "카피 방향 전환",
+      "tier": "strategy",
+      "cost": -10000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 메시지 관점을 바꿉니다."
+    },
+    {
+      "id": "card_brand_guide",
+      "name": "브랜드 가이드 확인",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 브랜드 기준을 다시 확인합니다."
+    },
+    {
+      "id": "card_push_by_gut",
+      "name": "감으로 밀어붙이기",
+      "tier": "special",
+      "cost": -20000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 근거는 약하지만 왠지 될 것 같습니다."
+    },
+    {
+      "id": "card_target_reset",
+      "name": "타겟 재설정",
+      "tier": "basic",
+      "cost": -5000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 반응이 나올 만한 타겟으로 다시 좁힙니다."
+    },
+    {
+      "id": "card_lowcost_abtest",
+      "name": "저비용 A/B 테스트",
+      "tier": "strategy",
+      "cost": -15000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 작은 비용으로 두 방향을 비교합니다."
+    },
+    {
+      "id": "card_find_buyer",
+      "name": "구매자 포착",
+      "tier": "strategy",
+      "cost": -15000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 구매 가능성이 높은 신호를 찾아 집중합니다."
+    },
+    {
+      "id": "card_hook_copy",
+      "name": "후킹 카피 수정",
+      "tier": "basic",
+      "cost": -10000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 첫 문장을 더 누르고 싶게 바꿉니다."
+    },
+    {
+      "id": "card_change_thumbnail",
+      "name": "썸네일 교체",
+      "tier": "strategy",
+      "cost": -15000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 첫 인상을 바꿔 클릭률을 노립니다."
+    },
+    {
+      "id": "card_controversy_attention",
+      "name": "논란도 관심이다",
+      "tier": "special",
+      "cost": -10000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 위험한 반응을 노출 기회로 씁니다."
+    },
+    {
+      "id": "card_report_shield",
+      "name": "보고서 방패",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 성과가 애매해도 설명 가능한 구조로 정리합니다."
+    },
+    {
+      "id": "card_explain_with_numbers",
+      "name": "숫자로 설명",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 선택의 이유를 수치로 설명합니다."
+    },
+    {
+      "id": "card_learning_summary",
+      "name": "배운 점 정리",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 성과가 부족해도 다음 액션으로 연결합니다."
+    },
+    {
+      "id": "card_result_summary",
+      "name": "결과 정리",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 지금까지의 결과를 읽기 쉽게 정리합니다."
+    },
+    {
+      "id": "card_report_risk_first",
+      "name": "리스크 먼저 공유",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 문제가 커지기 전에 먼저 공유합니다."
+    },
+    {
+      "id": "card_report_english",
+      "name": "보고서에 영어 많이 쓰기",
+      "tier": "special",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 있어 보이는 단어로 분위기를 만듭니다."
+    },
+    {
+      "id": "card_reframe_claims",
+      "name": "제품 장점 재정리",
+      "tier": "basic",
+      "cost": -5000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 장점을 타겟이 이해하기 쉬운 말로 바꿉니다."
+    },
+    {
+      "id": "card_message_differentiation",
+      "name": "메시지 차별화",
+      "tier": "strategy",
+      "cost": -10000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 경쟁사와 다른 관점으로 포지셔닝합니다."
+    },
+    {
+      "id": "card_compromise_plan",
+      "name": "타협안 제시",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 성과와 브랜드 사이의 중간안을 제시합니다."
+    },
+    {
+      "id": "card_keep_efficient_channel",
+      "name": "효율 채널만 유지",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 남은 예산을 효율 좋은 곳에만 남깁니다."
+    },
+    {
+      "id": "card_cut_loss",
+      "name": "손실 컷",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 성과가 안 나는 집행을 빠르게 멈춥니다."
+    },
+    {
+      "id": "card_reallocate_budget",
+      "name": "남은 예산 재분배",
+      "tier": "strategy",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 남은 예산을 다시 배치합니다."
+    },
+    {
+      "id": "card_all_in_budget",
+      "name": "남은 예산 몰빵",
+      "tier": "special",
+      "cost": -50000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 남은 예산을 한 번에 태웁니다."
+    },
+    {
+      "id": "card_accounting_rage",
+      "name": "회계팀의 분노",
+      "tier": "special",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 성과보다 지출 증빙이 먼저 문제가 됩니다."
+    },
+    {
+      "id": "card_landing_check",
+      "name": "상세페이지 점검",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 클릭 이후 구매까지의 흐름을 확인합니다."
+    },
+    {
+      "id": "card_conversion_audit",
+      "name": "전환 경로 점검",
+      "tier": "strategy",
+      "cost": -10000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 이탈 지점을 찾아봅니다."
+    },
+    {
+      "id": "card_reflect_on_landing",
+      "name": "랜딩에 반영",
+      "tier": "strategy",
+      "cost": -15000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 반응 좋은 메시지를 상세페이지에 반영합니다."
+    },
+    {
+      "id": "card_hypothesis_persuade",
+      "name": "가설로 설득",
+      "tier": "strategy",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 검증 가능한 가설로 설명합니다."
+    },
+    {
+      "id": "card_prepare_plan_b",
+      "name": "대체안 준비",
+      "tier": "strategy",
+      "cost": -10000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 컨펌이 늦어져도 가능한 플랜B를 만듭니다."
+    },
+    {
+      "id": "card_reschedule",
+      "name": "일정 재조정",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 무리한 일정을 현실적으로 다시 잡습니다."
+    },
+    {
+      "id": "card_reprioritize",
+      "name": "우선순위 재조정",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 지금 꼭 해야 하는 일만 남깁니다."
+    },
+    {
+      "id": "card_overtime",
+      "name": "일단 야근",
+      "tier": "special",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 멘탈을 갈아서 일을 해결합니다."
+    },
+    {
+      "id": "card_wait_and_watch",
+      "name": "흐름 지켜보기",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 성급하게 바꾸지 않고 반응을 더 봅니다."
+    },
+    {
+      "id": "card_scale_winning_creative",
+      "name": "성과 소재 증액",
+      "tier": "strategy",
+      "cost": -30000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 반응 좋은 소재에 예산을 더 실어줍니다."
+    },
+    {
+      "id": "card_use_review_content",
+      "name": "리뷰를 소재화",
+      "tier": "strategy",
+      "cost": -10000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 좋은 리뷰를 광고 소재로 씁니다."
+    },
+    {
+      "id": "card_algorithm_blessing",
+      "name": "알고리즘의 축복",
+      "tier": "special",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 이유는 모르겠지만 갑자기 광고가 잘 탑니다."
+    },
+    {
+      "id": "card_keep_brand_tone",
+      "name": "브랜드 톤 유지",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 성과보다 브랜드 일관성을 우선합니다."
+    },
+    {
+      "id": "card_tone_down",
+      "name": "톤 다운",
+      "tier": "basic",
+      "cost": -5000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 과한 표현을 줄입니다."
+    },
+    {
+      "id": "card_middle_compromise",
+      "name": "중간 타협안 제시",
+      "tier": "strategy",
+      "cost": -5000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 대표님 의견과 기존 전략 사이의 중간안을 냅니다."
+    },
+    {
+      "id": "card_follow_boss_taste",
+      "name": "대표님 취향 반영",
+      "tier": "special",
+      "cost": -15000,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 대표님이 좋아할 방향으로 과감히 바꿉니다."
+    },
+    {
+      "id": "card_competitor_soldout",
+      "name": "경쟁사 품절",
+      "tier": "special",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 경쟁사가 품절되어 기회가 생깁니다."
+    },
+    {
+      "id": "card_internal_report_first",
+      "name": "내부 보고 먼저",
+      "tier": "basic",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 수습 전에 내부에 먼저 상황을 공유합니다."
+    },
+    {
+      "id": "card_request_immediate_fix",
+      "name": "즉시 수정 요청",
+      "tier": "strategy",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 대행사 실수를 바로 수정 요청합니다."
+    },
+    {
+      "id": "card_root_cause_analysis",
+      "name": "원인 분석",
+      "tier": "strategy",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 성과가 꺾인 이유를 데이터로 분석합니다."
+    },
+    {
+      "id": "card_report_performance_focus",
+      "name": "성과 중심 정리",
+      "tier": "strategy",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 좋았던 지표를 중심으로 캠페인을 정리합니다."
+    },
+    {
+      "id": "card_wrap_weakness",
+      "name": "아쉬운 점을 포장",
+      "tier": "strategy",
+      "cost": 0,
+      "display": {
+        "showOnCard": [
+          "tier",
+          "name",
+          "cost"
+        ],
+        "hideOnCard": [
+          "description",
+          "tags",
+          "risk",
+          "effect",
+          "successRate"
+        ]
+      },
+      "dialogue": "인턴 마케터: 부족했던 결과를 다음 액션으로 연결합니다."
+    }
+  ]
+}
