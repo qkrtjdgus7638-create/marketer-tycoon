@@ -40,6 +40,11 @@
       "score": [
         1,
         2
+      ],
+      "role": "prep",
+      "routeTags": [
+        "budget_route",
+        "test_route"
       ]
     },
     "budget_defense": {
@@ -62,6 +67,10 @@
       "score": [
         -1,
         0
+      ],
+      "role": "defense",
+      "routeTags": [
+        "budget_route"
       ]
     },
     "channel_split": {
@@ -84,6 +93,10 @@
       "score": [
         1,
         2
+      ],
+      "role": "defense",
+      "routeTags": [
+        "budget_route"
       ]
     },
     "buyer_capture": {
@@ -107,6 +120,10 @@
       "score": [
         1,
         5
+      ],
+      "role": "revenue",
+      "routeTags": [
+        "conversion_route"
       ]
     },
     "click_hook": {
@@ -128,6 +145,11 @@
       "score": [
         1,
         3
+      ],
+      "role": "improve",
+      "routeTags": [
+        "content_burst",
+        "conversion_route"
       ]
     },
     "early_boost": {
@@ -151,7 +173,9 @@
       "score": [
         0,
         6
-      ]
+      ],
+      "role": "gamble",
+      "routeTags": []
     },
     "creative_boost": {
       "description": "현재 소재를 더 눈에 띄는 방향으로 다듬습니다.",
@@ -173,6 +197,10 @@
       "score": [
         1,
         4
+      ],
+      "role": "improve",
+      "routeTags": [
+        "content_burst"
       ]
     },
     "split_test": {
@@ -195,6 +223,10 @@
       "score": [
         1,
         3
+      ],
+      "role": "prep",
+      "routeTags": [
+        "test_route"
       ]
     },
     "hooking_copy": {
@@ -217,6 +249,10 @@
       "score": [
         0,
         4
+      ],
+      "role": "improve",
+      "routeTags": [
+        "content_burst"
       ]
     },
     "reference_collect": {
@@ -240,7 +276,11 @@
         0,
         1
       ],
-      "note": "레퍼런스 조사는 직접 예산을 거의 쓰지 않지만, 바로 큰 회수를 만들지는 않는 준비 카드."
+      "note": "레퍼런스 조사는 직접 예산을 거의 쓰지 않지만, 바로 큰 회수를 만들지는 않는 준비 카드.",
+      "role": "prep",
+      "routeTags": [
+        "test_route"
+      ]
     },
     "thumbnail_reroll": {
       "description": "반응이 약한 썸네일을 다른 방향으로 다시 잡습니다.",
@@ -262,6 +302,10 @@
       "score": [
         0,
         6
+      ],
+      "role": "gamble",
+      "routeTags": [
+        "content_burst"
       ]
     },
     "brand_mood": {
@@ -285,6 +329,10 @@
       "score": [
         0,
         2
+      ],
+      "role": "improve",
+      "routeTags": [
+        "brand_stable"
       ]
     },
     "tone_align": {
@@ -308,6 +356,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "defense",
+      "routeTags": [
+        "brand_stable"
       ]
     },
     "ask_first": {
@@ -330,6 +382,10 @@
       "score": [
         0,
         0
+      ],
+      "role": "prep",
+      "routeTags": [
+        "politics_route"
       ]
     },
     "approval_dodge": {
@@ -351,6 +407,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "defense",
+      "routeTags": [
+        "politics_route"
       ]
     },
     "report_shield": {
@@ -373,6 +433,11 @@
       "score": [
         1,
         2
+      ],
+      "role": "report",
+      "routeTags": [
+        "test_route",
+        "politics_route"
       ]
     },
     "file_cleanup": {
@@ -394,6 +459,10 @@
       "score": [
         0,
         0
+      ],
+      "role": "defense",
+      "routeTags": [
+        "ops_route"
       ]
     },
     "schedule_defense": {
@@ -415,6 +484,10 @@
       "score": [
         -1,
         0
+      ],
+      "role": "defense",
+      "routeTags": [
+        "ops_route"
       ]
     },
     "request_doc": {
@@ -438,6 +511,11 @@
       "score": [
         0,
         0
+      ],
+      "role": "prep",
+      "routeTags": [
+        "ops_route",
+        "politics_route"
       ]
     },
     "urgent_fix": {
@@ -460,6 +538,11 @@
       "score": [
         1,
         3
+      ],
+      "role": "improve",
+      "routeTags": [
+        "ops_route",
+        "content_burst"
       ]
     },
     "efficiency_track": {
@@ -471,6 +554,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "report",
+      "routeTags": [
+        "test_route"
       ]
     },
     "ad_stop": {
@@ -482,6 +569,10 @@
       "score": [
         -1,
         0
+      ],
+      "role": "defense",
+      "routeTags": [
+        "budget_route"
       ]
     },
     "test_goal": {
@@ -493,6 +584,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "prep",
+      "routeTags": [
+        "test_route"
       ]
     },
     "spend_pacing": {
@@ -504,6 +599,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "defense",
+      "routeTags": [
+        "budget_route"
       ]
     },
     "price_check": {
@@ -515,6 +614,11 @@
       "score": [
         0,
         2
+      ],
+      "role": "prep",
+      "routeTags": [
+        "budget_route",
+        "conversion_route"
       ]
     },
     "conversion_boost": {
@@ -526,6 +630,10 @@
       "score": [
         1,
         5
+      ],
+      "role": "revenue",
+      "routeTags": [
+        "conversion_route"
       ]
     },
     "click_recovery": {
@@ -537,6 +645,10 @@
       "score": [
         1,
         4
+      ],
+      "role": "revenue",
+      "routeTags": [
+        "conversion_route"
       ]
     },
     "landing_check": {
@@ -548,6 +660,10 @@
       "score": [
         1,
         2
+      ],
+      "role": "improve",
+      "routeTags": [
+        "conversion_route"
       ]
     },
     "offer_test": {
@@ -559,6 +675,10 @@
       "score": [
         0,
         4
+      ],
+      "role": "gamble",
+      "routeTags": [
+        "conversion_route"
       ]
     },
     "audience_split": {
@@ -570,6 +690,10 @@
       "score": [
         1,
         3
+      ],
+      "role": "prep",
+      "routeTags": [
+        "conversion_route"
       ]
     },
     "cta_tighten": {
@@ -581,6 +705,10 @@
       "score": [
         0,
         3
+      ],
+      "role": "improve",
+      "routeTags": [
+        "conversion_route"
       ]
     },
     "product_page_fix": {
@@ -592,6 +720,10 @@
       "score": [
         1,
         5
+      ],
+      "role": "revenue",
+      "routeTags": [
+        "conversion_route"
       ]
     },
     "angle_sort": {
@@ -603,6 +735,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "prep",
+      "routeTags": [
+        "test_route"
       ]
     },
     "message_cleanup": {
@@ -614,6 +750,10 @@
       "score": [
         0,
         2
+      ],
+      "role": "improve",
+      "routeTags": [
+        "content_burst"
       ]
     },
     "brand_guard": {
@@ -625,6 +765,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "defense",
+      "routeTags": [
+        "brand_stable"
       ]
     },
     "review_collect": {
@@ -636,6 +780,11 @@
       "score": [
         0,
         3
+      ],
+      "role": "improve",
+      "routeTags": [
+        "brand_stable",
+        "conversion_route"
       ]
     },
     "discount_restraint": {
@@ -647,6 +796,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "defense",
+      "routeTags": [
+        "brand_stable"
       ]
     },
     "reference_filter": {
@@ -658,6 +811,11 @@
       "score": [
         0,
         1
+      ],
+      "role": "prep",
+      "routeTags": [
+        "brand_stable",
+        "test_route"
       ]
     },
     "claim_check": {
@@ -669,6 +827,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "defense",
+      "routeTags": [
+        "brand_stable"
       ]
     },
     "exec_persuasion": {
@@ -680,6 +842,10 @@
       "score": [
         1,
         2
+      ],
+      "role": "report",
+      "routeTags": [
+        "politics_route"
       ]
     },
     "responsibility_split": {
@@ -691,6 +857,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "defense",
+      "routeTags": [
+        "politics_route"
       ]
     },
     "expectation_align": {
@@ -702,6 +872,10 @@
       "score": [
         0,
         0
+      ],
+      "role": "prep",
+      "routeTags": [
+        "politics_route"
       ]
     },
     "pre_report": {
@@ -713,6 +887,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "report",
+      "routeTags": [
+        "politics_route"
       ]
     },
     "meeting_summary": {
@@ -724,6 +902,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "report",
+      "routeTags": [
+        "politics_route"
       ]
     },
     "approval_anchor": {
@@ -735,6 +917,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "defense",
+      "routeTags": [
+        "politics_route"
       ]
     },
     "postmortem_note": {
@@ -746,6 +932,10 @@
       "score": [
         1,
         1
+      ],
+      "role": "report",
+      "routeTags": [
+        "test_route"
       ]
     },
     "agency_call": {
@@ -757,6 +947,10 @@
       "score": [
         1,
         3
+      ],
+      "role": "gamble",
+      "routeTags": [
+        "ops_route"
       ]
     },
     "asset_request": {
@@ -768,6 +962,10 @@
       "score": [
         0,
         0
+      ],
+      "role": "prep",
+      "routeTags": [
+        "ops_route"
       ]
     },
     "task_slice": {
@@ -779,6 +977,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "defense",
+      "routeTags": [
+        "ops_route"
       ]
     },
     "brief_rewrite": {
@@ -790,6 +992,10 @@
       "score": [
         0,
         1
+      ],
+      "role": "prep",
+      "routeTags": [
+        "ops_route"
       ]
     }
   },
@@ -2812,7 +3018,8 @@
           ]
         }
       ],
-      "resultSpeaker": "팀장님"
+      "resultSpeaker": "팀장님",
+      "moneyWeight": "low"
     },
     {
       "round": 2,
@@ -3022,7 +3229,8 @@
           ]
         }
       ],
-      "resultSpeaker": "팀장님"
+      "resultSpeaker": "팀장님",
+      "moneyWeight": "lowMid"
     },
     {
       "round": 3,
@@ -3225,7 +3433,8 @@
           ]
         }
       ],
-      "resultSpeaker": "사수"
+      "resultSpeaker": "사수",
+      "moneyWeight": "low"
     },
     {
       "round": 4,
@@ -3434,7 +3643,8 @@
           ]
         }
       ],
-      "resultSpeaker": "팀장님"
+      "resultSpeaker": "팀장님",
+      "moneyWeight": "mid"
     },
     {
       "round": 5,
@@ -3642,7 +3852,8 @@
           ]
         }
       ],
-      "resultSpeaker": "사수"
+      "resultSpeaker": "사수",
+      "moneyWeight": "lowMid"
     },
     {
       "round": 6,
@@ -3861,7 +4072,8 @@
           ]
         }
       ],
-      "resultSpeaker": "팀장님"
+      "resultSpeaker": "팀장님",
+      "moneyWeight": "high"
     },
     {
       "round": 7,
@@ -4072,7 +4284,8 @@
           ]
         }
       ],
-      "resultSpeaker": "팀장님"
+      "resultSpeaker": "팀장님",
+      "moneyWeight": "high"
     },
     {
       "round": 8,
@@ -4287,7 +4500,8 @@
           ]
         }
       ],
-      "resultSpeaker": "팀장님"
+      "resultSpeaker": "팀장님",
+      "moneyWeight": "veryHigh"
     },
     {
       "round": 9,
@@ -4501,7 +4715,8 @@
           ]
         }
       ],
-      "resultSpeaker": "팀장님"
+      "resultSpeaker": "팀장님",
+      "moneyWeight": "low"
     },
     {
       "round": 10,
@@ -4714,7 +4929,8 @@
           ]
         }
       ],
-      "resultSpeaker": "대표님"
+      "resultSpeaker": "대표님",
+      "moneyWeight": "mid"
     },
     {
       "round": 11,
@@ -4925,7 +5141,8 @@
           ]
         }
       ],
-      "resultSpeaker": "팀장님"
+      "resultSpeaker": "팀장님",
+      "moneyWeight": "eval"
     },
     {
       "round": 12,
@@ -5139,7 +5356,8 @@
           ]
         }
       ],
-      "resultSpeaker": "팀장님"
+      "resultSpeaker": "팀장님",
+      "moneyWeight": "eval"
     }
   ],
   "changeLog": [
@@ -6665,5 +6883,93 @@
     "EXP가 높아질수록 실패 확률은 조금 줄고 성공/대성공 확률은 조금 증가",
     "회수 금액에 결과 등급 배수 적용",
     "EXP 획득량도 결과 등급에 따라 변동"
+  ],
+  "deckBuildSystem": {
+    "roles": [
+      "prep",
+      "improve",
+      "revenue",
+      "defense",
+      "report",
+      "gamble"
+    ],
+    "roleLabels": {
+      "prep": "준비",
+      "improve": "개선",
+      "revenue": "수익",
+      "defense": "방어",
+      "report": "보고",
+      "gamble": "도박"
+    },
+    "routeLabels": {
+      "test_route": "테스트형",
+      "content_burst": "콘텐츠 폭발형",
+      "conversion_route": "전환형",
+      "brand_stable": "브랜드 안정형",
+      "politics_route": "정치 생존형",
+      "ops_route": "운영 안정형",
+      "budget_route": "예산 관리형"
+    },
+    "outcomeProbabilities": {
+      "prep": {
+        "bigFail": 2,
+        "fail": 8,
+        "breakEven": 60,
+        "success": 27,
+        "bigSuccess": 3
+      },
+      "defense": {
+        "bigFail": 1,
+        "fail": 9,
+        "breakEven": 65,
+        "success": 23,
+        "bigSuccess": 2
+      },
+      "improve": {
+        "bigFail": 6,
+        "fail": 18,
+        "breakEven": 38,
+        "success": 30,
+        "bigSuccess": 8
+      },
+      "revenue": {
+        "bigFail": 12,
+        "fail": 24,
+        "breakEven": 27,
+        "success": 25,
+        "bigSuccess": 12
+      },
+      "gamble": {
+        "bigFail": 18,
+        "fail": 25,
+        "breakEven": 20,
+        "success": 22,
+        "bigSuccess": 15
+      },
+      "report": {
+        "bigFail": 3,
+        "fail": 12,
+        "breakEven": 50,
+        "success": 30,
+        "bigSuccess": 5
+      }
+    },
+    "moneyWeightScale": {
+      "low": 0.25,
+      "lowMid": 0.52,
+      "mid": 0.82,
+      "high": 1.25,
+      "veryHigh": 1.45,
+      "eval": 0.45
+    },
+    "comboMaxMultiplier": 1.24,
+    "maxReasons": 3
+  },
+  "changeLogDeckBuildPatch": [
+    "카드별 role(prep/improve/revenue/defense/report/gamble) 추가",
+    "빌드 루트 routeTags 추가: 테스트형/콘텐츠 폭발형/전환형/브랜드 안정형/정치 생존형/운영 안정형/예산 관리형",
+    "라운드별 moneyWeight 추가: R1~R5 준비/리스크, R6~R8 수익, R9~R12 보고/평가 리듬 강화",
+    "결과 등급 확률을 role 기반으로 조정하고 EXP/빌드/위험/상황 적합/콤보 보정을 연결",
+    "결과 화면에 상승/하락 요인과 팀장 해석 대사를 출력하도록 app 패치와 연결"
   ]
 }
