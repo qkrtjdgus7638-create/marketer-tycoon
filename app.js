@@ -1092,11 +1092,13 @@ function renderChoices() {
 
 function renderChoiceCard(card) {
   const selected = card.id === state.selectedCardId;
-  const roleClass = card.role ? `role-${card.role}` : "role-default";
+  const role = cardRole(card);
+  const roleClass = `role-${role}`;
   return `
     <button class="choice-card ${categoryClass(card.category)} ${roleClass} ${selected ? "is-selected" : ""}" type="button" data-card-id="${card.id}" ${state.finished ? "disabled" : ""} aria-pressed="${selected}">
-      <div class="card-icon" aria-hidden="true">${cardIcon(card)}</div>
+      <div class="card-icon" aria-hidden="true">${cardIconMarkup(card)}</div>
       <div class="card-main">
+        <span class="role-badge">${roleLabels[role] || "선택"}</span>
         <h3>${card.name}</h3>
       </div>
       <div class="effect-list">
@@ -1106,6 +1108,29 @@ function renderChoiceCard(card) {
       <span class="selected-check" aria-hidden="true">✓</span>
     </button>
   `;
+}
+
+function cardRole(card) {
+  return card.role || outcomeProfileType(card) || "prep";
+}
+
+function cardIconMarkup(card) {
+  const role = cardRole(card);
+  const iconPath = roleIconPath(role);
+  if (iconPath) return `<img src="${iconPath}" alt="" loading="lazy" />`;
+  return cardIcon(card);
+}
+
+function roleIconPath(role) {
+  const icons = {
+    prep: "./assets/role-icons/prep.png",
+    improve: "./assets/role-icons/improve.png",
+    revenue: "./assets/role-icons/revenue.png",
+    defense: "./assets/role-icons/defense.png",
+    report: "./assets/role-icons/report.png",
+    gamble: "./assets/role-icons/gamble.png",
+  };
+  return icons[role] || "";
 }
 
 function renderAdvisor() {
