@@ -84,9 +84,12 @@ const els = {
   situationRisk: document.querySelector("#situationRisk"),
   situationName: document.querySelector("#situationName"),
   situationText: document.querySelector("#situationText"),
+  advisorText: document.querySelector("#advisorText"),
+  advisorName: document.querySelector("#advisorName"),
   stageHeading: document.querySelector("#stageHeading"),
   stageSubcopy: document.querySelector("#stageSubcopy"),
   cardChoices: document.querySelector("#cardChoices"),
+  confirmChoiceButton: document.querySelector("#confirmChoiceButton"),
   startScreen: document.querySelector("#startScreen"),
   startButton: document.querySelector("#startButton"),
   turnResult: document.querySelector("#turnResult"),
@@ -195,6 +198,7 @@ function initialState(screen = "choice") {
     currentSituation: null,
     currentStoryRound: null,
     offeredCards: [],
+    selectedCardId: null,
     turnResult: null,
     logs: [],
     finished: false,
@@ -216,6 +220,7 @@ function nextRound() {
   state.currentSituation = pickSituation();
   state.currentStoryRound = state.currentSituation.storyRound || null;
   state.offeredCards = pickCards(state.currentSituation);
+  state.selectedCardId = state.offeredCards[0]?.id || null;
   state.recentOfferedCards = [...state.offeredCards.map((card) => ({ id: card.id, name: card.name, round: state.round })), ...state.recentOfferedCards].slice(0, 12);
   state.recentSituations = [state.currentSituation.id, ...state.recentSituations].slice(0, 2);
   render();
@@ -752,6 +757,7 @@ function chooseCard(cardId) {
   if (state.finished || state.screen !== "choice") return;
 
   const card = data.cards.find((item) => item.id === cardId);
+  if (!card) return;
   const situation = state.currentSituation;
   const before = snapshotCore();
   const cost = card.cost;
@@ -791,6 +797,18 @@ function chooseCard(cardId) {
   state.round += 1;
   state.screen = "result";
   render();
+}
+
+function selectCard(cardId) {
+  if (state.finished || state.screen !== "choice") return;
+  if (!state.offeredCards.some((card) => card.id === cardId)) return;
+  state.selectedCardId = cardId;
+  render();
+}
+
+function confirmSelectedCard() {
+  if (state.finished || state.screen !== "choice" || !state.selectedCardId) return;
+  chooseCard(state.selectedCardId);
 }
 
 function applySituationPressure(situation) {
@@ -908,6 +926,7 @@ function render() {
   els.startScreen.classList.toggle("hidden", state.screen !== "intro");
   els.cardChoices.classList.toggle("hidden", state.screen !== "choice");
   els.turnResult.classList.toggle("hidden", state.screen !== "result");
+  if (els.confirmChoiceButton) els.confirmChoiceButton.classList.toggle("hidden", state.screen !== "choice");
 
   els.roundLabel.textContent = `Round ${Math.min(state.round, data.stageDefaults.rounds)} / ${data.stageDefaults.rounds}`;
   els.phaseLabel.textContent = state.finished ? "평가 완료" : state.screen === "result" ? "결과 확인" : state.mental <= 3 ? "번아웃 주의" : "인턴 생존 중";
@@ -924,6 +943,7 @@ function render() {
   renderRecentCards();
   renderSituation();
   renderChoices();
+  renderAdvisor();
   renderTurnResult();
   renderLogs();
 }
@@ -984,27 +1004,38 @@ function renderChoices() {
   if (state.screen !== "choice") return;
   els.cardChoices.innerHTML = state.offeredCards.map(renderChoiceCard).join("");
   for (const button of els.cardChoices.querySelectorAll("button")) {
-    button.addEventListener("click", () => chooseCard(button.dataset.cardId));
+    button.addEventListener("click", () => selectCard(button.dataset.cardId));
   }
 }
 
 function renderChoiceCard(card) {
-  const displayDescription = getCardDescription(card);
-  const roleLabel = card._choiceRole || card.category;
+  const selected = card.id === state.selectedCardId;
   return `
-    <button class="choice-card ${categoryClass(card.category)}" type="button" data-card-id="${card.id}" ${state.finished ? "disabled" : ""}>
+    <button class="choice-card ${categoryClass(card.category)} ${selected ? "is-selected" : ""}" type="button" data-card-id="${card.id}" ${state.finished ? "disabled" : ""} aria-pressed="${selected}">
       <div class="card-icon" aria-hidden="true">${cardIcon(card)}</div>
       <div class="card-main">
-        <div class="card-tagline"><span>${roleLabel}</span><span>${card.category} · ${card.tags.slice(0, 2).join(" · ")}</span></div>
         <h3>${card.name}</h3>
-        <p>${displayDescription}</p>
       </div>
       <div class="effect-list">
         <span class="cost-label">비용</span>
-        <strong>${formatCostCompact(card.cost)}</strong>
+        <strong>${formatMoney(card.cost)}</strong>
       </div>
+      <span class="selected-check" aria-hidden="true">✓</span>
     </button>
   `;
+}
+
+function renderAdvisor() {
+  if (!els.advisorText || !els.advisorName) return;
+  const card = state.offeredCards.find((item) => item.id === state.selectedCardId);
+  els.advisorName.textContent = "인턴 지우";
+  if (!card) {
+    els.advisorText.textContent = "카드를 하나 골라보면 제가 실행 방향을 정리해볼게요.";
+    if (els.confirmChoiceButton) els.confirmChoiceButton.disabled = true;
+    return;
+  }
+  els.advisorText.textContent = getCardDescription(card);
+  if (els.confirmChoiceButton) els.confirmChoiceButton.disabled = false;
 }
 
 function getCardDescription(card) {
@@ -1321,6 +1352,7 @@ function signed(value) {
 
 els.startButton.addEventListener("click", startGame);
 els.continueButton.addEventListener("click", continueAfterResult);
+if (els.confirmChoiceButton) els.confirmChoiceButton.addEventListener("click", confirmSelectedCard);
 els.restartButton.addEventListener("click", () => {
   els.resultModal.classList.add("hidden");
   startGame();
