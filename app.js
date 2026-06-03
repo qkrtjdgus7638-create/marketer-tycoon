@@ -87,9 +87,9 @@ const tierClass = {
   basic: "choice-card--basic",
   strategy: "choice-card--strategy",
   special: "choice-card--special",
-  silver: "choice-card--basic",
-  gold: "choice-card--strategy",
-  platinum: "choice-card--special",
+  silver: "choice-card--silver",
+  gold: "choice-card--gold",
+  platinum: "choice-card--platinum",
 };
 
 const roleByType = {
@@ -905,10 +905,10 @@ function renderEvent() {
   els.situationCategory.textContent = "";
   els.situationRisk.textContent = "";
   els.situationName.textContent = "";
-  els.situationText.textContent = event.speaker ? `${event.speaker}: “${event.description}”` : event.description;
+  const situationCopy = event.speaker ? `${event.speaker}: “${event.description}”` : event.description;
   els.situationHint.textContent = "";
   els.situationTags.innerHTML = "";
-  restartTyping(els.situationText);
+  renderReadableTyping(els.situationText, situationCopy);
 }
 
 function eventLabel(event) {
@@ -935,7 +935,6 @@ function renderChoiceCard(card) {
   const role = roleByType[card.cardType] || "prep";
   return `
     <button class="choice-card ${tierClass[card.tier] || ""} role-${role} ${selected ? "is-selected choice-card--selected" : ""}" type="button" data-card-id="${card.id}" aria-pressed="${selected}">
-      <div class="card-icon" aria-hidden="true">${cardIconMarkup(role)}</div>
       <div class="card-main">
         <span class="role-badge">${card.tierLabel || tierLabels[card.tier] || card.tier}</span>
         <h3>${card.name}</h3>
@@ -1015,12 +1014,14 @@ function cardAdvice(card) {
 function renderTurnResult() {
   if (!state.turnResult) return;
   const { card, outcome, event } = state.turnResult;
+  const narration = resultNarration(card, outcome);
+  const dialogue = resultDialogue(outcome);
   els.turnResultBadge.textContent = `${state.round}R 선택 결과`;
   els.turnResultTitle.textContent = card.name;
   els.turnResultText.innerHTML = `
     <div class="result-tier ${outcome.tier.className}">${outcome.tier.label}</div>
-    <span class="result-narration typing-text">${resultNarration(card, outcome)}</span>
-    <div class="result-dialogue"><span>${event.speaker}</span><strong class="typing-text">${resultDialogue(outcome)}</strong></div>
+    <span class="result-narration" data-typing-target="narration"></span>
+    <div class="result-dialogue"><span>${event.speaker || "팀장님"}</span><strong data-typing-target="dialogue"></strong></div>
     <div class="result-money-grid">
       <div><span>예산 변화</span><strong class="${outcome.budgetChange >= 0 ? "is-good" : "is-bad"}">${formatSignedMoney(outcome.budgetChange)}</strong></div>
       <div><span>EXP</span><strong>${signed(outcome.expChange)}</strong></div>
@@ -1031,7 +1032,8 @@ function renderTurnResult() {
   `;
   els.turnResultDelta.innerHTML = "";
   els.continueButton.textContent = state.round >= internData.config.totalRounds || shouldStopRun() ? "최종 평가 보기" : "다음 라운드";
-  for (const element of els.turnResultText.querySelectorAll(".typing-text")) restartTyping(element);
+  renderReadableTyping(els.turnResultText.querySelector('[data-typing-target="narration"]'), narration);
+  renderReadableTyping(els.turnResultText.querySelector('[data-typing-target="dialogue"]'), dialogue);
 }
 
 function restartTyping(element) {
@@ -1039,6 +1041,70 @@ function restartTyping(element) {
   element.classList.remove("typing-text");
   void element.offsetWidth;
   element.classList.add("typing-text");
+}
+
+function renderReadableTyping(element, text) {
+  if (!element) return;
+  const chunks = splitTypingChunks(text || "");
+  const timings = typingTimings(chunks);
+  element.innerHTML = chunks.map((chunk, index) => {
+    const { duration, delay } = timings[index];
+    return `<span class="typing-line" style="--typing-duration:${duration.toFixed(2)}s;--typing-delay:${delay.toFixed(2)}s">${escapeHtml(chunk)}</span>`;
+  }).join("");
+}
+
+function typingTimings(chunks) {
+  const totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0) || 1;
+  const totalTarget = clamp(totalLength * 0.018, 0.7, 2);
+  const gap = chunks.length > 1 ? Math.min(0.05, totalTarget / chunks.length / 3) : 0;
+  const available = Math.max(0.35, totalTarget - gap * Math.max(0, chunks.length - 1));
+  let cursor = 0;
+  const timings = chunks.map((chunk) => {
+    const duration = clamp((chunk.length / totalLength) * available, 0.12, 0.55);
+    const timing = { duration, delay: cursor };
+    cursor += duration + gap;
+    return timing;
+  });
+  const totalEnd = timings.reduce((max, timing) => Math.max(max, timing.duration + timing.delay), 0);
+  if (totalEnd > 2) {
+    const scale = 2 / totalEnd;
+    return timings.map((timing) => ({
+      duration: timing.duration * scale,
+      delay: timing.delay * scale,
+    }));
+  }
+  return timings;
+}
+
+function splitTypingChunks(text) {
+  const normalized = String(text).replace(/\s+/g, " ").trim();
+  if (!normalized) return [""];
+  const sentences = normalized.match(/[^.!?。！？…]+[.!?。！？…"]*|.+$/g) || [normalized];
+  const chunks = [];
+  for (const sentence of sentences.map((item) => item.trim()).filter(Boolean)) {
+    if (sentence.length <= 34) {
+      chunks.push(sentence);
+      continue;
+    }
+    let rest = sentence;
+    while (rest.length > 34) {
+      const slice = rest.slice(0, 34);
+      const breakAt = Math.max(slice.lastIndexOf(" "), slice.lastIndexOf(","), slice.lastIndexOf("，"));
+      const end = breakAt > 14 ? breakAt + 1 : 34;
+      chunks.push(rest.slice(0, end).trimEnd());
+      rest = rest.slice(end).trim();
+    }
+    if (rest) chunks.push(rest);
+  }
+  return chunks;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 function resultNarration(card, outcome) {
