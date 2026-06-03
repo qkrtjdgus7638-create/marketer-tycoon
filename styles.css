@@ -545,8 +545,9 @@ body.is-result .confirm-button {
 .choice-card {
   --tier: #9a9a9a;
   --tier-dark: #646464;
-  --tier-soft: #eeeeee;
-  --tier-paper: #fbfbf7;
+  --tier-sheen: rgba(255, 255, 255, 0.78);
+  --metal-face: linear-gradient(135deg, #ffffff 0%, #f2f2ee 42%, #ddddda 62%, #fbfaf4 100%);
+  --metal-border: linear-gradient(135deg, #fdfdfb 0%, #aaaaaa 24%, #ffffff 45%, #777777 68%, #eeeeea 100%);
   position: relative;
   display: grid;
   height: 100%;
@@ -554,16 +555,17 @@ body.is-result .confirm-button {
   grid-template-columns: minmax(0, 1fr) clamp(72px, 19vw, 86px);
   align-items: center;
   gap: 8px;
-  padding: 8px 11px;
+  padding: 8px 12px;
   overflow: hidden;
-  border: 2px solid var(--ink);
+  border: 2px solid transparent;
   border-radius: 7px;
   background:
-    linear-gradient(90deg, var(--tier-soft) 0 11%, transparent 11%),
-    linear-gradient(180deg, #fffdf2, var(--tier-paper));
+    radial-gradient(circle at 82% 20%, var(--tier-sheen) 0 5px, transparent 6px) padding-box,
+    var(--metal-face) padding-box,
+    var(--metal-border) border-box;
   box-shadow:
-    inset 5px 0 0 var(--tier),
-    inset 0 0 0 1px #fff8df,
+    inset 0 0 0 1px rgba(255, 255, 255, 0.68),
+    inset 0 -10px 18px rgba(45, 35, 25, 0.05),
     0 2px 0 var(--shadow);
   text-align: left;
   -webkit-tap-highlight-color: transparent;
@@ -578,59 +580,59 @@ body.is-result .confirm-button {
   border-color: var(--tier-dark);
   box-shadow:
     0 0 0 2px rgba(255, 247, 223, 0.8),
-    inset 5px 0 0 var(--tier),
-    inset 0 0 0 1px #fff8df,
+    inset 0 0 0 1px rgba(255, 255, 255, 0.76),
+    inset 0 -10px 18px rgba(45, 35, 25, 0.05),
     0 3px 0 var(--shadow);
 }
 
 .choice-card--basic {
-  --tier-accent: #587f9f;
+  --tier: #9b9b9b;
+  --tier-dark: #5f6366;
+  --metal-face: linear-gradient(135deg, #ffffff 0%, #f0f0ed 43%, #d9d9d6 64%, #faf9f2 100%);
+  --metal-border: linear-gradient(135deg, #ffffff 0%, #aeb3b6 25%, #f7f7f4 48%, #74787c 70%, #e9e9e4 100%);
 }
 
 .choice-card--strategy {
-  --tier-accent: #4f9b6b;
+  --tier: #d7a72e;
+  --tier-dark: #8c6518;
+  --metal-face: linear-gradient(135deg, #fff9df 0%, #ffe2a0 40%, #dba837 66%, #fff3c7 100%);
+  --metal-border: linear-gradient(135deg, #fff6ca 0%, #b37918 24%, #fff4bc 47%, #8b5b11 70%, #f1cb65 100%);
 }
 
 .choice-card--special {
-  --tier-accent: #9a6da8;
-  background:
-    linear-gradient(90deg, rgba(154, 109, 168, 0.16) 0 11%, transparent 11%),
-    linear-gradient(135deg, #fff8df, #f4e9f6 62%, #fff2d8);
+  --tier: #a7dce7;
+  --tier-dark: #5b8ea1;
+  --metal-face: linear-gradient(135deg, #ffffff 0%, #f6ffff 35%, #e4f2ff 62%, #fffaff 100%);
+  --metal-border: linear-gradient(135deg, #ffffff 0%, #bdebf4 22%, #ffffff 45%, #8bb7ce 68%, #f7f9ff 100%);
 }
 
 .choice-card--silver {
   --tier: #9b9b9b;
   --tier-dark: #5f6366;
-  --tier-soft: #e7e7e7;
-  --tier-paper: #f7f7f3;
-  background:
-    linear-gradient(90deg, #e2e2df 0 11%, transparent 11%),
-    linear-gradient(180deg, #ffffff, #ededec 58%, #faf6e8);
+  --tier-sheen: rgba(255, 255, 255, 0.72);
+  --metal-face: linear-gradient(135deg, #ffffff 0%, #f0f0ed 43%, #d9d9d6 64%, #faf9f2 100%);
+  --metal-border: linear-gradient(135deg, #ffffff 0%, #aeb3b6 25%, #f7f7f4 48%, #74787c 70%, #e9e9e4 100%);
 }
 
 .choice-card--gold {
   --tier: #d7a72e;
   --tier-dark: #8c6518;
-  --tier-soft: #ffe8a3;
-  --tier-paper: #fff0bd;
-  background:
-    linear-gradient(90deg, #ffe39a 0 11%, transparent 11%),
-    linear-gradient(180deg, #fff8d8, #ffe6a7 58%, #fff3cf);
+  --tier-sheen: rgba(255, 255, 245, 0.82);
+  --metal-face: linear-gradient(135deg, #fff9df 0%, #ffe2a0 40%, #dba837 66%, #fff3c7 100%);
+  --metal-border: linear-gradient(135deg, #fff6ca 0%, #b37918 24%, #fff4bc 47%, #8b5b11 70%, #f1cb65 100%);
 }
 
 .choice-card--platinum {
   --tier: #a7dce7;
   --tier-dark: #5b8ea1;
-  --tier-soft: #f6ffff;
-  --tier-paper: #f7fbff;
-  background:
-    radial-gradient(circle at 85% 24%, rgba(255, 255, 255, 0.92) 0 5px, transparent 6px),
-    linear-gradient(90deg, #d9fbff 0 11%, transparent 11%),
-    linear-gradient(135deg, #ffffff 0%, #f3ffff 38%, #eaf4ff 70%, #fffaff 100%);
+  --tier-sheen: rgba(255, 255, 255, 0.92);
+  --metal-face: linear-gradient(135deg, #ffffff 0%, #f6ffff 35%, #e4f2ff 62%, #fffaff 100%);
+  --metal-border: linear-gradient(135deg, #ffffff 0%, #bdebf4 22%, #ffffff 45%, #8bb7ce 68%, #f7f9ff 100%);
 }
 
 .card-main {
   min-width: 0;
+  align-self: center;
 }
 
 .choice-card h3 {
@@ -664,8 +666,8 @@ body.is-result .confirm-button {
   align-content: center;
   justify-items: end;
   gap: 3px;
-  padding-left: 6px;
-  border-left: 1px dashed rgba(42, 33, 27, 0.2);
+  padding-left: 7px;
+  border-left: 1px solid rgba(42, 33, 27, 0.13);
 }
 
 .cost-chip span {
@@ -725,20 +727,21 @@ body.is-result .confirm-button {
 
 .selected-check {
   position: absolute;
-  top: 7px;
-  right: clamp(80px, 22vw, 102px);
+  top: 50%;
+  right: clamp(76px, 20vw, 92px);
   display: none;
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   place-items: center;
   border: 2px solid #ffe8d8;
   border-radius: 50%;
   background: var(--tier);
   color: #fff7df;
-  box-shadow: 1px 1px 0 var(--shadow);
-  font-size: 15px;
+  box-shadow: 1px 1px 0 rgba(26, 17, 12, 0.45);
+  font-size: 13px;
   font-weight: 1000;
   line-height: 1;
+  transform: translateY(-50%);
 }
 
 .choice-card.is-selected .selected-check {
