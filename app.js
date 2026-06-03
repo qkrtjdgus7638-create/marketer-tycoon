@@ -936,7 +936,6 @@ function renderChoiceCard(card) {
   return `
     <button class="choice-card ${tierClass[card.tier] || ""} role-${role} ${selected ? "is-selected choice-card--selected" : ""}" type="button" data-card-id="${card.id}" aria-pressed="${selected}">
       <div class="card-main">
-        <span class="role-badge">${card.tierLabel || tierLabels[card.tier] || card.tier}</span>
         <h3>${card.name}</h3>
       </div>
       <div class="cost-chip">
