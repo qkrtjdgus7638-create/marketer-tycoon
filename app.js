@@ -686,7 +686,8 @@ function cardMatchScore(card, event) {
 
 function selectCard(cardId) {
   state.selectedCardId = cardId;
-  render();
+  updateChoiceSelection();
+  renderAdvisor();
 }
 
 function confirmSelectedCard() {
@@ -932,9 +933,8 @@ function renderChoices() {
 
 function renderChoiceCard(card) {
   const selected = card.id === state.selectedCardId;
-  const role = roleByType[card.cardType] || "prep";
   return `
-    <button class="choice-card ${tierClass[card.tier] || ""} role-${role} ${selected ? "is-selected choice-card--selected" : ""}" type="button" data-card-id="${card.id}" aria-pressed="${selected}">
+    <button class="choice-card ${tierClass[card.tier] || ""} ${selected ? "is-selected choice-card--selected" : ""}" type="button" data-card-id="${card.id}" aria-pressed="${selected}">
       <div class="card-main">
         <h3>${card.name}</h3>
       </div>
@@ -945,6 +945,20 @@ function renderChoiceCard(card) {
       ${selected ? `<span class="selected-check" aria-hidden="true">✓</span>` : ""}
     </button>
   `;
+}
+
+function updateChoiceSelection() {
+  for (const button of els.cardChoices.querySelectorAll(".choice-card")) {
+    const selected = button.dataset.cardId === state.selectedCardId;
+    button.classList.toggle("is-selected", selected);
+    button.classList.toggle("choice-card--selected", selected);
+    button.setAttribute("aria-pressed", String(selected));
+    const existingCheck = button.querySelector(".selected-check");
+    if (selected && !existingCheck) {
+      button.insertAdjacentHTML("beforeend", `<span class="selected-check" aria-hidden="true">✓</span>`);
+    }
+    if (!selected && existingCheck) existingCheck.remove();
+  }
 }
 
 function cardIconMarkup(role) {
