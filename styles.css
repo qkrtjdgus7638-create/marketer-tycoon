@@ -12,10 +12,6 @@
   --blue: #517fb7;
   --shadow: rgba(26, 17, 12, 0.72);
   --line: rgba(42, 33, 27, 0.24);
-  --role: #8f6a4a;
-  --role-dark: #5f4535;
-  --role-soft: #f4ead8;
-  --role-paper: #fff7e6;
 }
 
 * {
@@ -403,9 +399,9 @@ body.is-result .confirm-button {
   margin: 0;
   overflow: hidden;
   color: #352720;
-  font-size: clamp(12.8px, 3.45vw, 15.2px);
+  font-size: clamp(11.6px, 3.08vw, 13.4px);
   font-weight: 800;
-  line-height: 1.43;
+  line-height: 1.32;
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
@@ -547,10 +543,10 @@ body.is-result .confirm-button {
 }
 
 .choice-card {
-  --role: #c94232;
-  --role-dark: #7d2b22;
-  --role-soft: #fff0dc;
-  --role-paper: #fff3d3;
+  --tier: #9a9a9a;
+  --tier-dark: #646464;
+  --tier-soft: #eeeeee;
+  --tier-paper: #fbfbf7;
   position: relative;
   display: grid;
   height: 100%;
@@ -563,10 +559,10 @@ body.is-result .confirm-button {
   border: 2px solid var(--ink);
   border-radius: 7px;
   background:
-    linear-gradient(90deg, var(--role-soft) 0 11%, transparent 11%),
-    linear-gradient(180deg, #fff8df, var(--role-paper));
+    linear-gradient(90deg, var(--tier-soft) 0 11%, transparent 11%),
+    linear-gradient(180deg, #fffdf2, var(--tier-paper));
   box-shadow:
-    inset 5px 0 0 var(--role),
+    inset 5px 0 0 var(--tier),
     inset 0 0 0 1px #fff8df,
     0 2px 0 var(--shadow);
   text-align: left;
@@ -579,54 +575,12 @@ body.is-result .confirm-button {
 }
 
 .choice-card.is-selected {
-  border-color: var(--role-dark);
+  border-color: var(--tier-dark);
   box-shadow:
     0 0 0 2px rgba(255, 247, 223, 0.8),
-    inset 5px 0 0 var(--role),
+    inset 5px 0 0 var(--tier),
     inset 0 0 0 1px #fff8df,
     0 3px 0 var(--shadow);
-}
-
-.choice-card.role-prep {
-  --role: #587f9f;
-  --role-dark: #344d64;
-  --role-soft: #edf3f6;
-  --role-paper: #fff6df;
-}
-
-.choice-card.role-improve {
-  --role: #6c9770;
-  --role-dark: #456247;
-  --role-soft: #edf4df;
-  --role-paper: #fff5df;
-}
-
-.choice-card.role-revenue {
-  --role: #b98a3b;
-  --role-dark: #76572c;
-  --role-soft: #fff1c8;
-  --role-paper: #fff2d8;
-}
-
-.choice-card.role-defense {
-  --role: #7d8f58;
-  --role-dark: #505d3d;
-  --role-soft: #f0f2db;
-  --role-paper: #fff3dc;
-}
-
-.choice-card.role-report {
-  --role: #7b6da2;
-  --role-dark: #4e4568;
-  --role-soft: #eeeaf5;
-  --role-paper: #fff3dc;
-}
-
-.choice-card.role-gamble {
-  --role: #b75b6b;
-  --role-dark: #70404b;
-  --role-soft: #f7e5e8;
-  --role-paper: #fff1dc;
 }
 
 .choice-card--basic {
@@ -645,27 +599,34 @@ body.is-result .confirm-button {
 }
 
 .choice-card--silver {
-  --role: #8f969d;
-  --role-dark: #5e666d;
-  --role-soft: #f0f1f1;
-  --role-paper: #fbf7ea;
+  --tier: #9b9b9b;
+  --tier-dark: #5f6366;
+  --tier-soft: #e7e7e7;
+  --tier-paper: #f7f7f3;
+  background:
+    linear-gradient(90deg, #e2e2df 0 11%, transparent 11%),
+    linear-gradient(180deg, #ffffff, #ededec 58%, #faf6e8);
 }
 
 .choice-card--gold {
-  --role: #d5a328;
-  --role-dark: #8a6415;
-  --role-soft: #fff1b8;
-  --role-paper: #fff4ce;
+  --tier: #d7a72e;
+  --tier-dark: #8c6518;
+  --tier-soft: #ffe8a3;
+  --tier-paper: #fff0bd;
+  background:
+    linear-gradient(90deg, #ffe39a 0 11%, transparent 11%),
+    linear-gradient(180deg, #fff8d8, #ffe6a7 58%, #fff3cf);
 }
 
 .choice-card--platinum {
-  --role: #4fb7c7;
-  --role-dark: #236a82;
-  --role-soft: #dff8f7;
-  --role-paper: #eef1ff;
+  --tier: #a7dce7;
+  --tier-dark: #5b8ea1;
+  --tier-soft: #f6ffff;
+  --tier-paper: #f7fbff;
   background:
-    linear-gradient(90deg, rgba(79, 183, 199, 0.22) 0 9%, transparent 9%),
-    linear-gradient(135deg, #f1fffb 0%, #e9f0ff 48%, #f5e8ff 100%);
+    radial-gradient(circle at 85% 24%, rgba(255, 255, 255, 0.92) 0 5px, transparent 6px),
+    linear-gradient(90deg, #d9fbff 0 11%, transparent 11%),
+    linear-gradient(135deg, #ffffff 0%, #f3ffff 38%, #eaf4ff 70%, #fffaff 100%);
 }
 
 .card-main {
@@ -708,7 +669,7 @@ body.is-result .confirm-button {
 }
 
 .cost-chip span {
-  color: var(--role-dark);
+  color: var(--tier-dark);
   font-size: 9px;
   font-weight: 1000;
   line-height: 1;
@@ -727,7 +688,7 @@ body.is-result .confirm-button {
 }
 
 .cost-label {
-  color: var(--role-dark);
+  color: var(--tier-dark);
   font-size: 9px;
   font-weight: 1000;
   line-height: 1;
@@ -772,7 +733,7 @@ body.is-result .confirm-button {
   place-items: center;
   border: 2px solid #ffe8d8;
   border-radius: 50%;
-  background: var(--role);
+  background: var(--tier);
   color: #fff7df;
   box-shadow: 1px 1px 0 var(--shadow);
   font-size: 15px;
@@ -1253,8 +1214,8 @@ body.is-result .confirm-button {
 
   .situation-card p {
     margin-top: 0;
-    font-size: 15px;
-    line-height: 1.45;
+    font-size: 12.4px;
+    line-height: 1.32;
   }
 
   .situation-card .situation-hint {
@@ -1397,8 +1358,8 @@ body.is-result .confirm-button {
 
   .situation-card p {
     margin-top: 0;
-    font-size: 11.2px;
-    line-height: 1.3;
+    font-size: 10.8px;
+    line-height: 1.26;
   }
 
   .situation-card .situation-hint {
